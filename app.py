@@ -155,23 +155,81 @@ elif st.session_state.page == 3:
         st.session_state.responses["risk"][q] = st.radio(text, opts, index=None, key=q)
 
     risk_questions = [
-        ("Q15","Long-term goal preference:",
-         ["A","B","C","D","E"]),
-        ("Q16","Retirement horizon approach:",
-         ["A","B","C","D","E"]),
-        ("Q17","Medium-term goal approach:",
-         ["A","B","C","D","E"]),
-        ("Q18","Reaction to 10–15% loss:",
-         ["A","B","C","D","E"]),
-        ("Q19","Risk–return preference:",
-         ["A","B","C","D","E"]),
-        ("Q20","Volatility view:",
-         ["A","B","C","D","E"]),
-        ("Q21","Income vs growth:",
-         ["A","B","C","D","E"]),
-        ("Q22","Time vs certainty:",
-         ["A","B","C","D","E"])
-    ]
+    ("Q15", "Long-term goal preference (10–15 years). You prefer to:",
+     [
+         "A. Protect capital even if growth is limited",
+         "B. Earn steady low-volatility returns",
+         "C. Balance growth and safety",
+         "D. Accept volatility for higher growth",
+         "E. Maximise growth despite fluctuations"
+     ]),
+
+    ("Q16", "Retirement horizon (20+ years away). Your approach would be:",
+     [
+         "A. Preserve savings",
+         "B. Focus on income assets",
+         "C. Mix income and growth",
+         "D. Tilt toward growth early",
+         "E. Aggressively grow capital"
+     ]),
+
+    ("Q17", "Medium-term goal (5–7 years). You would:",
+     [
+         "A. Keep funds fully safe",
+         "B. Use mostly low-risk instruments",
+         "C. Combine safety with equity",
+         "D. Use growth assets initially",
+         "E. Invest aggressively"
+     ]),
+
+    ("Q18", "Reaction to a 10–15% portfolio decline:",
+     [
+         "A. Exit investments",
+         "B. Reduce exposure",
+         "C. Hold and wait",
+         "D. Increase exposure",
+         "E. Rebalance strategically"
+     ]),
+
+    ("Q19", "Risk–return preference. Which best describes you?",
+     [
+         "A. Lower risk, lower return",
+         "B. Moderate risk, moderate return",
+         "C. Market-level risk and return",
+         "D. Higher risk for higher return",
+         "E. Maximum return regardless of risk"
+     ]),
+
+    ("Q20", "How do you view market volatility?",
+     [
+         "A. Something to avoid",
+         "B. A reason to be cautious",
+         "C. A normal part of investing",
+         "D. A potential opportunity",
+         "E. A source of advantage"
+     ]),
+
+    ("Q21", "For your long-term future, you value:",
+     [
+         "A. Stable income",
+         "B. Mostly income with some growth",
+         "C. Equal income and growth",
+         "D. Mostly growth",
+         "E. Growth first, income later"
+     ]),
+
+    ("Q22", "Time vs certainty trade-off. You can reach your goal in:\n"
+             "• 10 years with low risk, or\n"
+             "• 6 years with high uncertainty.\nYou would choose to:",
+     [
+         "A. Definitely choose safety",
+         "B. Lean toward safety",
+         "C. Balance both",
+         "D. Prefer the faster route",
+         "E. Strongly prefer speed despite risk"
+     ])
+]
+
 
     for q in risk_questions:
         ask_risk(*q)
