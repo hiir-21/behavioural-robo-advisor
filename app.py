@@ -232,7 +232,7 @@ elif st.session_state.page == 3:
          "C. Market-level risk and return","D. Higher risk for higher return",
          "E. Maximum return regardless of risk"])
 
-    ask_risk("Q20","Q20. Volatility Attitude\nHow do you view market volatility?",
+    ask_risk("Q20","Volatility Attitude\nHow do you view market volatility?",
         ["A. Something to avoid","B. A reason to be cautious",
          "C. A normal part of investing","D. A potential opportunity",
          "E. A source of advantage"])
