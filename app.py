@@ -31,7 +31,7 @@ body {
 }
 .stButton > button {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
-    color: black;
+    color: blue;
     border: none;
     padding: 14px 34px;
     font-size: 1rem;
