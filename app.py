@@ -1,4 +1,5 @@
 import streamlit as st
+import numpy as np
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -7,56 +8,115 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ---------------- CSS STYLING ----------------
+# ---------------- ADVANCED STYLING ----------------
 st.markdown("""
 <style>
+/* Global background */
 body {
-    background: radial-gradient(circle at top, #0f2027, #000000 60%);
+    background: radial-gradient(circle at top left, #0f2027, #000000 65%);
     color: #ffffff;
 }
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(90deg, #2df8c5, #1cb5e0, #9b5cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Hero section */
 .hero {
     text-align: center;
-    padding: 90px 20px 40px;
+    padding: 90px 20px 50px;
 }
+
 .hero h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 18px;
+    font-size: 3.3rem;
+    font-weight: 800;
+    margin-bottom: 20px;
 }
+
 .hero p {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: #b0b8c1;
     max-width: 720px;
     margin: auto;
 }
+
+/* Glass card */
+.glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: 24px;
+}
+
+/* Buttons */
 .stButton > button {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
-    color: black;
+    color: #000;
     border: none;
-    padding: 14px 34px;
+    padding: 15px 38px;
     font-size: 1rem;
     border-radius: 999px;
-    font-weight: 600;
-    margin-top: 30px;
+    font-weight: 700;
+    box-shadow: 0 0 25px rgba(45, 248, 197, 0.25);
 }
+
+.stButton > button:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 0 35px rgba(45, 248, 197, 0.45);
+    transition: all 0.25s ease;
+}
+
+/* Section spacing */
 .section {
-    margin-top: 40px;
+    margin-top: 60px;
 }
-.card {
-    background: #0d1117;
-    padding: 26px;
-    border-radius: 14px;
-    margin-top: 20px;
-    border: 1px solid #1f2933;
-}
+
+/* Trust line */
 .trust {
-    margin-top: 25px;
+    margin-top: 28px;
     font-size: 0.85rem;
     color: #8b949e;
     text-align: center;
 }
 </style>
 """, unsafe_allow_html=True)
+
+# ---------------- SESSION STATE ----------------
+if "start" not in st.session_state:
+    st.session_state.start = False
+
+if "bias_result" not in st.session_state:
+    st.session_state.bias_result = None
+
+# ---------------- HERO ----------------
+if not st.session_state.start:
+    st.markdown("""
+    <div class="hero">
+        <h1 class="gradient-text">Decode Your Investment Behaviour</h1>
+        <p>
+        Discover behavioural patterns that shape financial decisions using
+        psychological signals and portfolio dynamics.
+        This system provides behavioural diagnostics only.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("Start Behavioural Assessment"):
+        st.session_state.start = True
+        st.rerun()
+
+    st.markdown("""
+    <div class="trust">
+        Secure session • No data stored • Academic research prototype
+    </div>
+    """, unsafe_allow_html=True)
+
 
 # ---------------- SESSION STATE ----------------
 if "page" not in st.session_state:
