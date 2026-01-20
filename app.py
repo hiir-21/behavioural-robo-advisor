@@ -9,7 +9,7 @@ from datetime import datetime
 from survey_logic import generate_full_survey_analysis
 from views.methodology import show_methodology
 from views.biases import show_biases
-from views.about import show_about
+from pages.about import show_about
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
