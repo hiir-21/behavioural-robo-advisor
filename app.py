@@ -2,287 +2,352 @@ import streamlit as st
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Behavioural Robo-Advisor",
-    layout="wide",
+    page_title="Behavioural Bias Identification",
+    layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# ---------------- GLOBAL CSS ----------------
+# ---------------- CSS STYLING ----------------
 st.markdown("""
 <style>
-
-/* Hide Streamlit sidebar */
-section[data-testid="stSidebar"] {
-    display: none;
+body {
+    background: radial-gradient(circle at top, #0f2027, #000000 60%);
+    color: #ffffff;
 }
-
-/* Top Navigation Bar */
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 50px;
-    background: linear-gradient(90deg, #0f2027, #000000);
-    border-bottom: 1px solid #1f2933;
-}
-
-.nav-left {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: white;
-}
-
-.nav-center {
-    display: flex;
-    gap: 28px;
-}
-
-.nav-center button {
-    background: none;
-    border: none;
-    color: #cbd5e1;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.nav-center button:hover {
-    color: white;
-}
-
-.nav-right button {
-    background: #22c55e;
-    color: black;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 999px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
 .hero {
     text-align: center;
-    padding: 90px 20px;
+    padding: 90px 20px 40px;
 }
-
 .hero h1 {
-    font-size: 3.2rem;
-    font-weight: 800;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 18px;
 }
-
 .hero p {
     font-size: 1.1rem;
-    color: #94a3b8;
+    color: #b0b8c1;
     max-width: 720px;
     margin: auto;
 }
-
-.footer {
-    text-align: center;
-    color: #64748b;
-    font-size: 0.85rem;
+.stButton > button {
+    background: linear-gradient(135deg, #2df8c5, #1cb5e0);
+    color: black;
+    border: none;
+    padding: 14px 34px;
+    font-size: 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    margin-top: 30px;
+}
+.section {
     margin-top: 40px;
 }
-
+.card {
+    background: #0d1117;
+    padding: 26px;
+    border-radius: 14px;
+    margin-top: 20px;
+    border: 1px solid #1f2933;
+}
+.trust {
+    margin-top: 25px;
+    font-size: 0.85rem;
+    color: #8b949e;
+    text-align: center;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- NAV BAR ----------------
-nav = st.container()
-with nav:
-    c1, c2, c3 = st.columns([2, 3, 1])
+# ---------------- SESSION STATE ----------------
+if "page" not in st.session_state:
+    st.session_state.page = 0
 
-    with c1:
-        st.markdown('<div class="nav-left">🧠 Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
+if "responses" not in st.session_state:
+    st.session_state.responses = {
+        "demographics": {},
+        "bias": {},
+        "risk": {}
+    }
 
-    with c2:
-        col_h, col_m, col_b, col_a = st.columns(4)
-        with col_h:
-            if st.button("Home"):
-                st.switch_page("app.py")
-        with col_m:
-            if st.button("Methodology"):
-                st.switch_page("pages/methodology.py")
-        with col_b:
-            if st.button("Biases"):
-                st.switch_page("pages/biases.py")
-        with col_a:
-            if st.button("About"):
-                st.switch_page("pages/about.py")
+# ---------------- PAGE 0 : HERO ----------------
+if st.session_state.page == 0:
+    st.markdown("""
+    <div class="hero">
+        <h1>Understand Your Investment Behaviour</h1>
+        <p>
+        Identify behavioural biases influencing investment decisions using
+        scenario-based psychology and personal finance preferences.
+        This tool provides behavioural diagnostics only and does not offer financial advice.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    with c3:
-        if st.button("Start Assessment"):
-            st.switch_page("pages/methodology.py")
+    col1, col2, col3 = st.columns([1, 2, 1])
 
-st.divider()
+    with col2:
+        if st.button("Start Behavioural Assessment"):
+            st.session_state.page = 1
+            st.rerun()
 
-# ---------------- HOME CONTENT ----------------
-st.markdown("""
-<div class="hero">
-    <h1>Decode Your Investment Behaviour</h1>
-    <p>
-    Identify behavioural biases and risk preferences influencing investment
-    decisions using scenario-based behavioural finance assessment.
-    This tool is strictly for academic analysis.
-    </p>
-</div>
-""", unsafe_allow_html=True)
 
-c1, c2, c3 = st.columns([1,2,1])
-with c2:
-    if st.button("Begin Behavioural Assessment"):
-        st.switch_page("pages/methodology.py")
+    st.markdown("""
+    <div class="trust">
+        Session-based analysis • No data stored • Academic research prototype
+    </div>
+    """, unsafe_allow_html=True)
 
-st.markdown("""
-<div class="footer">
-    Session-based analysis • No data stored • Academic research prototype
-</div>
-""", unsafe_allow_html=True)
-
-# ================= DEMOGRAPHICS =================
-elif st.session_state.view == "survey_demographics":
+# ---------------- PAGE 1 : Q1–Q2 (AGE & GENDER) ----------------
+elif st.session_state.page == 1:
+    st.markdown("<div class='section'></div>", unsafe_allow_html=True)
     st.header("Basic Information")
 
-    age = st.selectbox("Select your age group", ["18–25","26–35","36–50","50+"], index=None)
-    gender = st.selectbox("Select your gender", ["Female","Male","Prefer not to say"], index=None)
+    age = st.selectbox(
+        "Q1. Select your age group",
+        ["18–25", "26–35", "36–50", "50+"],
+        index=None
+    )
+
+    gender = st.selectbox(
+        "Q2. Select your gender",
+        ["Female", "Male", "Prefer not to say"],
+        index=None
+    )
 
     if st.button("Next"):
         if age and gender:
-            st.session_state.responses["demographics"] = {"Q1": age, "Q2": gender}
-            st.session_state.view = "survey_bias"
+            st.session_state.responses["demographics"] = {
+                "Q1": age,
+                "Q2": gender
+            }
+            st.session_state.page = 2
             st.rerun()
         else:
             st.warning("Please answer both questions.")
 
-# ================= BIAS QUESTIONS =================
-elif st.session_state.view == "survey_bias":
+# ---------------- PAGE 2 : Q3–Q14 (BEHAVIOURAL BIASES) ----------------
+elif st.session_state.page == 2:
+    st.markdown("<div class='section'></div>", unsafe_allow_html=True)
     st.header("Investment Decision Scenarios")
 
-    def ask(q, text, opts):
-        st.session_state.responses["bias"][q] = st.radio(text, opts, index=None, key=q)
+    def ask_bias(qno, question, options):
+        st.session_state.responses["bias"][qno] = st.radio(
+            question, options, index=None, key=qno
+        )
 
-    bias_questions = [
-        ("Q3","When new information contradicts your investment thesis, you usually:",
-         ["A. Assume it is temporary noise","B. Wait for further confirmation",
-          "C. Adjust expectations slightly","D. Re-examine the entire thesis","E. Exit or reduce exposure"]),
-        ("Q4","You bought a stock at ₹1,500; it now trades at ₹1,000:",
-         ["A. It should return to ₹1,500","B. ₹1,500 is a key reference",
-          "C. Past prices matter less","D. The fall may indicate opportunity","E. Price history should not guide decisions"]),
-        ("Q5","When deciding whether to sell an investment, you rely most on:",
-         ["A. Original price","B. Previous high","C. Fundamentals","D. Market sentiment","E. Long-term returns"]),
-        ("Q6","After a stock performs very well recently:",
-         ["A. Trend continues","B. Momentum matters","C. Both matter","D. Long-term data","E. Short-term moves irrelevant"]),
-        ("Q7","Which presentation makes you more comfortable?",
-         ["A. 90% success","B. 10% failure","C. Both equally","D. Absolute returns","E. Long-term averages"]),
-        ("Q8","After repeated market crash news:",
-         ["A. Investing feels riskier","B. Reduce exposure","C. Re-check data","D. Proceed cautiously","E. Stick to long-term plans"]),
-        ("Q9","Most uncomfortable situation:",
-         ["A. Booking a loss","B. Missing gains","C. Unclear decision","D. Being wrong publicly","E. Small loss for long-term gain"]),
-        ("Q10","After profitable trades:",
-         ["A. Increase size","B. Same strategy","C. Keep size","D. Diversify","E. Review assumptions"]),
-        ("Q11","Stock trending on social media:",
-         ["A. Buy immediately","B. Invest small","C. Track first","D. Research fundamentals","E. Avoid hype"]),
-        ("Q12","One stock up, one down:",
-         ["A. Sell winner","B. Hold loser","C. Sell part both","D. Rebalance","E. Reassess fundamentals"]),
-        ("Q13","You keep old investments because:",
-         ["A. Familiar","B. Effort to change","C. Haven’t reviewed","D. No urgency","E. Periodic review"]),
-        ("Q14","When markets move sharply:",
-         ["A. Trade actively","B. Adjust quickly","C. Pause","D. Stick to rules","E. Avoid reacting"])
-    ]
+    ask_bias("Q3",
+        "Q3. When new information contradicts your investment thesis, you usually:",
+        ["A. Assume it is temporary noise",
+         "B. Wait for further confirmation",
+         "C. Adjust expectations slightly",
+         "D. Re-examine the entire thesis",
+         "E. Exit or reduce exposure"]
+    )
 
-    for q in bias_questions:
-        ask(*q)
+    ask_bias("Q4",
+        "Q4. You bought a stock at ₹1,500; it now trades at ₹1,000. Which thought best reflects your reaction?",
+        ["A. It should eventually return to ₹1,500",
+         "B. ₹1,500 remains a key reference for my decision",
+         "C. Past prices matter less than future performance",
+         "D. The fall itself could indicate opportunity",
+         "E. Price history alone should not guide decisions"]
+    )
+
+    ask_bias("Q5",
+        "Q5. When deciding whether to sell an investment, you rely most on:",
+        ["A. The price you originally paid",
+         "B. The asset’s previous highest price",
+         "C. Current valuation and fundamentals",
+         "D. Recent market sentiment and news",
+         "E. Long-term expected returns"]
+    )
+
+    ask_bias("Q6",
+        "Q6. After a stock performs very well over the last few months, you believe:",
+        ["A. The trend will continue",
+         "B. Momentum matters more than history",
+         "C. Both trend and history matter",
+         "D. Long-term data is more reliable",
+         "E. Short-term movements are irrelevant"]
+    )
+
+    ask_bias("Q7",
+        "Q7. Which presentation makes you more comfortable investing?",
+        ["A. “90% success rate”",
+         "B. “Only 10% failure rate”",
+         "C. Both equally",
+         "D. Absolute return numbers",
+         "E. Long-term historical averages"]
+    )
+
+    ask_bias("Q8",
+        "Q8. After repeated news about market crashes, you:",
+        ["A. Feel investing is riskier",
+         "B. Reduce exposure temporarily",
+         "C. Re-check historical data",
+         "D. Proceed cautiously",
+         "E. Stick strictly to long-term plans"]
+    )
+
+    ask_bias("Q9",
+        "Q9. Which situation feels most uncomfortable to you as an investor?",
+        ["A. Selling an investment at a loss",
+         "B. Missing out on a potential gain",
+         "C. Making a decision without sufficient information",
+         "D. Being wrong in front of others",
+         "E. Realising a loss even when it improves future outcomes"]
+    )
+
+    ask_bias("Q10",
+        "Q10. After a series of profitable trades, you plan your next investment by:",
+        ["A. Increasing position size significantly",
+         "B. Using the same strategy with minor tweaks",
+         "C. Keeping position size unchanged",
+         "D. Diversifying to reduce reliance",
+         "E. Reviewing assumptions behind past success"]
+    )
+
+    ask_bias("Q11",
+        "Q11. A stock is trending heavily on social media and business news. You:",
+        ["A. Buy immediately",
+         "B. Invest a small amount",
+         "C. Track it closely first",
+         "D. Research fundamentals independently",
+         "E. Avoid it due to hype"]
+    )
+
+    ask_bias("Q12",
+        "Q12. You have one stock with large gains and one with losses. You:",
+        ["A. Sell the winner to lock profits",
+         "B. Hold the loser hoping for recovery",
+         "C. Sell part of both",
+         "D. Rebalance based on targets",
+         "E. Reassess both on fundamentals"]
+    )
+
+    ask_bias("Q13",
+        "Q13. You keep an old investment mainly because:",
+        ["A. It feels familiar",
+         "B. Changing requires effort",
+         "C. You haven’t reviewed alternatives",
+         "D. There’s no urgent reason",
+         "E. You reassess periodically"]
+    )
+
+    ask_bias("Q14",
+        "Q14. When markets move sharply in a single day, you tend to:",
+        ["A. Trade actively",
+         "B. Adjust positions quickly",
+         "C. Pause and reassess",
+         "D. Stick to preset rules",
+         "E. Avoid reacting"]
+    )
 
     if st.button("Next"):
         if all(st.session_state.responses["bias"].values()):
-            st.session_state.view = "survey_risk"
+            st.session_state.page = 3
             st.rerun()
         else:
             st.warning("Please answer all questions.")
 
-# ================= RISK QUESTIONS =================
-elif st.session_state.view == "survey_risk":
+# ---------------- PAGE 3 : Q15–Q22 (RISK APPETITE) ----------------
+elif st.session_state.page == 3:
+    st.markdown("<div class='section'></div>", unsafe_allow_html=True)
     st.header("Personal Finance Preferences")
 
-    def ask_risk(q, text, opts):
-        st.session_state.responses["risk"][q] = st.radio(text, opts, index=None, key=q)
+    def ask_risk(qno, question, options):
+        st.session_state.responses["risk"][qno] = st.radio(
+            question, options, index=None, key=qno
+        )
 
-    risk_questions = [
-        ("Q15","Long-term goal preference (10–15 years):",
-         ["A. Protect capital","B. Low volatility","C. Balanced","D. High growth","E. Max growth"]),
-        ("Q16","Retirement horizon approach:",
-         ["A. Preserve savings","B. Income focus","C. Balanced","D. Growth early","E. Aggressive growth"]),
-        ("Q17","Medium-term goal (5–7 years):",
-         ["A. Fully safe","B. Mostly safe","C. Balanced","D. Growth-oriented","E. Aggressive"]),
-        ("Q18","Reaction to 10–15% loss:",
-         ["A. Exit","B. Reduce exposure","C. Hold","D. Increase exposure","E. Rebalance"]),
-        ("Q19","Risk-return preference:",
-         ["A. Low-low","B. Moderate","C. Market","D. High-high","E. Max return"]),
-        ("Q20","Volatility view:",
-         ["A. Avoid","B. Cautious","C. Normal","D. Opportunity","E. Advantage"]),
-        ("Q21","Income vs growth:",
-         ["A. Income","B. Mostly income","C. Balanced","D. Mostly growth","E. Growth first"]),
-        ("Q22","Time vs certainty trade-off:",
-         ["A. Safety","B. Lean safety","C. Balance","D. Faster route","E. Speed despite risk"])
-    ]
+    ask_risk("Q15",
+        "Q15. Long-Term Wealth Goal (10–15 years)\nYou prefer to:",
+        ["A. Protect capital even if growth is limited",
+         "B. Earn steady low-volatility returns",
+         "C. Balance growth and safety",
+         "D. Accept volatility for higher growth",
+         "E. Maximise growth despite fluctuations"]
+    )
 
-    for q in risk_questions:
-        ask_risk(*q)
+    ask_risk("Q16",
+        "Q16. Retirement Horizon (20+ years away)\nYour approach would be:",
+        ["A. Preserve savings",
+         "B. Focus on income assets",
+         "C. Mix income and growth",
+         "D. Tilt toward growth early",
+         "E. Aggressively grow capital"]
+    )
+
+    ask_risk("Q17",
+        "Q17. Medium-Term Goal (5–7 years)\nYou would:",
+        ["A. Keep funds fully safe",
+         "B. Use mostly low-risk instruments",
+         "C. Combine safety with equity",
+         "D. Use growth assets initially",
+         "E. Invest aggressively"]
+    )
+
+    ask_risk("Q18",
+        "Q18. Reaction to a 10–15% Portfolio Decline\nYou would most likely:",
+        ["A. Exit investments",
+         "B. Reduce exposure",
+         "C. Hold and wait",
+         "D. Increase exposure",
+         "E. Rebalance strategically"]
+    )
+
+    ask_risk("Q19",
+        "Q19. Risk–Return Preference\nWhich best describes you?",
+        ["A. Lower risk, lower return",
+         "B. Moderate risk, moderate return",
+         "C. Market-level risk and return",
+         "D. Higher risk for higher return",
+         "E. Maximum return regardless of risk"]
+    )
+
+    ask_risk("Q20",
+        "Q20. Volatility Attitude\nHow do you view market volatility?",
+        ["A. Something to avoid",
+         "B. A reason to be cautious",
+         "C. A normal part of investing",
+         "D. A potential opportunity",
+         "E. A source of advantage"]
+    )
+
+    ask_risk("Q21",
+        "Q21. Income vs Growth Orientation\nFor your long-term future, you value:",
+        ["A. Stable income",
+         "B. Mostly income with some growth",
+         "C. Equal income and growth",
+         "D. Mostly growth",
+         "E. Growth first, income later"]
+    )
+
+    ask_risk("Q22",
+        "Q22. Time vs Certainty Trade-off\nYou can reach your goal in:\n• 10 years with low risk, or\n• 6 years with high uncertainty\nYou would choose to:",
+        ["A. Definitely choose safety",
+         "B. Lean toward safety",
+         "C. Balance both",
+         "D. Prefer the faster route",
+         "E. Strongly prefer speed despite risk"]
+    )
 
     if st.button("Submit Survey"):
         if all(st.session_state.responses["risk"].values()):
-            st.session_state.view = "analysis"
+            st.success("Survey completed successfully.")
+            st.session_state.page = 4
             st.rerun()
         else:
             st.warning("Please answer all questions.")
 
-# ================= ANALYSIS =================
-elif st.session_state.view == "analysis":
-    st.header("Assessment Results")
-
-    responses = {}
-    for section in ["bias","risk"]:
-        for q, ans in st.session_state.responses[section].items():
-            responses[q] = ["A","B","C","D","E"].index(ans.split(".")[0]) + 1
-
-    analysis = generate_full_survey_analysis(responses)
-
-    st.session_state.results.append({
-        "timestamp": datetime.now(),
-        "analysis": analysis
-    })
-
-    bfs = analysis["behavioral_bias_analysis"]["bfs_summary"]
-    bias_profile = analysis["behavioral_bias_analysis"]["bias_profile"]
-    risk = analysis["risk_appetite_analysis"]
-
-    st.subheader("Behavioral Finance Score")
-    st.metric("BFS", f"{bfs['bfs_score']} / {bfs['max_score']}", bfs["category"])
-
-    st.subheader("Behavioral Bias Breakdown")
-    for b, d in bias_profile.items():
-        st.write(f"**{b}** — {d['level']} (Score: {d['score']})")
-
-    st.subheader("Risk Appetite Assessment")
-    st.metric("Average Risk Score", risk["average_score"], risk["category"])
-    st.write(risk["interpretation"])
-
-# ================= RESULTS =================
-elif st.session_state.view == "results":
-    st.header("Previous Assessments")
-
-    if not st.session_state.results:
-        st.info("No assessments completed yet.")
-    else:
-        for i, r in enumerate(st.session_state.results):
-            with st.expander(f"Assessment {i+1} — {r['timestamp'].strftime('%d %b %Y %H:%M')}"):
-                st.json(r["analysis"])
-
-# ================= STATIC VIEWS =================
-elif st.session_state.view == "methodology":
-    show_methodology()
-
-elif st.session_state.view == "biases":
-    show_biases()
-
-elif st.session_state.view == "about":
-    show_about()
+# ---------------- PAGE 4 : COMPLETION ----------------
+elif st.session_state.page == 4:
+    st.markdown("<div class='section'></div>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card">
+        <h3>Assessment Completed</h3>
+        <p>
+        Your responses have been recorded successfully.
+        Behavioural bias scoring and risk appetite analysis will be performed next.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
