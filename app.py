@@ -1,132 +1,142 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(__file__))
-
 import streamlit as st
-from datetime import datetime
-
-from survey_logic import generate_full_survey_analysis
-from pages.methodology import show_methodology
-from pages.biases import show_biases
-from pages.about import show_about
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Behavioural Bias Identification",
-    layout="centered",
+    page_title="Behavioural Robo-Advisor",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# ---------------- ADVANCED STYLING ----------------
+# ---------------- GLOBAL CSS ----------------
 st.markdown("""
 <style>
-body {
-    background: radial-gradient(circle at top left, #0f2027, #000000 65%);
-    color: #ffffff;
+
+/* Hide Streamlit sidebar */
+section[data-testid="stSidebar"] {
+    display: none;
 }
-.gradient-text {
-    background: linear-gradient(90deg, #2df8c5, #1cb5e0, #9b5cff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+
+/* Top Navigation Bar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: linear-gradient(90deg, #0f2027, #000000);
+    border-bottom: 1px solid #1f2933;
 }
+
+.nav-left {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+.nav-center {
+    display: flex;
+    gap: 28px;
+}
+
+.nav-center button {
+    background: none;
+    border: none;
+    color: #cbd5e1;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.nav-center button:hover {
+    color: white;
+}
+
+.nav-right button {
+    background: #22c55e;
+    color: black;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .hero {
     text-align: center;
-    padding: 90px 20px 50px;
+    padding: 90px 20px;
 }
+
 .hero h1 {
     font-size: 3.2rem;
     font-weight: 800;
 }
+
 .hero p {
     font-size: 1.1rem;
-    color: #b0b8c1;
+    color: #94a3b8;
     max-width: 720px;
     margin: auto;
 }
-.stButton > button {
-    background: linear-gradient(135deg, #2df8c5, #1cb5e0);
-    color: black;
-    border: none;
-    padding: 12px 28px;
-    font-size: 0.95rem;
-    border-radius: 999px;
-    font-weight: 700;
-}
-.trust {
-    margin-top: 30px;
-    font-size: 0.85rem;
-    color: #8b949e;
+
+.footer {
     text-align: center;
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-top: 40px;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- SESSION STATE ----------------
-if "view" not in st.session_state:
-    st.session_state.view = "home"
+# ---------------- NAV BAR ----------------
+nav = st.container()
+with nav:
+    c1, c2, c3 = st.columns([2, 3, 1])
 
-if "responses" not in st.session_state:
-    st.session_state.responses = {
-        "demographics": {},
-        "bias": {},
-        "risk": {}
-    }
+    with c1:
+        st.markdown('<div class="nav-left">🧠 Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
 
-if "results" not in st.session_state:
-    st.session_state.results = []
+    with c2:
+        col_h, col_m, col_b, col_a = st.columns(4)
+        with col_h:
+            if st.button("Home"):
+                st.switch_page("app.py")
+        with col_m:
+            if st.button("Methodology"):
+                st.switch_page("pages/methodology.py")
+        with col_b:
+            if st.button("Biases"):
+                st.switch_page("pages/biases.py")
+        with col_a:
+            if st.button("About"):
+                st.switch_page("pages/about.py")
 
-# ---------------- NAVIGATION BAR ----------------
-def navbar():
-    col1, col2, col3, col4, col5, col6 = st.columns([2.2,1,1,1,1,1])
+    with c3:
+        if st.button("Start Assessment"):
+            st.switch_page("pages/methodology.py")
 
-    with col1:
-        st.markdown("### 🧠 Behavioural Robo-Advisor")
-
-    with col2:
-        if st.button("Home"):
-            st.session_state.view = "home"
-
-    with col3:
-        if st.button("Methodology"):
-            st.session_state.view = "methodology"
-
-    with col4:
-        if st.button("Biases"):
-            st.session_state.view = "biases"
-
-    with col5:
-        if st.button("Results"):
-            st.session_state.view = "results"
-
-    with col6:
-        if st.button("About"):
-            st.session_state.view = "about"
-
-navbar()
 st.divider()
 
-# ================= HOME =================
-if st.session_state.view == "home":
-    st.markdown("""
-    <div class="hero">
-        <h1 class="gradient-text">Decode Your Investment Behaviour</h1>
-        <p>
-        Identify behavioural biases and risk preferences influencing investment decisions
-        using psychology-driven scenarios. This tool provides behavioural diagnostics only.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+# ---------------- HOME CONTENT ----------------
+st.markdown("""
+<div class="hero">
+    <h1>Decode Your Investment Behaviour</h1>
+    <p>
+    Identify behavioural biases and risk preferences influencing investment
+    decisions using scenario-based behavioural finance assessment.
+    This tool is strictly for academic analysis.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
-    if st.button("Start Behavioural Assessment"):
-        st.session_state.view = "survey_demographics"
-        st.rerun()
+c1, c2, c3 = st.columns([1,2,1])
+with c2:
+    if st.button("Begin Behavioural Assessment"):
+        st.switch_page("pages/methodology.py")
 
-    st.markdown("""
-    <div class="trust">
-        Session-based analysis • No data stored • Academic research prototype
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown("""
+<div class="footer">
+    Session-based analysis • No data stored • Academic research prototype
+</div>
+""", unsafe_allow_html=True)
 
 # ================= DEMOGRAPHICS =================
 elif st.session_state.view == "survey_demographics":
