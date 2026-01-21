@@ -44,35 +44,29 @@ body {
     text-align: center;
     font-size: 2rem;
     font-weight: 800;
-    margin-top: 20px;
+    margin-top: 12px;
 }
 
 /* NAV BAR */
 .navbar {
     display: flex;
     justify-content: center;
-    gap: 18px;
-    margin: 15px 0 10px;
+    gap: 20px;
+    margin: 12px 0 6px;
 }
 
-.nav-btn > button,
-.nav-btn-active > button {
-    min-width: 170px;          /* forces equal size */
-    height: 52px;              /* taller pills */
+.navbar button {
+    min-width: 170px;
+    height: 54px;
     border-radius: 999px;
     border: none;
     font-weight: 600;
     background: #0d1117;
     color: #c9d1d9;
     white-space: nowrap;
-    display: flex;             /* centers text properly */
-    align-items: center;
-    justify-content: center;
 }
 
-
-
-.nav-btn-active > button {
+.navbar button[data-active="true"] {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
 }
@@ -80,7 +74,7 @@ body {
 /* HERO */
 .hero {
     text-align: center;
-    margin-top: 35px;
+    margin-top: 18px;
 }
 
 .hero h1 {
@@ -95,25 +89,16 @@ body {
     font-size: 1.1rem;
 }
 
-/* BUTTON */
-.stButton > button {
+/* CTA BUTTON */
+div.stButton > button {
+    display: block;
+    margin: 40px auto 0 auto;
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
     border-radius: 999px;
-    padding: 14px 36px;
+    padding: 16px 48px;
     border: none;
     font-weight: 600;
-    margin-top: 35px;
-}
-
-/* CARD */
-.card {
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(14px);
-    border-radius: 18px;
-    padding: 28px;
-    margin-top: 30px;
-    border: 1px solid rgba(255,255,255,0.08);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -124,25 +109,28 @@ body {
 st.markdown('<div class="app-title">🧠 Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# NAV BAR
+# NAV BAR (FIXED — NO COLUMNS)
 # --------------------------------------------------
-tabs = ["Home", "Methodology", "Biases", "Results", "About"]
-cols = st.columns(len(tabs))
+st.markdown("<div class='navbar'>", unsafe_allow_html=True)
 
-for col, tab in zip(cols, tabs):
-    with col:
-        cls = "nav-btn-active" if st.session_state.page == tab else "nav-btn"
-        st.markdown(f'<div class="{cls}">', unsafe_allow_html=True)
-        if st.button(tab, key=f"nav-{tab}"):
-            st.session_state.page = tab
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+for tab in ["Home", "Methodology", "Biases", "Results", "About"]:
+    active = "true" if st.session_state.page == tab else "false"
+    if st.button(tab, key=f"nav-{tab}", help=tab):
+        st.session_state.page = tab
+        st.rerun()
+    st.markdown(
+        f"""
+        <script>
+        const btn = window.parent.document.querySelector('[data-testid="stButton"][title="{tab}"] button');
+        if (btn) btn.setAttribute("data-active", "{active}");
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
 
+st.markdown("</div>", unsafe_allow_html=True)
 st.divider()
 
-# ==================================================
-# HOME
-# ==================================================
 # ==================================================
 # HOME
 # ==================================================
@@ -159,20 +147,13 @@ if st.session_state.page == "Home":
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div style="
-        display:flex;
-        justify-content:center;
-        margin-top:40px;
-    ">
-    """, unsafe_allow_html=True)
-
     if st.button("Start Behavioural Assessment", key="start-assessment"):
         st.session_state.page = "Survey-Demographics"
         st.rerun()
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
+# ==================================================
+# EVERYTHING BELOW IS UNCHANGED (survey, results, pages)
+# ==================================================
 
 
 
