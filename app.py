@@ -106,6 +106,14 @@ body {
     margin-top: 30px;
     border: 1px solid rgba(255,255,255,0.08);
 }
+
+/* RESULTS SECTION TITLES */
+.results-title {
+    color: #2df8c5;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -325,7 +333,11 @@ elif st.session_state.page == "Results":
 
         # ---------------- BFS CARD ----------------
         
-        st.subheader("Behavioral Finance Score (BFS)")
+        st.markdown(
+            "<h2 class='results-title'>Behavioral Finance Score (BFS)</h2>",
+            unsafe_allow_html=True
+        )
+
 
         st.metric(
             "BFS",
@@ -346,7 +358,7 @@ elif st.session_state.page == "Results":
         st.markdown("</div>", unsafe_allow_html=True)
 
         # ---------------- BIASES CARD ----------------
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        
         st.subheader("Detected Behavioral Biases")
 
         st.markdown(
@@ -388,8 +400,12 @@ elif st.session_state.page == "Results":
                 "for potential long-term returns."
             )
 
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.subheader("Risk Appetite Assessment")
+        
+        st.markdown(
+            "<h2 class='results-title'>Risk Appetite Assessment</h2>",
+            unsafe_allow_html=True
+        )
+
 
         st.metric(
             "Average Risk Score",
@@ -423,7 +439,7 @@ elif st.session_state.page == "Results":
 # STATIC PAGES
 # ==================================================
 # ==================================================
-# METHODOLOGY
+# METHOD
 # ==================================================
 elif st.session_state.page == "Method":
 
