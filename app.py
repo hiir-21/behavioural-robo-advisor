@@ -324,7 +324,7 @@ elif st.session_state.page == "Results":
         risk = analysis["risk_appetite_analysis"]
 
         # ---------------- BFS CARD ----------------
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
+        
         st.subheader("Behavioral Finance Score (BFS)")
 
         st.metric(
