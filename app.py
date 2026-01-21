@@ -30,7 +30,7 @@ if "analysis_result" not in st.session_state:
     st.session_state.analysis_result = None
 
 # --------------------------------------------------
-# STYLES
+# STYLES (ONLY VISUAL FIXES)
 # --------------------------------------------------
 st.markdown("""
 <style>
@@ -48,14 +48,14 @@ body {
 }
 
 /* NAV BAR */
-.navbar {
+.nav-wrapper {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin: 12px 0 6px;
+    margin-top: 12px;
 }
 
-.navbar button {
+.nav-btn > button,
+.nav-btn-active > button {
     min-width: 170px;
     height: 54px;
     border-radius: 999px;
@@ -66,7 +66,7 @@ body {
     white-space: nowrap;
 }
 
-.navbar button[data-active="true"] {
+.nav-btn-active > button {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
 }
@@ -89,10 +89,10 @@ body {
     font-size: 1.1rem;
 }
 
-/* CTA BUTTON */
+/* CTA BUTTON (TRUE CENTER) */
 div.stButton > button {
     display: block;
-    margin: 40px auto 0 auto;
+    margin: 36px auto 0 auto;
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
     border-radius: 999px;
@@ -109,24 +109,21 @@ div.stButton > button {
 st.markdown('<div class="app-title">🧠 Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# NAV BAR (FIXED — NO COLUMNS)
+# NAV BAR (HORIZONTAL, EQUAL, STABLE)
 # --------------------------------------------------
-st.markdown("<div class='navbar'>", unsafe_allow_html=True)
+tabs = ["Home", "Methodology", "Biases", "Results", "About"]
 
-for tab in ["Home", "Methodology", "Biases", "Results", "About"]:
-    active = "true" if st.session_state.page == tab else "false"
-    if st.button(tab, key=f"nav-{tab}", help=tab):
-        st.session_state.page = tab
-        st.rerun()
-    st.markdown(
-        f"""
-        <script>
-        const btn = window.parent.document.querySelector('[data-testid="stButton"][title="{tab}"] button');
-        if (btn) btn.setAttribute("data-active", "{active}");
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
+st.markdown("<div class='nav-wrapper'>", unsafe_allow_html=True)
+nav_cols = st.columns(len(tabs), gap="large")
+
+for col, tab in zip(nav_cols, tabs):
+    with col:
+        cls = "nav-btn-active" if st.session_state.page == tab else "nav-btn"
+        st.markdown(f"<div class='{cls}'>", unsafe_allow_html=True)
+        if st.button(tab, key=f"nav-{tab}", use_container_width=True):
+            st.session_state.page = tab
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
 st.divider()
@@ -150,10 +147,6 @@ if st.session_state.page == "Home":
     if st.button("Start Behavioural Assessment", key="start-assessment"):
         st.session_state.page = "Survey-Demographics"
         st.rerun()
-
-# ==================================================
-# EVERYTHING BELOW IS UNCHANGED (survey, results, pages)
-# ==================================================
 
 
 
