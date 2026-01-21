@@ -30,7 +30,7 @@ if "analysis_result" not in st.session_state:
     st.session_state.analysis_result = None
 
 # --------------------------------------------------
-# STYLES (ONLY VISUAL FIXES)
+# STYLES
 # --------------------------------------------------
 st.markdown("""
 <style>
@@ -44,26 +44,24 @@ body {
     text-align: center;
     font-size: 2rem;
     font-weight: 800;
-    margin-top: 12px;
+    margin-top: 20px;
 }
 
 /* NAV BAR */
-.nav-wrapper {
+.navbar {
     display: flex;
     justify-content: center;
-    margin-top: 12px;
+    gap: 18px;
+    margin: 30px 0 25px;
 }
 
-.nav-btn > button,
-.nav-btn-active > button {
-    min-width: 170px;
-    height: 54px;
+.nav-btn > button {
+    padding: 10px 24px;
     border-radius: 999px;
     border: none;
     font-weight: 600;
     background: #0d1117;
     color: #c9d1d9;
-    white-space: nowrap;
 }
 
 .nav-btn-active > button {
@@ -74,7 +72,7 @@ body {
 /* HERO */
 .hero {
     text-align: center;
-    margin-top: 18px;
+    margin-top: 70px;
 }
 
 .hero h1 {
@@ -89,16 +87,25 @@ body {
     font-size: 1.1rem;
 }
 
-/* CTA BUTTON (TRUE CENTER) */
-div.stButton > button {
-    display: block;
-    margin: 36px auto 0 auto;
+/* BUTTON */
+.stButton > button {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
     border-radius: 999px;
-    padding: 16px 48px;
+    padding: 14px 36px;
     border: none;
     font-weight: 600;
+    margin-top: 35px;
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 28px;
+    margin-top: 30px;
+    border: 1px solid rgba(255,255,255,0.08);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -109,43 +116,21 @@ div.stButton > button {
 st.markdown('<div class="app-title">🧠 Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
-# NAV BAR (HORIZONTAL, EQUAL, STABLE)
+# NAV BAR
 # --------------------------------------------------
-# --------------------------------------------------
-# NAV BAR (FIXED – NO COLUMNS, NO WRAPPING)
-# --------------------------------------------------
-st.markdown("""
-<div style="
-    display:flex;
-    justify-content:center;
-    gap:24px;
-    margin-top:12px;
-    margin-bottom:6px;
-">
-""", unsafe_allow_html=True)
-
 tabs = ["Home", "Methodology", "Biases", "Results", "About"]
+cols = st.columns(len(tabs))
 
-for tab in tabs:
-    active = st.session_state.page == tab
-    btn_key = f"nav-{tab}"
+for col, tab in zip(cols, tabs):
+    with col:
+        cls = "nav-btn-active" if st.session_state.page == tab else "nav-btn"
+        st.markdown(f'<div class="{cls}">', unsafe_allow_html=True)
+        if st.button(tab, key=f"nav-{tab}"):
+            st.session_state.page = tab
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown(
-        f"""
-        <div style="display:inline-block;">
-        """,
-        unsafe_allow_html=True
-    )
-
-    if st.button(tab, key=btn_key):
-        st.session_state.page = tab
-        st.rerun()
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
 st.divider()
-
 
 # ==================================================
 # HOME
@@ -163,11 +148,12 @@ if st.session_state.page == "Home":
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("Start Behavioural Assessment", key="start-assessment"):
-        st.session_state.page = "Survey-Demographics"
-        st.rerun()
+    col1, col2, col3 = st.columns([1, 2, 1])
 
-
+    with col2:
+        if st.button("Start Behavioural Assessment"):
+            st.session_state.page = 1
+            st.rerun()
 
 # ==================================================
 # SURVEY – DEMOGRAPHICS
