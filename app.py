@@ -1,4 +1,6 @@
 import streamlit as st
+from survey_logic import generate_full_survey_analysis
+
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -103,30 +105,36 @@ if "responses" not in st.session_state:
     }
 
 # ---------------- NAVBAR ----------------
-with st.container():
-    c1, c2 = st.columns([2, 3])
+# ---------------- NAVIGATION BAR ----------------
+nav = st.container()
+with nav:
+    col1, col2, col3, col4, col5 = st.columns([2, 1, 1, 1, 1])
 
-    with c1:
-        st.markdown("<div class='brand'>🧠 Behavioural Robo-Advisor</div>", unsafe_allow_html=True)
+    with col1:
+        st.markdown("### 🧠 Behavioural Robo-Advisor")
 
-    with c2:
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            if st.button("Home"):
-                st.session_state.page = 0
-                st.rerun()
-        with col2:
-            if st.button("Methodology"):
-                st.session_state.page = 99
-                st.rerun()
-        with col3:
-            if st.button("Biases"):
-                st.session_state.page = 98
-                st.rerun()
-        with col4:
-            if st.button("About"):
-                st.session_state.page = 97
-                st.rerun()
+    with col2:
+        if st.button("Home", use_container_width=True):
+            st.session_state.page = 0
+            st.rerun()
+
+    with col3:
+        if st.button("Methodology", use_container_width=True):
+            st.session_state.page = 97
+            st.rerun()
+
+    with col4:
+        if st.button("Biases", use_container_width=True):
+            st.session_state.page = 98
+            st.rerun()
+
+    with col5:
+        if st.button("About", use_container_width=True):
+            st.session_state.page = 99
+            st.rerun()
+
+st.divider()
+
 
 # ---------------- PAGE 0 : HERO ----------------
 if st.session_state.page == 0:
@@ -301,26 +309,49 @@ elif st.session_state.page == 3:
             st.warning("Please answer all questions.")
 
 # ---------------- PAGE 4 : COMPLETION ----------------
+# ---------------- PAGE 4 : ANALYSIS ----------------
 elif st.session_state.page == 4:
-    st.markdown("""
-    <div class="card">
-        <h3>Assessment Completed</h3>
-        <p>
-        Your responses have been recorded successfully.
-        Behavioural bias scoring and risk appetite analysis will be performed next.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.header("Assessment Results")
 
-# ---------------- STATIC PAGES ----------------
-elif st.session_state.page == 99:
-    st.header("Methodology")
-    st.write("Detailed explanation of BFS and Risk Appetite Scoring.")
+    # Convert answers A–E → 1–5
+    responses = {}
+    for section in ["bias", "risk"]:
+        for q, ans in st.session_state.responses[section].items():
+            responses[q] = ["A","B","C","D","E"].index(ans.split(".")[0]) + 1
 
-elif st.session_state.page == 98:
-    st.header("Behavioural Biases")
-    st.write("Confirmation Bias, Loss Aversion, Anchoring, Herding, etc.")
+    # Run analysis
+    analysis = generate_full_survey_analysis(responses)
 
-elif st.session_state.page == 97:
-    st.header("About Us")
-    st.write("Project purpose, team details, and mentor information.")
+    bfs = analysis["behavioral_bias_analysis"]["bfs_summary"]
+    bias_profile = analysis["behavioral_bias_analysis"]["bias_profile"]
+    risk = analysis["risk_appetite_analysis"]
+
+    st.subheader("Behavioral Finance Score (BFS)")
+    st.metric(
+        label="BFS Score",
+        value=f"{bfs['bfs_score']} / {bfs['max_score']}",
+        delta=bfs["category"]
+    )
+
+    st.subheader("Behavioural Bias Breakdown")
+    for bias, data in bias_profile.items():
+        st.write(f"**{bias}** — {data['level']} (Score: {data['score']})")
+
+    st.subheader("Risk Appetite Assessment")
+    st.metric(
+        label="Average Risk Score",
+        value=risk["average_score"],
+        delta=risk["category"]
+    )
+    st.write(risk["interpretation"])
+
+    st.divider()
+
+    if st.button("Restart Assessment"):
+        st.session_state.page = 0
+        st.session_state.responses = {
+            "demographics": {},
+            "bias": {},
+            "risk": {}
+        }
+        st.rerun()
