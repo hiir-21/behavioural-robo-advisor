@@ -57,15 +57,19 @@ body {
 
 .nav-btn > button,
 .nav-btn-active > button {
-    width: 165px;              /* SAME width for all */
-    height: 48px;              /* SAME height for all */
+    min-width: 170px;          /* forces equal size */
+    height: 52px;              /* taller pills */
     border-radius: 999px;
     border: none;
     font-weight: 600;
     background: #0d1117;
     color: #c9d1d9;
-    white-space: nowrap;       /* prevents wrapping */
+    white-space: nowrap;
+    display: flex;             /* centers text properly */
+    align-items: center;
+    justify-content: center;
 }
+
 
 
 .nav-btn-active > button {
@@ -155,13 +159,20 @@ if st.session_state.page == "Home":
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="
+        display:flex;
+        justify-content:center;
+        margin-top:40px;
+    ">
+    """, unsafe_allow_html=True)
 
-    if st.button("Start Behavioural Assessment"):
+    if st.button("Start Behavioural Assessment", key="start-assessment"):
         st.session_state.page = "Survey-Demographics"
         st.rerun()
 
     st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
