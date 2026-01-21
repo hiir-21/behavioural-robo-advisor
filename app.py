@@ -1,6 +1,6 @@
 import streamlit as st
 
-# ---------------- PAGE CONFIG ----------------
+# ---------------- PAGE CONFIG ---------------
 st.set_page_config(
     page_title="Behavioural Bias Identification",
     layout="centered",
