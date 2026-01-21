@@ -105,35 +105,56 @@ if "responses" not in st.session_state:
     }
 
 # ---------------- NAVBAR ----------------
-# ---------------- NAVIGATION BAR ----------------
-nav = st.container()
-with nav:
-    col1, col2, col3, col4, col5 = st.columns([2, 1, 1, 1, 1])
+# ---------------- NAVBAR ----------------
+st.markdown("""
+<style>
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 20px 0;
+}
+.nav-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+div[data-testid="stRadio"] > label {
+    display: none;
+}
+div[data-testid="stRadio"] > div {
+    display: flex;
+    gap: 28px;
+}
+</style>
+""", unsafe_allow_html=True)
 
-    with col1:
-        st.markdown("### 🧠 Behavioural Robo-Advisor")
+nav_col1, nav_col2 = st.columns([2, 5])
 
-    with col2:
-        if st.button("Home", use_container_width=True):
-            st.session_state.page = 0
-            st.rerun()
+with nav_col1:
+    st.markdown("🧠 **Behavioural Robo-Advisor**")
 
-    with col3:
-        if st.button("Methodology", use_container_width=True):
-            st.session_state.page = 97
-            st.rerun()
-
-    with col4:
-        if st.button("Biases", use_container_width=True):
-            st.session_state.page = 98
-            st.rerun()
-
-    with col5:
-        if st.button("About", use_container_width=True):
-            st.session_state.page = 99
-            st.rerun()
+with nav_col2:
+    nav = st.radio(
+        "Navigation",
+        ["Home", "Methodology", "Biases", "About"],
+        horizontal=True,
+        index=0 if "nav" not in st.session_state else
+        ["Home", "Methodology", "Biases", "About"].index(st.session_state.nav)
+    )
 
 st.divider()
+
+if nav == "Home":
+    st.session_state.page = 0
+elif nav == "Methodology":
+    st.session_state.page = 97
+elif nav == "Biases":
+    st.session_state.page = 98
+elif nav == "About":
+    st.session_state.page = 99
+
+st.session_state.nav = nav
+
 
 
 # ---------------- PAGE 0 : HERO ----------------
