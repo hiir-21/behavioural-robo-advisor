@@ -335,9 +335,269 @@ elif st.session_state.page == "Results":
 # ==================================================
 # STATIC PAGES
 # ==================================================
+# ==================================================
+# METHODOLOGY
+# ==================================================
 elif st.session_state.page == "Methodology":
+
     st.header("Methodology")
-    st.info("Methodology content already defined earlier.")
+
+    st.write(
+        "This page explains the theoretical foundations and scoring mechanisms "
+        "used to identify behavioural biases and risk appetite."
+    )
+
+    st.divider()
+
+    # --------------------------------------------------
+    # BEHAVIOURAL FINANCE SCORING (BFS)
+    # --------------------------------------------------
+    with st.expander("Behavioural Finance Scoring (BFS)", expanded=True):
+
+        st.markdown("""
+        Behavioural Finance Scoring (BFS) is used to identify psychological
+        biases that systematically influence investment decision-making.
+        The methodology is grounded in established behavioural finance research
+        and infers latent behavioural traits from structured survey responses.
+
+        This approach is primarily based on **Prospect Theory**
+        (Kahneman & Tversky, 1979), which explains why individuals tend to
+        experience losses more intensely than equivalent gains.
+        """)
+
+        st.markdown("**BFS Calculation Flow**")
+
+        st.markdown("""
+        Survey Responses  
+        ⬇  
+        Normalisation (Likert Scale: 1–5 → 0–1)  
+        ⬇  
+        Bias-wise Aggregation  
+        ⬇  
+        Behavioural Bias Intensity Score  
+        ⬇  
+        Dominant Behavioural Bias
+        """)
+
+        st.progress(0.78)
+        st.caption("Illustrative Loss Aversion Score (High)")
+
+        st.markdown("""
+        Multiple questions are mapped to each behavioural bias to reduce noise
+        and increase reliability. Aggregation ensures that no single response
+        disproportionately influences the final score.
+        """)
+
+    # --------------------------------------------------
+    # RISK APPETITE SCORING
+    # --------------------------------------------------
+    with st.expander("Risk Appetite Scoring"):
+
+        st.markdown("""
+        Risk Appetite Scoring estimates an individual’s psychological comfort
+        with uncertainty and potential losses. Rather than relying on
+        self-declared risk labels, the system infers risk tolerance using
+        behavioural indicators.
+
+        This methodology aligns with behavioural risk tolerance models proposed
+        by **Grable & Lytton (1999)**, which emphasise observed behaviour over
+        stated preference.
+        """)
+
+        st.markdown("**Risk Appetite Calculation Flow**")
+
+        st.markdown("""
+        Behavioural Indicators  
+        ⬇  
+        Composite Risk Score  
+        ⬇  
+        Risk Appetite Classification
+        """)
+
+        st.progress(0.55)
+        st.caption("Illustrative Moderate Risk Appetite")
+
+        st.markdown("""
+        Composite scoring improves robustness by combining indicators such as
+        loss sensitivity, confidence in decision-making, and reaction to
+        uncertainty.
+        """)
+
+    # --------------------------------------------------
+    # BEHAVIOURAL–PORTFOLIO INTEGRATION
+    # --------------------------------------------------
+    with st.expander("Behavioural Bias and Portfolio Integration"):
+
+        st.markdown("""
+        Behavioural scores are evaluated alongside portfolio allocation data
+        to identify alignment or mismatch between psychological tendencies and
+        investment structure.
+
+        Prior research suggests that behavioural–portfolio misalignment may
+        increase emotional stress and reactive decision-making during periods
+        of market volatility (**Shefrin, 2007**).
+        """)
+
+        st.markdown("**Integration Flow**")
+
+        st.markdown("""
+        Behavioural Profile  
+        ⬇  
+        Bias and Risk Interpretation  
+        ⬇  
+        Portfolio Allocation  
+        ⬇  
+        Integrated Behavioural Insight
+        """)
+
+        st.markdown("""
+        This integration enables context-aware insights rather than generic
+        recommendations, supporting disciplined decision-making.
+        """)
+
+    # --------------------------------------------------
+    # TRANSPARENCY & REFERENCES
+    # --------------------------------------------------
+# ==================================================
+# METHODOLOGY
+# ==================================================
+elif st.session_state.page == "Methodology":
+
+    st.header("Methodology")
+
+    st.write(
+        "This page explains the theoretical foundations and scoring mechanisms "
+        "used to identify behavioural biases and risk appetite."
+    )
+
+    st.divider()
+
+    # --------------------------------------------------
+    # BEHAVIOURAL FINANCE SCORING (BFS)
+    # --------------------------------------------------
+    with st.expander("Behavioural Finance Scoring (BFS)", expanded=True):
+
+        st.markdown("""
+        Behavioural Finance Scoring (BFS) is used to identify psychological
+        biases that systematically influence investment decision-making.
+        The methodology is grounded in established behavioural finance research
+        and infers latent behavioural traits from structured survey responses.
+
+        This approach is primarily based on **Prospect Theory**
+        (Kahneman & Tversky, 1979), which explains why individuals tend to
+        experience losses more intensely than equivalent gains.
+        """)
+
+        st.markdown("**BFS Calculation Flow**")
+
+        st.markdown("""
+        Survey Responses  
+        ⬇  
+        Normalisation (Likert Scale: 1–5 → 0–1)  
+        ⬇  
+        Bias-wise Aggregation  
+        ⬇  
+        Behavioural Bias Intensity Score  
+        ⬇  
+        Dominant Behavioural Bias
+        """)
+
+        st.progress(0.78)
+        st.caption("Illustrative Loss Aversion Score (High)")
+
+        st.markdown("""
+        Multiple questions are mapped to each behavioural bias to reduce noise
+        and increase reliability. Aggregation ensures that no single response
+        disproportionately influences the final score.
+        """)
+
+    # --------------------------------------------------
+    # RISK APPETITE SCORING
+    # --------------------------------------------------
+    with st.expander("Risk Appetite Scoring"):
+
+        st.markdown("""
+        Risk Appetite Scoring estimates an individual’s psychological comfort
+        with uncertainty and potential losses. Rather than relying on
+        self-declared risk labels, the system infers risk tolerance using
+        behavioural indicators.
+
+        This methodology aligns with behavioural risk tolerance models proposed
+        by **Grable & Lytton (1999)**, which emphasise observed behaviour over
+        stated preference.
+        """)
+
+        st.markdown("**Risk Appetite Calculation Flow**")
+
+        st.markdown("""
+        Behavioural Indicators  
+        ⬇  
+        Composite Risk Score  
+        ⬇  
+        Risk Appetite Classification
+        """)
+
+        st.progress(0.55)
+        st.caption("Illustrative Moderate Risk Appetite")
+
+        st.markdown("""
+        Composite scoring improves robustness by combining indicators such as
+        loss sensitivity, confidence in decision-making, and reaction to
+        uncertainty.
+        """)
+
+    # --------------------------------------------------
+    # BEHAVIOURAL–PORTFOLIO INTEGRATION
+    # --------------------------------------------------
+    with st.expander("Behavioural Bias and Portfolio Integration"):
+
+        st.markdown("""
+        Behavioural scores are evaluated alongside portfolio allocation data
+        to identify alignment or mismatch between psychological tendencies and
+        investment structure.
+
+        Prior research suggests that behavioural–portfolio misalignment may
+        increase emotional stress and reactive decision-making during periods
+        of market volatility (**Shefrin, 2007**).
+        """)
+
+        st.markdown("**Integration Flow**")
+
+        st.markdown("""
+        Behavioural Profile  
+        ⬇  
+        Bias and Risk Interpretation  
+        ⬇  
+        Portfolio Allocation  
+        ⬇  
+        Integrated Behavioural Insight
+        """)
+
+        st.markdown("""
+        This integration enables context-aware insights rather than generic
+        recommendations, supporting disciplined decision-making.
+        """)
+
+    # --------------------------------------------------
+    # TRANSPARENCY & REFERENCES
+    # --------------------------------------------------
+    with st.expander("Transparency and Academic References"):
+
+        st.markdown("""
+        **Transparency & Limitations**
+        - This system provides behavioural diagnostics only
+        - It does not offer financial advice or predict market outcomes
+        - All scoring logic is rule-based and explainable
+        - Results are intended for educational and research purposes
+        """)
+
+        st.markdown("**Key Academic References**")
+
+        st.markdown("""
+        1. Kahneman, D., & Tversky, A. (1979). *Prospect Theory: An Analysis of Decision under Risk*. Econometrica.  
+        2. Grable, J. E., & Lytton, R. H. (1999). *Financial Risk Tolerance Revisited*. Financial Services Review.  
+        3. Shefrin, H. (2007). *Behavioral Corporate Finance*. McGraw-Hill.
+        """)
 
 elif st.session_state.page == "Biases":
     st.header("Behavioural Biases")
