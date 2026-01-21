@@ -111,22 +111,41 @@ st.markdown('<div class="app-title">🧠 Behavioural Robo-Advisor</div>', unsafe
 # --------------------------------------------------
 # NAV BAR (HORIZONTAL, EQUAL, STABLE)
 # --------------------------------------------------
+# --------------------------------------------------
+# NAV BAR (FIXED – NO COLUMNS, NO WRAPPING)
+# --------------------------------------------------
+st.markdown("""
+<div style="
+    display:flex;
+    justify-content:center;
+    gap:24px;
+    margin-top:12px;
+    margin-bottom:6px;
+">
+""", unsafe_allow_html=True)
+
 tabs = ["Home", "Methodology", "Biases", "Results", "About"]
 
-st.markdown("<div class='nav-wrapper'>", unsafe_allow_html=True)
-nav_cols = st.columns(len(tabs), gap="large")
+for tab in tabs:
+    active = st.session_state.page == tab
+    btn_key = f"nav-{tab}"
 
-for col, tab in zip(nav_cols, tabs):
-    with col:
-        cls = "nav-btn-active" if st.session_state.page == tab else "nav-btn"
-        st.markdown(f"<div class='{cls}'>", unsafe_allow_html=True)
-        if st.button(tab, key=f"nav-{tab}", use_container_width=True):
-            st.session_state.page = tab
-            st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div style="display:inline-block;">
+        """,
+        unsafe_allow_html=True
+    )
+
+    if st.button(tab, key=btn_key):
+        st.session_state.page = tab
+        st.rerun()
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
 st.divider()
+
 
 # ==================================================
 # HOME
