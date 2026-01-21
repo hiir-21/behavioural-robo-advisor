@@ -342,9 +342,9 @@ elif st.session_state.page == "Results":
 # ==================================================
 # METHODOLOGY
 # ==================================================
-elif st.session_state.page == "Methodology":
+elif st.session_state.page == "Method":
 
-    st.header("Methodology")
+    st.header("Method")
 
     st.write(
         "This page explains the theoretical foundations and scoring mechanisms "
