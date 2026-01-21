@@ -131,9 +131,7 @@ for col, tab in zip(cols, tabs):
 
 st.divider()
 
-# ==================================================
-# HOME
-# ==================================================
+
 # ==================================================
 # HOME
 # ==================================================
@@ -313,6 +311,7 @@ elif st.session_state.page == "Survey-Risk":
 # ==================================================
 # RESULTS
 # ==================================================
+
 elif st.session_state.page == "Results":
 
     if not st.session_state.survey_completed:
@@ -324,16 +323,101 @@ elif st.session_state.page == "Results":
         bias_profile = analysis["behavioral_bias_analysis"]["bias_profile"]
         risk = analysis["risk_appetite_analysis"]
 
+        # ---------------- BFS CARD ----------------
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
         st.subheader("Behavioral Finance Score (BFS)")
-        st.metric("BFS", f"{bfs['bfs_score']} / {bfs['max_score']}", bfs["category"])
 
+        st.metric(
+            "BFS",
+            f"{bfs['bfs_score']} / {bfs['max_score']}",
+            bfs["category"]
+        )
+
+        st.caption(
+            "Your Behavioral Finance Score (BFS) is calculated out of **60**, "
+            "based on **12 behavioural biases**, each evaluated from your survey responses. "
+            "Higher scores indicate **greater susceptibility to behavioural biases**."
+        )
+
+        st.markdown(
+            "_Each bias intensity score (e.g., **0.75**) is measured **out of 1**, "
+            "where higher values indicate stronger influence on decision-making._"
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        # ---------------- BIASES CARD ----------------
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
         st.subheader("Detected Behavioral Biases")
-        for bias, data in bias_profile.items():
-            st.write(f"**{bias}** — {data['level']} (Score: {data['score']})")
 
+        st.markdown(
+            "**Bias Intensity Scale**  \n"
+            "• **High (0.75)** — Strong influence on decisions  \n"
+            "• **Moderate (0.50)** — Situational influence  \n"
+            "• **Low (0.25)** — Minimal influence"
+        )
+
+        st.markdown("---")
+
+        for bias, data in bias_profile.items():
+            st.write(
+                f"**{bias}** — {data['level']} "
+                f"(Score: {data['score']} / 1)"
+            )
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        # ---------------- RISK APPETITE CARD ----------------
+        avg_risk = risk["average_score"]
+
+        if avg_risk < 2:
+            risk_line = (
+                f"An average score of **{avg_risk:.2f}/5** indicates a "
+                "**conservative risk profile**, with strong preference for stability "
+                "and lower volatility."
+            )
+        elif avg_risk < 3.5:
+            risk_line = (
+                f"An average score of **{avg_risk:.2f}/5** indicates a "
+                "**moderate risk tolerance**, balancing growth opportunities "
+                "with risk control."
+            )
+        else:
+            risk_line = (
+                f"An average score of **{avg_risk:.2f}/5** indicates a "
+                "**higher risk tolerance**, with comfort in volatility "
+                "for potential long-term returns."
+            )
+
+        st.markdown("<div class='card'>", unsafe_allow_html=True)
         st.subheader("Risk Appetite Assessment")
-        st.metric("Average Risk Score", risk["average_score"], risk["category"])
-        st.write(risk["interpretation"])
+
+        st.metric(
+            "Average Risk Score",
+            f"{avg_risk:.2f} / 5",
+            risk["category"]
+        )
+
+        st.markdown(
+            "**Score Explanation:**  \n"
+            "Your risk appetite score is calculated on a **1–5 scale**, based solely "
+            "on your responses to the assessment questions:"
+        )
+
+        st.markdown(
+            "• **1** — Very conservative  \n"
+            "• **3** — Balanced risk-taking  \n"
+            "• **5** — Highly aggressive"
+        )
+
+        st.markdown(risk_line)
+
+        st.markdown(
+            "_This assessment reflects behavioural tendencies inferred from your answers, "
+            "not financial advice or performance predictions._"
+        )
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
 
 # ==================================================
 # STATIC PAGES
