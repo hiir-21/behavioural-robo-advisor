@@ -17,12 +17,11 @@ body {
 }
 .hero {
     text-align: center;
-    padding: 90px 20px 40px;
+    padding: 70px 20px 30px;
 }
 .hero h1 {
     font-size: 3rem;
     font-weight: 700;
-    margin-bottom: 18px;
 }
 .hero p {
     font-size: 1.1rem;
@@ -38,11 +37,8 @@ body {
     font-size: 1rem;
     border-radius: 999px;
     font-weight: 600;
-    margin-top: 30px;
 }
-.section {
-    margin-top: 40px;
-}
+.section { margin-top: 40px; }
 .card {
     background: #0d1117;
     padding: 26px;
@@ -55,6 +51,13 @@ body {
     font-size: 0.85rem;
     color: #8b949e;
     text-align: center;
+}
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -69,6 +72,28 @@ if "responses" not in st.session_state:
         "bias": {},
         "risk": {}
     }
+
+# ---------------- NAVBAR (SAFE) ----------------
+st.markdown("<div class='navbar'>", unsafe_allow_html=True)
+c1, c2, c3 = st.columns(3)
+
+with c1:
+    if st.button("Home", use_container_width=True):
+        st.session_state.page = 0
+        st.rerun()
+
+with c2:
+    if st.button("Assessment", use_container_width=True):
+        st.session_state.page = 1
+        st.rerun()
+
+with c3:
+    if st.button("Results", use_container_width=True):
+        st.session_state.page = 4
+        st.rerun()
+
+st.markdown("</div>", unsafe_allow_html=True)
+st.divider()
 
 # ---------------- PAGE 0 : HERO ----------------
 if st.session_state.page == 0:
@@ -120,7 +145,7 @@ elif st.session_state.page == 2:
     def ask_bias(q, text, opts):
         st.session_state.responses["bias"][q] = st.radio(text, opts, index=None, key=q)
 
-    # Q3–Q14 (UNCHANGED)
+    # Q3–Q14 (UNCHANGED – EXACT)
     ask_bias("Q3","Q3. When new information contradicts your investment thesis, you usually:",
         ["A. Assume it is temporary noise","B. Wait for further confirmation",
          "C. Adjust expectations slightly","D. Re-examine the entire thesis","E. Exit or reduce exposure"])
