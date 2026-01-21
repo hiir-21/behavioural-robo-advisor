@@ -305,11 +305,18 @@ elif st.session_state.page == "Survey-Risk":
          "E. Strongly prefer speed despite risk"])
 
     if st.button("Submit Survey"):
-        responses_numeric = {
-            q: ["A","B","C","D","E"].index(ans[0]) + 1
-            for section in ["bias", "risk"]
-            for q, ans in st.session_state.responses[section].items()
-        }
+        responses_numeric = {}
+
+        # -------- BIAS QUESTIONS (REVERSE CODED) --------
+        for q, ans in st.session_state.responses["bias"].items():
+            # A → 5 (max bias), E → 1 (min bias)
+            responses_numeric[q] = 6 - (["A","B","C","D","E"].index(ans[0]) + 1)
+        
+        # -------- RISK QUESTIONS (NORMAL CODED) --------
+        for q, ans in st.session_state.responses["risk"].items():
+            # A → 1 (conservative), E → 5 (aggressive)
+            responses_numeric[q] = ["A","B","C","D","E"].index(ans[0]) + 1
+
 
         st.session_state.analysis_result = generate_full_survey_analysis(responses_numeric)
         st.session_state.survey_completed = True
