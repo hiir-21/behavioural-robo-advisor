@@ -135,6 +135,9 @@ st.divider()
 # ==================================================
 # HOME
 # ==================================================
+# ==================================================
+# HOME
+# ==================================================
 if st.session_state.page == "Home":
 
     st.markdown("""
@@ -152,8 +155,9 @@ if st.session_state.page == "Home":
 
     with col2:
         if st.button("Start Behavioural Assessment"):
-            st.session_state.page = 1
+            st.session_state.page = "Survey-Demographics"  # <-- FIXED
             st.rerun()
+
 
 # ==================================================
 # SURVEY – DEMOGRAPHICS
