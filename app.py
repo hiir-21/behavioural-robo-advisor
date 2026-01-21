@@ -7,8 +7,8 @@ import streamlit as st
 from datetime import datetime
 
 from survey_logic import generate_full_survey_analysis
-from views.methodology import show_methodology
-from views.biases import show_biases
+from pages.methodology import show_methodology
+from pages.biases import show_biases
 from pages.about import show_about
 
 # ---------------- PAGE CONFIG ----------------
