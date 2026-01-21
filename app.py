@@ -2,12 +2,12 @@ import streamlit as st
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
-    page_title="Behavioural Robo-Advisor",
+    page_title="Behavioural Bias Identification",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# ---------------- CSS ----------------
+# ---------------- CSS STYLING ----------------
 st.markdown("""
 <style>
 body {
@@ -29,14 +29,16 @@ body {
     font-weight: 700;
 }
 
-.nav-links a {
-    margin: 0 14px;
-    text-decoration: none;
+.nav-links button {
+    background: none;
+    border: none;
     color: #b0b8c1;
     font-size: 0.95rem;
+    margin: 0 10px;
+    cursor: pointer;
 }
 
-.nav-links a:hover {
+.nav-links button:hover {
     color: white;
 }
 
@@ -60,7 +62,7 @@ body {
 }
 
 /* BUTTON */
-.cta {
+.stButton > button {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
     border: none;
@@ -69,7 +71,6 @@ body {
     border-radius: 999px;
     font-weight: 600;
     margin-top: 30px;
-    cursor: pointer;
 }
 
 /* CARD */
@@ -102,25 +103,30 @@ if "responses" not in st.session_state:
     }
 
 # ---------------- NAVBAR ----------------
-st.markdown("""
-<div class="navbar">
-    <div class="brand">🧠 Behavioural Robo-Advisor</div>
-    <div class="nav-links">
-        <a href="?page=0">Home</a>
-        <a href="?page=99">Methodology</a>
-        <a href="?page=98">Biases</a>
-        <a href="?page=97">About</a>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+with st.container():
+    c1, c2 = st.columns([2, 3])
 
-# Handle navbar navigation
-params = st.query_params
-if "page" in params:
-    try:
-        st.session_state.page = int(params["page"])
-    except:
-        pass
+    with c1:
+        st.markdown("<div class='brand'>🧠 Behavioural Robo-Advisor</div>", unsafe_allow_html=True)
+
+    with c2:
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            if st.button("Home"):
+                st.session_state.page = 0
+                st.rerun()
+        with col2:
+            if st.button("Methodology"):
+                st.session_state.page = 99
+                st.rerun()
+        with col3:
+            if st.button("Biases"):
+                st.session_state.page = 98
+                st.rerun()
+        with col4:
+            if st.button("About"):
+                st.session_state.page = 97
+                st.rerun()
 
 # ---------------- PAGE 0 : HERO ----------------
 if st.session_state.page == 0:
@@ -132,11 +138,14 @@ if st.session_state.page == 0:
         scenario-based psychology and personal finance preferences.
         This tool provides behavioural diagnostics only and does not offer financial advice.
         </p>
-        <form>
-            <button class="cta" formaction="?page=1">Start Behavioural Assessment</button>
-        </form>
     </div>
     """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        if st.button("Start Behavioural Assessment"):
+            st.session_state.page = 1
+            st.rerun()
 
     st.markdown("""
     <div class="trust">
@@ -168,7 +177,7 @@ elif st.session_state.page == 1:
         else:
             st.warning("Please answer both questions.")
 
-# ---------------- PAGE 2 : Q3–Q14 (UNCHANGED, FULL) ----------------
+# ---------------- PAGE 2 : Q3–Q14 ----------------
 elif st.session_state.page == 2:
     st.header("Investment Decision Scenarios")
 
@@ -239,7 +248,7 @@ elif st.session_state.page == 2:
         else:
             st.warning("Please answer all questions.")
 
-# ---------------- PAGE 3 : Q15–Q22 (UNCHANGED, FULL) ----------------
+# ---------------- PAGE 3 : Q15–Q22 ----------------
 elif st.session_state.page == 3:
     st.header("Personal Finance Preferences")
 
