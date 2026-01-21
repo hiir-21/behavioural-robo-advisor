@@ -113,12 +113,12 @@ body {
 # --------------------------------------------------
 # APP TITLE
 # --------------------------------------------------
-st.markdown('<div class="app-title">🧠 Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
+st.markdown('<div class="app-title">Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
 
 # --------------------------------------------------
 # NAV BAR
 # --------------------------------------------------
-tabs = ["Home", "Methodology", "Biases", "Results", "About"]
+tabs = ["Home", "Method", "Biases", "Results", "About"]
 cols = st.columns(len(tabs))
 
 for col, tab in zip(cols, tabs):
