@@ -52,17 +52,21 @@ body {
     display: flex;
     justify-content: center;
     gap: 18px;
-    margin: 30px 0 25px;
+    margin: 15px 0 10px;
 }
 
-.nav-btn > button {
-    padding: 10px 24px;
+.nav-btn > button,
+.nav-btn-active > button {
+    width: 165px;              /* SAME width for all */
+    height: 48px;              /* SAME height for all */
     border-radius: 999px;
     border: none;
     font-weight: 600;
     background: #0d1117;
     color: #c9d1d9;
+    white-space: nowrap;       /* prevents wrapping */
 }
+
 
 .nav-btn-active > button {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
@@ -72,7 +76,7 @@ body {
 /* HERO */
 .hero {
     text-align: center;
-    margin-top: 70px;
+    margin-top: 35px;
 }
 
 .hero h1 {
@@ -151,12 +155,14 @@ if st.session_state.page == "Home":
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+    st.markdown("<div style='text-align:center;'>", unsafe_allow_html=True)
 
-    with col2:
-        if st.button("Start Behavioural Assessment"):
-            st.session_state.page = "Survey-Demographics"  # <-- FIXED
-            st.rerun()
+    if st.button("Start Behavioural Assessment"):
+        st.session_state.page = "Survey-Demographics"
+        st.rerun()
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 # ==================================================
