@@ -465,7 +465,7 @@ elif st.session_state.page == "Method":
     with st.expander("Behavioural Finance Scoring (BFS)", expanded=True):
 
         st.markdown("""
-        ### 🧠 How Your Behavioural Finance Score Is Calculated
+        ###  How Your Behavioural Finance Score Is Calculated
         
         Your **Behavioural Finance Score (BFS)** reflects how strongly psychological biases influence your investment decisions — based entirely on how you responded to realistic investment scenarios.
         
@@ -475,7 +475,7 @@ elif st.session_state.page == "Method":
         st.markdown("---")
         
         st.markdown("""
-        ### 🔍 What We Analysed
+        ###  What We Analysed
         
         During the assessment, you were presented with **scenario-based questions** designed to capture how you typically react in real investment situations, such as:
         """)
@@ -494,7 +494,7 @@ elif st.session_state.page == "Method":
         st.markdown("---")
         
         st.markdown("""
-        ### 📊 How the Score Works
+        ###  How the Score Works
         """)
         
         st.markdown("""
@@ -511,7 +511,7 @@ elif st.session_state.page == "Method":
         st.markdown("---")
         
         st.markdown("""
-        ### 🎯 Understanding Bias Scores
+        ###  Understanding Bias Scores
         
         Each detected bias is assigned a **bias intensity score between 0 and 1**, indicating how strongly it influences your decisions:
         """)
@@ -529,7 +529,7 @@ elif st.session_state.page == "Method":
         st.markdown("---")
         
         st.markdown("""
-        ### ✅ Why This Approach Is Reliable
+        ###  Why This Approach Is Reliable
         """)
         
         st.markdown("""
