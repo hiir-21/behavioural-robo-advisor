@@ -535,82 +535,72 @@ elif st.session_state.page == "Method":
     # RISK APPETITE SCORING
     # --------------------------------------------------
     with st.expander("Risk Appetite Scoring"):
-
-        st.markdown("""
-        <h4 style="font-size:1.4rem; font-weight:700; margin-bottom:10px;">
-        How Your Risk Appetite Is Assessed
-        </h4>
     
-        <p style="color:#cfd6dd; font-size:0.95rem; line-height:1.6;">
-        Your <strong>Risk Appetite Score</strong> reflects your psychological comfort
-        with uncertainty, volatility, and potential losses in investing.
-        </p>
+        st.markdown(
+            "<h4 style='font-size:1.3rem; font-weight:700; margin-bottom:10px;'>"
+            "How Your Risk Appetite Is Assessed"
+            "</h4>"
     
-        <p style="color:#cfd6dd; font-size:0.95rem; line-height:1.6;">
-        Instead of relying on self-declared risk labels, the assessment infers
-        your risk tolerance from <strong>observable decision patterns</strong>
-        across realistic financial scenarios.
-        </p>
+            "<p style='color:#cfd6dd; font-size:0.95rem; line-height:1.6;'>"
+            "Your <strong>Risk Appetite Score</strong> reflects your psychological comfort "
+            "with uncertainty, volatility, and potential losses in investing."
+            "</p>"
     
-        <hr style="border:0.5px solid #2a2f36; margin:20px 0;">
+            "<p style='color:#cfd6dd; font-size:0.95rem; line-height:1.6;'>"
+            "Instead of relying on self-declared risk labels, the assessment infers "
+            "risk tolerance from <strong>observable decision patterns</strong> "
+            "across realistic financial scenarios."
+            "</p>"
     
-        <h5 style="font-size:1.1rem; font-weight:600; margin-bottom:8px;">
-        What We Evaluated
-        </h5>
+            "<hr style='border:0.5px solid #2a2f36; margin:20px 0;'>"
     
-        <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
-            <li>Reactions to portfolio losses and gains</li>
-            <li>Willingness to accept short-term volatility</li>
-            <li>Trade-offs between safety and growth</li>
-            <li>Responses to uncertainty and time horizons</li>
-        </ul>
+            "<h5 style='font-size:1.05rem; font-weight:600;'>What We Evaluated</h5>"
+            "<ul style='color:#cfd6dd; font-size:0.92rem; line-height:1.6;'>"
+            "<li>Reactions to portfolio losses and gains</li>"
+            "<li>Willingness to accept short-term volatility</li>"
+            "<li>Trade-offs between safety and growth</li>"
+            "<li>Responses to uncertainty and time horizons</li>"
+            "</ul>"
     
-        <hr style="border:0.5px solid #2a2f36; margin:20px 0;">
+            "<hr style='border:0.5px solid #2a2f36; margin:20px 0;'>"
     
-        <h5 style="font-size:1.1rem; font-weight:600; margin-bottom:8px;">
-        How the Risk Score Works
-        </h5>
+            "<h5 style='font-size:1.05rem; font-weight:600;'>How the Risk Score Works</h5>"
+            "<ul style='color:#cfd6dd; font-size:0.92rem; line-height:1.6;'>"
+            "<li>Each response is scored on a 1–5 scale</li>"
+            "<li>Lower values indicate conservative preferences</li>"
+            "<li>Higher values indicate greater tolerance for risk</li>"
+            "<li>The final score reflects an <strong>average risk tendency</strong></li>"
+            "</ul>"
     
-        <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
-            <li>Each response is scored on a 1 to 5 scale</li>
-            <li>Lower values indicate conservative preferences</li>
-            <li>Higher values indicate greater tolerance for risk and volatility</li>
-            <li>The final score represents an <strong>average risk tendency</strong></li>
-        </ul>
+            "<p style='color:#9ba3af; font-size:0.9rem; margin-top:10px;'>"
+            "This score captures behavioural tendencies, not financial capability."
+            "</p>"
     
-        <p style="color:#9ba3af; font-size:0.9rem; margin-top:10px;">
-        This score captures behavioural tendencies, not financial capability.
-        </p>
+            "<hr style='border:0.5px solid #2a2f36; margin:20px 0;'>"
     
-        <hr style="border:0.5px solid #2a2f36; margin:20px 0;">
+            "<h5 style='font-size:1.05rem; font-weight:600;'>Interpreting Your Risk Appetite</h5>"
+            "<ul style='color:#cfd6dd; font-size:0.92rem; line-height:1.6;'>"
+            "<li><strong>1.0 – 2.0</strong>: Conservative</li>"
+            "<li><strong>2.1 – 3.5</strong>: Moderate / Balanced</li>"
+            "<li><strong>3.6 – 5.0</strong>: Aggressive</li>"
+            "</ul>"
     
-        <h5 style="font-size:1.1rem; font-weight:600; margin-bottom:8px;">
-        Interpreting Your Risk Appetite
-        </h5>
+            "<p style='color:#9ba3af; font-size:0.9rem; margin-top:10px;'>"
+            "Results are based on behavioural patterns across multiple questions, "
+            "ensuring no single response dominates the outcome."
+            "</p>",
+            unsafe_allow_html=True
+        )
     
-        <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
-            <li><strong>1.0 - 2.0</strong> : Conservative risk appetite</li>
-            <li><strong>2.1 - 3.5</strong> : Moderate / balanced risk appetite</li>
-            <li><strong>3.6 - 5.0</strong> : Aggressive risk appetite</li>
-        </ul>
-    
-        <p style="color:#9ba3af; font-size:0.9rem; margin-top:10px;">
-        Results are based on behavioural patterns across multiple questions,
-        ensuring no single response dominates the outcome.
-        </p>
-        """, unsafe_allow_html=True)
-
-
     # --------------------------------------------------
     # BEHAVIOURAL–PORTFOLIO INTEGRATION
     # --------------------------------------------------
     with st.expander("Behavioural Bias and Portfolio Integration"):
-
-        
-
+        st.markdown(
+            "This section will link behavioural tendencies with portfolio structure "
+            "to highlight alignment or mismatch between psychology and investment design."
+        )
     
-
-
     # --------------------------------------------------
     # TRANSPARENCY & REFERENCES
     # --------------------------------------------------
@@ -618,19 +608,20 @@ elif st.session_state.page == "Method":
     
         st.markdown(
             "**Transparency & Limitations**\n"
-            "- This system provides behavioural diagnostics only\n"
-            "- It does not offer financial advice or predict market outcomes\n"
-            "- All scoring logic is rule-based and explainable\n"
-            "- Results are intended for educational and research purposes"
+            "- Behavioural diagnostics only\n"
+            "- Not financial advice\n"
+            "- Rule-based and explainable scoring\n"
+            "- Intended for educational and research use"
         )
     
         st.markdown("**Key Academic References**")
     
         st.markdown(
-            "1. Kahneman, D., & Tversky, A. (1979). *Prospect Theory: An Analysis of Decision under Risk*. Econometrica.\n"
-            "2. Grable, J. E., & Lytton, R. H. (1999). *Financial Risk Tolerance Revisited*. Financial Services Review.\n"
-            "3. Shefrin, H. (2007). *Behavioral Corporate Finance*. McGraw-Hill."
+            "1. Kahneman & Tversky (1979) – Prospect Theory\n"
+            "2. Grable & Lytton (1999) – Risk Tolerance\n"
+            "3. Shefrin (2007) – Behavioral Corporate Finance"
         )
+
 
 
 elif st.session_state.page == "Biases":
