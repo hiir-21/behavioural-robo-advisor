@@ -572,7 +572,7 @@ elif st.session_state.page == "Method":
         </h5>
     
         <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
-            <li>Each response is scored on a <strong>1–5 scale</strong></li>
+            <li>Each response is scored on a 1 to 5 scale</li>
             <li>Lower values indicate conservative preferences</li>
             <li>Higher values indicate greater tolerance for risk and volatility</li>
             <li>The final score represents an <strong>average risk tendency</strong></li>
