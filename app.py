@@ -1,3 +1,4 @@
+
 import streamlit as st
 from survey_logic import generate_full_survey_analysis
 
@@ -528,101 +529,222 @@ elif st.session_state.page == "Method":
             <li><strong>0.67 – 1.00</strong> → High influence</li>
         </ul>
     
-        )
+        <p style="color:#9ba3af; font-size:0.9rem; margin-top:10px;">
+        Scores are based on patterns across multiple responses, not any single answer.
+        </p>
+        """, unsafe_allow_html=True)
 
 
     # --------------------------------------------------
     # RISK APPETITE SCORING
     # --------------------------------------------------
     with st.expander("Risk Appetite Scoring"):
-    
-        st.markdown(
-            "<h4 style='font-size:1.3rem; font-weight:700; margin-bottom:10px;'>"
-            "How Your Risk Appetite Is Assessed"
-            "</h4>"
-    
-            "<p style='color:#cfd6dd; font-size:0.95rem; line-height:1.6;'>"
-            "Your <strong>Risk Appetite Score</strong> reflects your psychological comfort "
-            "with uncertainty, volatility, and potential losses in investing."
-            "</p>"
-    
-            "<p style='color:#cfd6dd; font-size:0.95rem; line-height:1.6;'>"
-            "Instead of relying on self-declared risk labels, the assessment infers "
-            "risk tolerance from <strong>observable decision patterns</strong> "
-            "across realistic financial scenarios."
-            "</p>"
-    
-            "<hr style='border:0.5px solid #2a2f36; margin:20px 0;'>"
-    
-            "<h5 style='font-size:1.05rem; font-weight:600;'>What We Evaluated</h5>"
-            "<ul style='color:#cfd6dd; font-size:0.92rem; line-height:1.6;'>"
-            "<li>Reactions to portfolio losses and gains</li>"
-            "<li>Willingness to accept short-term volatility</li>"
-            "<li>Trade-offs between safety and growth</li>"
-            "<li>Responses to uncertainty and time horizons</li>"
-            "</ul>"
-    
-            "<hr style='border:0.5px solid #2a2f36; margin:20px 0;'>"
-    
-            "<h5 style='font-size:1.05rem; font-weight:600;'>How the Risk Score Works</h5>"
-            "<ul style='color:#cfd6dd; font-size:0.92rem; line-height:1.6;'>"
-            "<li>Each response is scored on a 1–5 scale</li>"
-            "<li>Lower values indicate conservative preferences</li>"
-            "<li>Higher values indicate greater tolerance for risk</li>"
-            "<li>The final score reflects an <strong>average risk tendency</strong></li>"
-            "</ul>"
-    
-            "<p style='color:#9ba3af; font-size:0.9rem; margin-top:10px;'>"
-            "This score captures behavioural tendencies, not financial capability."
-            "</p>"
-    
-            "<hr style='border:0.5px solid #2a2f36; margin:20px 0;'>"
-    
-            "<h5 style='font-size:1.05rem; font-weight:600;'>Interpreting Your Risk Appetite</h5>"
-            "<ul style='color:#cfd6dd; font-size:0.92rem; line-height:1.6;'>"
-            "<li><strong>1.0 – 2.0</strong>: Conservative</li>"
-            "<li><strong>2.1 – 3.5</strong>: Moderate / Balanced</li>"
-            "<li><strong>3.6 – 5.0</strong>: Aggressive</li>"
-            "</ul>"
-    
-            "<p style='color:#9ba3af; font-size:0.9rem; margin-top:10px;'>"
-            "Results are based on behavioural patterns across multiple questions, "
-            "ensuring no single response dominates the outcome."
-            "</p>",
-            unsafe_allow_html=True
-        )
-    
+
+        st.markdown("""
+        Risk Appetite Scoring estimates an individual’s psychological comfort
+        with uncertainty and potential losses. Rather than relying on
+        self-declared risk labels, the system infers risk tolerance using
+        behavioural indicators.
+
+        This methodology aligns with behavioural risk tolerance models proposed
+        by **Grable & Lytton (1999)**, which emphasise observed behaviour over
+        stated preference.
+        """)
+
+        st.markdown("**Risk Appetite Calculation Flow**")
+
+        st.markdown("""
+        Behavioural Indicators  
+        ⬇  
+        Composite Risk Score  
+        ⬇  
+        Risk Appetite Classification
+        """)
+
+        st.progress(0.55)
+        st.caption("Illustrative Moderate Risk Appetite")
+
+        st.markdown("""
+        Composite scoring improves robustness by combining indicators such as
+        loss sensitivity, confidence in decision-making, and reaction to
+        uncertainty.
+        """)
+
     # --------------------------------------------------
     # BEHAVIOURAL–PORTFOLIO INTEGRATION
     # --------------------------------------------------
     with st.expander("Behavioural Bias and Portfolio Integration"):
-        st.markdown(
-            "This section will link behavioural tendencies with portfolio structure "
-            "to highlight alignment or mismatch between psychology and investment design."
-        )
-    
+
+        st.markdown("""
+        Behavioural scores are evaluated alongside portfolio allocation data
+        to identify alignment or mismatch between psychological tendencies and
+        investment structure.
+
+        Prior research suggests that behavioural–portfolio misalignment may
+        increase emotional stress and reactive decision-making during periods
+        of market volatility (**Shefrin, 2007**).
+        """)
+
+        st.markdown("**Integration Flow**")
+
+        st.markdown("""
+        Behavioural Profile  
+        ⬇  
+        Bias and Risk Interpretation  
+        ⬇  
+        Portfolio Allocation  
+        ⬇  
+        Integrated Behavioural Insight
+        """)
+
+        st.markdown("""
+        This integration enables context-aware insights rather than generic
+        recommendations, supporting disciplined decision-making.
+        """)
+
+    # --------------------------------------------------
+    # TRANSPARENCY & REFERENCES
+    # --------------------------------------------------
+# ==================================================
+# METHODOLOGY
+# ==================================================
+elif st.session_state.page == "Methodology":
+
+    st.header("Methodology")
+
+    st.write(
+        "This page explains the theoretical foundations and scoring mechanisms "
+        "used to identify behavioural biases and risk appetite."
+    )
+
+    st.divider()
+
+    # --------------------------------------------------
+    # BEHAVIOURAL FINANCE SCORING (BFS)
+    # --------------------------------------------------
+    with st.expander("Behavioural Finance Scoring (BFS)", expanded=True):
+
+        st.markdown("""
+        Behavioural Finance Scoring (BFS) is used to identify psychological
+        biases that systematically influence investment decision-making.
+        The methodology is grounded in established behavioural finance research
+        and infers latent behavioural traits from structured survey responses.
+
+        This approach is primarily based on **Prospect Theory**
+        (Kahneman & Tversky, 1979), which explains why individuals tend to
+        experience losses more intensely than equivalent gains.
+        """)
+
+        st.markdown("**BFS Calculation Flow**")
+
+        st.markdown("""
+        Survey Responses  
+        ⬇  
+        Normalisation (Likert Scale: 1–5 → 0–1)  
+        ⬇  
+        Bias-wise Aggregation  
+        ⬇  
+        Behavioural Bias Intensity Score  
+        ⬇  
+        Dominant Behavioural Bias
+        """)
+
+        st.progress(0.78)
+        st.caption("Illustrative Loss Aversion Score (High)")
+
+        st.markdown("""
+        Multiple questions are mapped to each behavioural bias to reduce noise
+        and increase reliability. Aggregation ensures that no single response
+        disproportionately influences the final score.
+        """)
+
+    # --------------------------------------------------
+    # RISK APPETITE SCORING
+    # --------------------------------------------------
+    with st.expander("Risk Appetite Scoring"):
+
+        st.markdown("""
+        Risk Appetite Scoring estimates an individual’s psychological comfort
+        with uncertainty and potential losses. Rather than relying on
+        self-declared risk labels, the system infers risk tolerance using
+        behavioural indicators.
+
+        This methodology aligns with behavioural risk tolerance models proposed
+        by **Grable & Lytton (1999)**, which emphasise observed behaviour over
+        stated preference.
+        """)
+
+        st.markdown("**Risk Appetite Calculation Flow**")
+
+        st.markdown("""
+        Behavioural Indicators  
+        ⬇  
+        Composite Risk Score  
+        ⬇  
+        Risk Appetite Classification
+        """)
+
+        st.progress(0.55)
+        st.caption("Illustrative Moderate Risk Appetite")
+
+        st.markdown("""
+        Composite scoring improves robustness by combining indicators such as
+        loss sensitivity, confidence in decision-making, and reaction to
+        uncertainty.
+        """)
+
+    # --------------------------------------------------
+    # BEHAVIOURAL–PORTFOLIO INTEGRATION
+    # --------------------------------------------------
+    with st.expander("Behavioural Bias and Portfolio Integration"):
+
+        st.markdown("""
+        Behavioural scores are evaluated alongside portfolio allocation data
+        to identify alignment or mismatch between psychological tendencies and
+        investment structure.
+
+        Prior research suggests that behavioural–portfolio misalignment may
+        increase emotional stress and reactive decision-making during periods
+        of market volatility (**Shefrin, 2007**).
+        """)
+
+        st.markdown("**Integration Flow**")
+
+        st.markdown("""
+        Behavioural Profile  
+        ⬇  
+        Bias and Risk Interpretation  
+        ⬇  
+        Portfolio Allocation  
+        ⬇  
+        Integrated Behavioural Insight
+        """)
+
+        st.markdown("""
+        This integration enables context-aware insights rather than generic
+        recommendations, supporting disciplined decision-making.
+        """)
+
     # --------------------------------------------------
     # TRANSPARENCY & REFERENCES
     # --------------------------------------------------
     with st.expander("Transparency and Academic References"):
-    
-        st.markdown(
-            "**Transparency & Limitations**\n"
-            "- Behavioural diagnostics only\n"
-            "- Not financial advice\n"
-            "- Rule-based and explainable scoring\n"
-            "- Intended for educational and research use"
-        )
-    
+
+        st.markdown("""
+        **Transparency & Limitations**
+        - This system provides behavioural diagnostics only
+        - It does not offer financial advice or predict market outcomes
+        - All scoring logic is rule-based and explainable
+        - Results are intended for educational and research purposes
+        """)
+
         st.markdown("**Key Academic References**")
-    
-        st.markdown(
-            "1. Kahneman & Tversky (1979) – Prospect Theory\n"
-            "2. Grable & Lytton (1999) – Risk Tolerance\n"
-            "3. Shefrin (2007) – Behavioral Corporate Finance"
-        )
 
-
+        st.markdown("""
+        1. Kahneman, D., & Tversky, A. (1979). *Prospect Theory: An Analysis of Decision under Risk*. Econometrica.  
+        2. Grable, J. E., & Lytton, R. H. (1999). *Financial Risk Tolerance Revisited*. Financial Services Review.  
+        3. Shefrin, H. (2007). *Behavioral Corporate Finance*. McGraw-Hill.
+        """)
 
 elif st.session_state.page == "Biases":
     st.header("Behavioural Biases")
