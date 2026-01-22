@@ -462,85 +462,77 @@ elif st.session_state.page == "Method":
     # --------------------------------------------------
     # BEHAVIOURAL FINANCE SCORING (BFS)
     # --------------------------------------------------
-    with st.expander("Behavioural Finance Scoring (BFS)", expanded=True):
+    with st.expander("Behavioural Finance Scoring (BFS)"):
 
         st.markdown("""
-        ###  How Your Behavioural Finance Score Is Calculated
-        
-        Your **Behavioural Finance Score (BFS)** reflects how strongly psychological biases influence your investment decisions — based entirely on how you responded to realistic investment scenarios.
-        
-        Rather than asking you to label yourself, the assessment **observes patterns in your choices** to identify behavioural tendencies that commonly affect investors.
-        """)
-        
-        st.markdown("---")
-        
-        st.markdown("""
-        ###  What We Analysed
-        
-        During the assessment, you were presented with **scenario-based questions** designed to capture how you typically react in real investment situations, such as:
-        """)
-        
-        st.markdown("""
-        - Reacting to **gains and losses**
-        - Responding to **market news and trends**
-        - Handling **uncertainty and volatility**
-        - Making decisions under **pressure or social influence**
-        """)
-        
-        st.markdown("""
-        Each scenario maps to **well-documented behavioural biases** observed in real-world investing behaviour.
-        """)
-        
-        st.markdown("---")
-        
-        st.markdown("""
-        ###  How the Score Works
-        """)
-        
-        st.markdown("""
-        - The BFS is calculated **out of 60**, based on **12 behavioural biases**
-        - Each bias contributes **equally** to the final score
-        - **Higher scores** indicate greater susceptibility to behavioural biases
-        - **Lower scores** suggest more disciplined and emotionally neutral decision-making
-        """)
-        
-        st.info(
-            "This score is **diagnostic**, not judgmental — it highlights behavioural tendencies, not mistakes."
-        )
-        
-        st.markdown("---")
-        
-        st.markdown("""
-        ###  Understanding Bias Scores
-        
-        Each detected bias is assigned a **bias intensity score between 0 and 1**, indicating how strongly it influences your decisions:
-        """)
-        
-        st.markdown("""
-        - **0.00 – 0.33** → Low influence  
-        - **0.34 – 0.66** → Moderate influence  
-        - **0.67 – 1.00** → High influence
-        """)
-        
-        st.markdown("""
-        For example, a score of **0.75** for a bias means it has a **strong influence** on your decision-making relative to other biases.
-        """)
-        
-        st.markdown("---")
-        
-        st.markdown("""
-        ###  Why This Approach Is Reliable
-        """)
-        
-        st.markdown("""
-        - Multiple questions contribute to each bias to reduce noise  
-        - No single answer can dominate the outcome  
-        - Results reflect **patterns across decisions**, not isolated choices  
-        """)
-        
-        st.caption(
-            "This makes the analysis more robust and aligned with how behavioural finance is studied in academic and applied research."
-        )
+        <h4 style="font-size:1.4rem; font-weight:700; margin-bottom:10px;">
+        How Your Behavioural Finance Score Is Calculated
+        </h4>
+    
+        <p style="color:#cfd6dd; font-size:0.95rem; line-height:1.6;">
+        Your <strong>Behavioural Finance Score (BFS)</strong> reflects how strongly
+        behavioural biases influence your investment decisions. It is derived from
+        how you responded to realistic, scenario-based investment questions.
+        </p>
+    
+        <p style="color:#cfd6dd; font-size:0.95rem; line-height:1.6;">
+        Instead of asking you to label yourself, the assessment identifies
+        <strong>patterns in your decision-making</strong> that commonly affect
+        real-world investors.
+        </p>
+    
+        <hr style="border:0.5px solid #2a2f36; margin:20px 0;">
+    
+        <h5 style="font-size:1.1rem; font-weight:600; margin-bottom:8px;">
+        What We Analysed
+        </h5>
+    
+        <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+            <li>Reactions to gains, losses, and price changes</li>
+            <li>Responses to market news and trends</li>
+            <li>Comfort with uncertainty and volatility</li>
+            <li>Decision-making under pressure or social influence</li>
+        </ul>
+    
+        <hr style="border:0.5px solid #2a2f36; margin:20px 0;">
+    
+        <h5 style="font-size:1.1rem; font-weight:600; margin-bottom:8px;">
+        How the Score Works
+        </h5>
+    
+        <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+            <li>BFS is calculated <strong>out of 60</strong>, based on <strong>12 behavioural biases</strong></li>
+            <li>Each bias contributes equally to the final score</li>
+            <li>Higher scores indicate greater susceptibility to behavioural biases</li>
+            <li>Lower scores suggest more disciplined and emotionally neutral decisions</li>
+        </ul>
+    
+        <p style="color:#9ba3af; font-size:0.9rem; margin-top:10px;">
+        This score is diagnostic — it highlights tendencies, not mistakes.
+        </p>
+    
+        <hr style="border:0.5px solid #2a2f36; margin:20px 0;">
+    
+        <h5 style="font-size:1.1rem; font-weight:600; margin-bottom:8px;">
+        Understanding Bias Intensity
+        </h5>
+    
+        <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+        Each detected bias is assigned an <strong>intensity score between 0 and 1</strong>,
+        where higher values indicate a stronger influence on decision-making.
+        </p>
+    
+        <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+            <li><strong>0.00 – 0.33</strong> → Low influence</li>
+            <li><strong>0.34 – 0.66</strong> → Moderate influence</li>
+            <li><strong>0.67 – 1.00</strong> → High influence</li>
+        </ul>
+    
+        <p style="color:#9ba3af; font-size:0.9rem; margin-top:10px;">
+        Scores are based on patterns across multiple responses, not any single answer.
+        </p>
+        """, unsafe_allow_html=True)
+
 
     # --------------------------------------------------
     # RISK APPETITE SCORING
