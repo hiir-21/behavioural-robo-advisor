@@ -465,38 +465,83 @@ elif st.session_state.page == "Method":
     with st.expander("Behavioural Finance Scoring (BFS)", expanded=True):
 
         st.markdown("""
-        Behavioural Finance Scoring (BFS) is used to identify psychological
-        biases that systematically influence investment decision-making.
-        The methodology is grounded in established behavioural finance research
-        and infers latent behavioural traits from structured survey responses.
-
-        This approach is primarily based on **Prospect Theory**
-        (Kahneman & Tversky, 1979), which explains why individuals tend to
-        experience losses more intensely than equivalent gains.
+        ### 🧠 How Your Behavioural Finance Score Is Calculated
+        
+        Your **Behavioural Finance Score (BFS)** reflects how strongly psychological biases influence your investment decisions — based entirely on how you responded to realistic investment scenarios.
+        
+        Rather than asking you to label yourself, the assessment **observes patterns in your choices** to identify behavioural tendencies that commonly affect investors.
         """)
-
-        st.markdown("**BFS Calculation Flow**")
-
+        
+        st.markdown("---")
+        
         st.markdown("""
-        Survey Responses  
-        ⬇  
-        Normalisation (Likert Scale: 1–5 → 0–1)  
-        ⬇  
-        Bias-wise Aggregation  
-        ⬇  
-        Behavioural Bias Intensity Score  
-        ⬇  
-        Dominant Behavioural Bias
+        ### 🔍 What We Analysed
+        
+        During the assessment, you were presented with **scenario-based questions** designed to capture how you typically react in real investment situations, such as:
         """)
-
-        st.progress(0.78)
-        st.caption("Illustrative Loss Aversion Score (High)")
-
+        
         st.markdown("""
-        Multiple questions are mapped to each behavioural bias to reduce noise
-        and increase reliability. Aggregation ensures that no single response
-        disproportionately influences the final score.
+        - Reacting to **gains and losses**
+        - Responding to **market news and trends**
+        - Handling **uncertainty and volatility**
+        - Making decisions under **pressure or social influence**
         """)
+        
+        st.markdown("""
+        Each scenario maps to **well-documented behavioural biases** observed in real-world investing behaviour.
+        """)
+        
+        st.markdown("---")
+        
+        st.markdown("""
+        ### 📊 How the Score Works
+        """)
+        
+        st.markdown("""
+        - The BFS is calculated **out of 60**, based on **12 behavioural biases**
+        - Each bias contributes **equally** to the final score
+        - **Higher scores** indicate greater susceptibility to behavioural biases
+        - **Lower scores** suggest more disciplined and emotionally neutral decision-making
+        """)
+        
+        st.info(
+            "This score is **diagnostic**, not judgmental — it highlights behavioural tendencies, not mistakes."
+        )
+        
+        st.markdown("---")
+        
+        st.markdown("""
+        ### 🎯 Understanding Bias Scores
+        
+        Each detected bias is assigned a **bias intensity score between 0 and 1**, indicating how strongly it influences your decisions:
+        """)
+        
+        st.markdown("""
+        - **0.00 – 0.33** → Low influence  
+        - **0.34 – 0.66** → Moderate influence  
+        - **0.67 – 1.00** → High influence
+        """)
+        
+        st.markdown("""
+        For example, a score of **0.75** for a bias means it has a **strong influence** on your decision-making relative to other biases.
+        """)
+        
+        st.markdown("---")
+        
+        st.markdown("""
+        ### ✅ Why This Approach Is Reliable
+        """)
+        
+        st.markdown("""
+        - Multiple questions contribute to each bias to reduce noise  
+        - No single answer can dominate the outcome  
+        - Results reflect **patterns across decisions**, not isolated choices  
+        """)
+        
+        st.caption(
+            "This makes the analysis more robust and aligned with how behavioural finance is studied in academic and applied research."
+        )
+
 
     # --------------------------------------------------
     # RISK APPETITE SCORING
