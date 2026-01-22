@@ -615,22 +615,23 @@ elif st.session_state.page == "Method":
     # TRANSPARENCY & REFERENCES
     # --------------------------------------------------
     with st.expander("Transparency and Academic References"):
-
-        st.markdown("""
-        **Transparency & Limitations**
-        - This system provides behavioural diagnostics only
-        - It does not offer financial advice or predict market outcomes
-        - All scoring logic is rule-based and explainable
-        - Results are intended for educational and research purposes
-        """)
-
+    
+        st.markdown(
+            "**Transparency & Limitations**\n"
+            "- This system provides behavioural diagnostics only\n"
+            "- It does not offer financial advice or predict market outcomes\n"
+            "- All scoring logic is rule-based and explainable\n"
+            "- Results are intended for educational and research purposes"
+        )
+    
         st.markdown("**Key Academic References**")
+    
+        st.markdown(
+            "1. Kahneman, D., & Tversky, A. (1979). *Prospect Theory: An Analysis of Decision under Risk*. Econometrica.\n"
+            "2. Grable, J. E., & Lytton, R. H. (1999). *Financial Risk Tolerance Revisited*. Financial Services Review.\n"
+            "3. Shefrin, H. (2007). *Behavioral Corporate Finance*. McGraw-Hill."
+        )
 
-        st.markdown("""
-        1. Kahneman, D., & Tversky, A. (1979). *Prospect Theory: An Analysis of Decision under Risk*. Econometrica.  
-        2. Grable, J. E., & Lytton, R. H. (1999). *Financial Risk Tolerance Revisited*. Financial Services Review.  
-        3. Shefrin, H. (2007). *Behavioral Corporate Finance*. McGraw-Hill.
-        """)
 
 elif st.session_state.page == "Biases":
     st.header("Behavioural Biases")
