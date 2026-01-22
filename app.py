@@ -589,9 +589,9 @@ elif st.session_state.page == "Method":
         </h5>
     
         <ul style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
-            <li><strong>1.0 – 2.0</strong> → Conservative risk appetite</li>
-            <li><strong>2.1 – 3.5</strong> → Moderate / balanced risk appetite</li>
-            <li><strong>3.6 – 5.0</strong> → Aggressive risk appetite</li>
+            <li><strong>1.0 - 2.0</strong> → Conservative risk appetite</li>
+            <li><strong>2.1 - 3.5</strong> → Moderate / balanced risk appetite</li>
+            <li><strong>3.6 - 5.0</strong> → Aggressive risk appetite</li>
         </ul>
     
         <p style="color:#9ba3af; font-size:0.9rem; margin-top:10px;">
