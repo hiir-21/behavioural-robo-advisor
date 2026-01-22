@@ -542,7 +542,6 @@ elif st.session_state.page == "Method":
             "This makes the analysis more robust and aligned with how behavioural finance is studied in academic and applied research."
         )
 
-
     # --------------------------------------------------
     # RISK APPETITE SCORING
     # --------------------------------------------------
