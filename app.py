@@ -621,115 +621,116 @@ elif st.session_state.page == "Method":
     
 
 
-elif st.session_state.page == "Biases":
-    st.header("Behavioural Biases")
+elif st.session_state.page == "Method":
 
-# --------------------------------------------------
-# BEHAVIOURAL BIASES EXPLAINED
-# --------------------------------------------------
+    st.header("Method")
+        # --------------------------------------------------
+    # BEHAVIOURAL BIASES EXPLAINED
+    # --------------------------------------------------
 
-st.markdown("""
-<h3 style="font-size:1.6rem; font-weight:800; margin-bottom:18px;">
-Behavioural Biases Explained
-</h3>
+    st.markdown("""
+    <h3 style="font-size:1.6rem; font-weight:800; margin-bottom:18px;">
+    Behavioural Biases Explained
+    </h3>
 
-<p style="color:#cfd6dd; font-size:0.95rem; line-height:1.6;">
-The following behavioural biases are commonly observed in real-world investing.
-They influence how investors process information, perceive risk, and make
-decisions under uncertainty.
-</p>
-""", unsafe_allow_html=True)
+    <p style="color:#cfd6dd; font-size:0.95rem; line-height:1.6;">
+    The assessment identifies psychological patterns that commonly influence
+    real-world investment behaviour. These biases affect how investors
+    process information, perceive risk, and act under uncertainty.
+    </p>
+    """, unsafe_allow_html=True)
 
+    def bias_expander(title, desc, example):
+        with st.expander(title):
+            st.markdown(f"""
+            <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+            {desc}
+            </p>
+            <p style="color:#9ba3af; font-size:0.9rem;">
+            <em>Example: {example}</em>
+            </p>
+            """, unsafe_allow_html=True)
 
-def bias_expander(title, description, example):
-    with st.expander(title):
-        st.markdown(f"""
-        <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
-        {description}
-        </p>
-        <p style="color:#9ba3af; font-size:0.9rem;">
-        <em>Example: {example}</em>
-        </p>
-        """, unsafe_allow_html=True)
+    bias_expander(
+        "Confirmation Bias",
+        "Investors tend to seek or interpret information that supports existing beliefs "
+        "while ignoring contradictory evidence. This reinforces flawed assumptions "
+        "and delays corrective action.",
+        "Ignoring negative news about a stock because it conflicts with your belief."
+    )
 
+    bias_expander(
+        "Anchoring",
+        "Decisions are overly influenced by an initial reference point such as a past "
+        "price, even when new information makes that reference irrelevant.",
+        "Holding a stock because it has not returned to your purchase price."
+    )
 
-bias_expander(
-    "Confirmation Bias",
-    "Investors seek or interpret information that supports existing beliefs while "
-    "ignoring contradictory evidence. This can reinforce flawed assumptions and "
-    "delay corrective action.",
-    "Ignoring negative news about a stock because it supports your belief."
-)
+    bias_expander(
+        "Recency Bias",
+        "Recent events are given more importance than long-term trends, often leading "
+        "to performance chasing or overreaction.",
+        "Investing heavily in assets that performed well recently."
+    )
 
-bias_expander(
-    "Anchoring",
-    "Decisions are overly influenced by an initial reference point such as a past "
-    "price, even when new information makes it irrelevant.",
-    "Refusing to sell because the stock hasn’t returned to your buy price."
-)
+    bias_expander(
+        "Framing Effect",
+        "Decisions are influenced by how information is presented rather than the "
+        "underlying facts.",
+        "Preferring a 90 percent success rate over a 10 percent failure rate."
+    )
 
-bias_expander(
-    "Recency Bias",
-    "Recent events are given more importance than long-term trends, often leading "
-    "to performance chasing or overreaction.",
-    "Investing heavily in assets that performed well recently."
-)
+    bias_expander(
+        "Risk Sensitivity",
+        "Heightened reaction to perceived risk can result in overly cautious or "
+        "inconsistent investment behaviour.",
+        "Avoiding equities due to frequent crash-related news."
+    )
 
-bias_expander(
-    "Framing Effect",
-    "Investment decisions are influenced by how information is presented rather "
-    "than the underlying facts.",
-    "Preferring “90% success rate” over “10% failure rate.”"
-)
+    bias_expander(
+        "Loss Aversion",
+        "Losses are felt more intensely than gains, causing investors to avoid "
+        "realising losses even when doing so is rational.",
+        "Holding a losing stock to avoid locking in a loss."
+    )
 
-bias_expander(
-    "Risk Sensitivity",
-    "Heightened reaction to perceived risk or uncertainty can result in overly "
-    "cautious or inconsistent strategies.",
-    "Avoiding equities after frequent news about market crashes."
-)
+    bias_expander(
+        "Overconfidence",
+        "Investors overestimate their knowledge or ability to predict markets, "
+        "often leading to excessive trading and underestimation of risk.",
+        "Increasing position size after a few successful trades."
+    )
 
-bias_expander(
-    "Loss Aversion",
-    "Losses are felt more intensely than gains, causing investors to avoid "
-    "realising losses even when rational.",
-    "Holding a losing stock to avoid admitting a loss."
-)
+    bias_expander(
+        "Herding",
+        "Decisions are influenced by the actions of others rather than independent "
+        "analysis, often driven by fear of missing out.",
+        "Buying a stock because it is trending on social media."
+    )
 
-bias_expander(
-    "Overconfidence",
-    "Investors overestimate their skill or knowledge, leading to excessive trading "
-    "and underestimation of risk.",
-    "Increasing trade size after a few successful investments."
-)
+    bias_expander(
+        "Disposition Effect",
+        "Investors tend to sell winning investments too early while holding losing "
+        "ones for too long due to emotional attachment.",
+        "Selling profitable stocks quickly but holding losses."
+    )
 
-bias_expander(
-    "Herding",
-    "Decisions are influenced by the actions of others rather than independent "
-    "analysis, often driven by fear of missing out.",
-    "Buying a stock because it is trending on social media."
-)
+    bias_expander(
+        "Status Quo Bias",
+        "A preference for existing choices can prevent portfolio adjustments even "
+        "when better alternatives exist.",
+        "Keeping outdated investments without review."
+    )
 
-bias_expander(
-    "Disposition Effect",
-    "Investors tend to sell winning investments too early while holding losing ones "
-    "for too long.",
-    "Selling profitable stocks quickly but holding losses."
-)
+    bias_expander(
+        "Emotional / Overtrading Bias",
+        "Emotional reactions such as fear or excitement lead to frequent trading, "
+        "often reducing long-term returns.",
+        "Rapid buying and selling during volatile market days."
+    )
 
-bias_expander(
-    "Status Quo Bias",
-    "A preference for existing choices can prevent necessary portfolio adjustments "
-    "even when better alternatives exist.",
-    "Keeping outdated investments without review."
-)
-
-bias_expander(
-    "Emotional / Overtrading Bias",
-    "Emotional reactions such as fear or excitement lead to frequent trading and "
-    "often reduce long-term returns.",
-    "Rapid buying and selling during volatile market days."
-)
+    
+    st.divider()
 
 
 elif st.session_state.page == "About":
