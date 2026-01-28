@@ -623,7 +623,7 @@ elif st.session_state.page == "Method":
 
 elif st.session_state.page == "Biases":
 
-    st.header(Biases")
+    st.header(Biases)
         # --------------------------------------------------
     # BEHAVIOURAL BIASES EXPLAINED
     # --------------------------------------------------
