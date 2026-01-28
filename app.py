@@ -653,80 +653,68 @@ elif st.session_state.page == "Biases":
 
     bias_expander(
         "Confirmation Bias",
-        "Investors tend to seek or interpret information that supports existing beliefs "
-        "while ignoring contradictory evidence. This reinforces flawed assumptions "
-        "and delays corrective action.",
-        "Ignoring negative news about a stock because it conflicts with your belief."
+        "Confirmation bias occurs when investors actively look for information that supports their existing beliefs while downplaying or ignoring evidence that challenges them. Over time, this selective attention can strengthen confidence in an incorrect investment view and delay corrective decisions. It often creates emotional attachment to certain stocks or strategies, even when objective data suggests reevaluation.",
+        "You believe a company is a great long-term investment, so you focus only on positive news and dismiss poor earnings or warnings as “temporary,” missing early signs of trouble."
     )
 
     bias_expander(
         "Anchoring",
-        "Decisions are overly influenced by an initial reference point such as a past "
-        "price, even when new information makes that reference irrelevant.",
-        "Holding a stock because it has not returned to your purchase price."
+        "Anchoring bias arises when investors rely too heavily on an initial reference point, such as a purchase price or past valuation. Future decisions are then made relative to this anchor, even when new information makes it irrelevant. This can distort judgement during changing market conditions and prevent timely decision-making.",
+        "You bought a stock at ₹1,500 and refuse to sell until it returns to that price, even though the company’s outlook has worsened and the market has moved on."
     )
 
     bias_expander(
         "Recency Bias",
-        "Recent events are given more importance than long-term trends, often leading "
-        "to performance chasing or overreaction.",
-        "Investing heavily in assets that performed well recently."
+        "Recency bias occurs when investors place excessive importance on recent events while underestimating long-term trends or historical data. This can lead to overreaction to short-term performance, causing investors to chase recent winners or panic during temporary downturns, often resulting in poorly timed investment decisions.",
+        "A stock has performed very well in recent months, so you invest heavily, assuming the trend will continue without checking long-term fundamentals."
     )
 
     bias_expander(
         "Framing Effect",
-        "Decisions are influenced by how information is presented rather than the "
-        "underlying facts.",
-        "Preferring a 90 percent success rate over a 10 percent failure rate."
+        "The framing effect happens when investment decisions are influenced by how information is presented rather than by the actual facts. Different wording, context, or emphasis can trigger different emotional reactions, even when the underlying information remains the same, leading to inconsistent or biased decision-making.",
+        "You feel more confident about an investment described as having a “90% success rate” than one described as having a “10% failure rate,” even though both describe the same outcome."
     )
 
     bias_expander(
         "Risk Sensitivity",
-        "Heightened reaction to perceived risk can result in overly cautious or "
-        "inconsistent investment behaviour.",
-        "Avoiding equities due to frequent crash-related news."
+        "Risk sensitivity reflects how strongly an investor emotionally reacts to perceived risk or uncertainty. Highly risk-sensitive individuals may allow fear or anxiety to dominate decision-making, leading to overly cautious behaviour or frequent strategy changes that are not supported by objective analysis or long-term goals.",
+        "After repeatedly hearing news about market crashes, you avoid equity investments altogether, even though long-term data shows that downturns are a normal part of markets."
     )
 
     bias_expander(
         "Loss Aversion",
-        "Losses are felt more intensely than gains, causing investors to avoid "
-        "realising losses even when doing so is rational.",
-        "Holding a losing stock to avoid locking in a loss."
+        "Loss aversion refers to the tendency to experience losses more intensely than equivalent gains. Investors often focus on avoiding losses rather than maximising overall returns, which can lead to irrational decisions such as holding onto losing investments for too long or avoiding beneficial risks altogether.",
+        "You keep holding a falling stock to avoid “locking in” a loss, even when switching to a better investment could improve your portfolio."
     )
 
     bias_expander(
         "Overconfidence",
-        "Investors overestimate their knowledge or ability to predict markets, "
-        "often leading to excessive trading and underestimation of risk.",
-        "Increasing position size after a few successful trades."
+        "Overconfidence bias occurs when investors overestimate their knowledge, skills, or ability to predict market movements. This false sense of control can lead to excessive trading, insufficient diversification, and underestimation of risk, increasing the likelihood of poor long-term performance.",
+        "After a few successful trades, you increase your position sizes, assuming your judgement is always correct, without considering the role of luck or market conditions."
     )
 
     bias_expander(
         "Herding",
-        "Decisions are influenced by the actions of others rather than independent "
-        "analysis, often driven by fear of missing out.",
-        "Buying a stock because it is trending on social media."
+        "Herding bias occurs when investors follow the actions of others instead of making independent decisions. Social influence, fear of missing out, and group behaviour often drive this bias, especially during market booms or crashes, leading to crowded trades and increased risk exposure.",
+        "You buy a stock simply because it is trending on social media or everyone around you is investing in it, without understanding the underlying business."
     )
 
     bias_expander(
         "Disposition Effect",
-        "Investors tend to sell winning investments too early while holding losing "
-        "ones for too long due to emotional attachment.",
-        "Selling profitable stocks quickly but holding losses."
+        "The disposition effect describes the tendency to sell investments that have gained value too quickly while holding onto losing investments for too long. This behaviour is driven by the desire to realise gains and avoid regret associated with losses, often reducing overall portfolio efficiency.",
+        "You sell a stock as soon as it shows a small profit but continue holding a losing stock, hoping it will recover, even when there is little reason to expect it will."
     )
 
     bias_expander(
         "Status Quo Bias",
-        "A preference for existing choices can prevent portfolio adjustments even "
-        "when better alternatives exist.",
-        "Keeping outdated investments without review."
+        "Status quo bias is the preference to maintain existing choices rather than making changes, even when better alternatives exist. Familiarity, inertia, and perceived effort often prevent investors from reviewing or adjusting their portfolios, leading to missed opportunities for improvement.",
+        "You keep the same investments for years without reviewing them, simply because changing them feels uncomfortable or requires extra effort."
     )
 
     bias_expander(
         "Emotional / Overtrading Bias",
-        "Emotional reactions such as fear or excitement lead to frequent trading, "
-        "often reducing long-term returns.",
-        "Rapid buying and selling during volatile market days."
+        "Emotional or overtrading bias occurs when investment decisions are driven by emotions such as fear, excitement, or stress rather than rational analysis. This can result in frequent trading, poor timing, and higher transaction costs, ultimately harming long-term investment outcomes.",
+        "During a highly volatile market day, you rapidly buy and sell assets based on fear or excitement instead of sticking to a long-term plan."
     )
 
     
