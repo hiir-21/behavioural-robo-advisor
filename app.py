@@ -623,7 +623,124 @@ elif st.session_state.page == "Method":
 
 elif st.session_state.page == "Biases":
     st.header("Behavioural Biases")
-    st.info("This section will describe individual behavioural biases.")
+
+    # --------------------------------------------------
+# BEHAVIOURAL BIASES EXPLAINED
+# --------------------------------------------------
+with st.expander("Behavioural Biases Explained"):
+
+    st.markdown("""
+    <h4 style="font-size:1.3rem; font-weight:700; margin-bottom:14px;">
+    Key Behavioural Biases Identified in the Assessment
+    </h4>
+
+    <p style="color:#cfd6dd; font-size:0.95rem; line-height:1.6;">
+    The assessment evaluates common psychological biases that influence
+    real-world investment behaviour. These biases affect how investors
+    process information, perceive risk, and make decisions under uncertainty.
+    </p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:22px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Confirmation Bias</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Investors tend to seek or interpret information that supports existing beliefs
+    while ignoring contradictory evidence. This can reinforce flawed assumptions
+    and delay corrective action.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Ignoring negative news because it conflicts with your belief in a stock.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Anchoring</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Decisions are influenced by an initial reference point such as a past price,
+    even when new information suggests that reference is no longer relevant.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Holding a stock because it hasn’t returned to your purchase price.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Recency Bias</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Recent market events are given more importance than long-term trends,
+    often leading to overreaction or performance chasing.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Investing heavily in assets that performed well recently.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Framing Effect</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Decisions are influenced by how information is presented rather than
+    the actual underlying data, triggering emotional responses.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Preferring “90% success rate” over “10% failure rate.”</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Risk Sensitivity</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    High sensitivity to perceived risk can lead to overly cautious or
+    inconsistent investment behaviour driven by fear of losses.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Avoiding equities due to frequent crash-related news.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Loss Aversion</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Losses are felt more intensely than gains, causing investors to avoid
+    realising losses even when doing so is rational.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Holding a losing stock to avoid admitting a loss.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Overconfidence</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Investors overestimate their knowledge or ability to predict markets,
+    often resulting in excessive trading and underestimation of risk.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Increasing trade size after a few successful investments.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Herding</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Decisions are influenced by the actions of others rather than independent
+    analysis, often driven by fear of missing out.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Buying a stock because it is trending on social media.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Disposition Effect</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Investors tend to sell winning investments too early while holding
+    losing investments for too long due to emotional attachment.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Selling profitable stocks quickly but holding losses.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Status Quo Bias</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    A preference for existing choices can prevent portfolio adjustments,
+    even when better alternatives are available.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Keeping outdated investments without review.</em></p>
+
+    <hr style="border:0.5px solid #2a2f36; margin:18px 0;">
+
+    <h5 style="font-size:1.05rem; font-weight:600;">Emotional / Overtrading Bias</h5>
+    <p style="color:#cfd6dd; font-size:0.92rem; line-height:1.6;">
+    Emotional reactions such as fear or excitement lead to frequent trading,
+    often reducing long-term portfolio performance.
+    </p>
+    <p style="color:#9ba3af; font-size:0.9rem;"><em>Example: Rapid buying and selling during volatile market days.</em></p>
+    """, unsafe_allow_html=True)
+
 
 elif st.session_state.page == "About":
     st.header("About")
