@@ -28,7 +28,10 @@ if "survey_completed" not in st.session_state:
 
 if "analysis_result" not in st.session_state:
     st.session_state.analysis_result = None
-
+    
+if "robo_result" not in st.session_state:
+    st.session_state.robo_result = None
+    
 # --------------------------------------------------
 # STYLES
 # --------------------------------------------------
@@ -126,7 +129,7 @@ st.markdown('<div class="app-title">Behavioural Robo-Advisor</div>', unsafe_allo
 # --------------------------------------------------
 # NAV BAR
 # --------------------------------------------------
-tabs = ["Home", "Method", "Biases", "Results", "About"]
+tabs = ["Home","Manual Assessment","Results","Method","Biases","About"]
 cols = st.columns(len(tabs))
 
 for col, tab in zip(cols, tabs):
@@ -142,7 +145,7 @@ st.divider()
 
 
 # ==================================================
-# HOME
+# HOME → ROBO ADVISOR START
 # ==================================================
 if st.session_state.page == "Home":
 
@@ -151,8 +154,7 @@ if st.session_state.page == "Home":
         <h1>Understand Your Investment Behaviour</h1>
         <p>
         Identify behavioural biases influencing investment decisions using
-        scenario-based psychology and personal finance preferences.
-        This tool provides behavioural diagnostics only and does not offer financial advice.
+        scenario-based psychology and demographic investor behaviour.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -161,9 +163,65 @@ if st.session_state.page == "Home":
 
     with col2:
         if st.button("Start Behavioural Assessment"):
-            st.session_state.page = "Survey-Demographics"  # <-- FIXED
+            st.session_state.page = "RoboAdvisor"
             st.rerun()
 
+# ==================================================
+# ROBO ADVISOR PAGE
+# ==================================================
+
+elif st.session_state.page == "RoboAdvisor":
+
+    st.header("Robo-Advisor Analysis")
+
+    age = st.selectbox("Select Age Group",
+        ["18–25","26–35","36–50","50+"]
+    )
+
+    gender = st.selectbox("Select Gender",
+        ["Female","Male","Prefer not to say"]
+    )
+
+    if st.button("Run Analysis"):
+
+        # placeholder until dataset integration
+        bias = "Recency Bias"
+        sector = "Technology"
+
+        st.session_state.robo_result = {
+            "age":age,
+            "gender":gender,
+            "bias":bias,
+            "sector":sector
+        }
+
+        st.success("Analysis Complete")
+
+        st.subheader("Behavioural Insight")
+        st.write(f"Most common bias in your demographic: **{bias}**")
+
+        st.subheader("Sector Preference")
+        st.write(f"Investors in this demographic prefer **{sector} sector**")
+
+        if st.button("View Combined Results"):
+            st.session_state.page="Results"
+            st.rerun()
+
+# ==================================================
+# MANUAL ASSESSMENT ENTRY
+# ==================================================
+
+elif st.session_state.page == "Manual Assessment":
+
+    st.header("Manual Behavioural Assessment")
+
+    st.write(
+        "Answer scenario-based questions to receive a personalized behavioural analysis."
+    )
+
+    if st.button("Start Manual Assessment"):
+        st.session_state.page = "Survey-Demographics"
+        st.rerun()
 
 # ==================================================
 # SURVEY – DEMOGRAPHICS
