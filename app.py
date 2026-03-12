@@ -59,17 +59,24 @@ body {
 }
 
 .nav-btn > button {
-    padding: 10px 24px;
+    padding: 12px 28px;
     border-radius: 999px;
     border: none;
     font-weight: 600;
     background: #0d1117;
     color: #c9d1d9;
+
+    white-space: nowrap;      /* prevents text breaking */
+    min-width: 140px;         /* makes buttons wider */
+    text-align: center;
 }
 
 .nav-btn-active > button {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
+
+    white-space: nowrap;
+    min-width: 140px;
 }
 
 /* HERO */
