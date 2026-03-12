@@ -75,8 +75,10 @@ body {
     background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
 
+    .nav-btn button,
+    .nav-btn-active button {
     white-space: nowrap;
-    min-width: 140px;
+    font-size: 16px;
 }
 
 /* HERO */
@@ -137,17 +139,16 @@ st.markdown('<div class="app-title">Behavioural Robo-Advisor</div>', unsafe_allo
 # NAV BAR
 # --------------------------------------------------
 tabs = ["Home","Manual Assessment","Results","Method","Biases","About"]
-cols = st.columns(len(tabs))
+cols = st.columns([1.2,2.4,1.2,1.2,1.2,1.2])
 
 for col, tab in zip(cols, tabs):
     with col:
         cls = "nav-btn-active" if st.session_state.page == tab else "nav-btn"
         st.markdown(f'<div class="{cls}">', unsafe_allow_html=True)
-        if st.button(tab, key=f"nav-{tab}"):
+        if st.button(tab, key=f"nav-{tab}", use_container_width=True):
             st.session_state.page = tab
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
-
 st.divider()
 
 
