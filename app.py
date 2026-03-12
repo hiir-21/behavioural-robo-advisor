@@ -388,9 +388,44 @@ elif st.session_state.page == "Survey-Risk":
 
 elif st.session_state.page == "Results":
 
+    st.header("Results")
+
+    # ==================================================
+    # ROBO ADVISOR RESULTS
+    # ==================================================
+
+    if "robo_result" in st.session_state and st.session_state.robo_result:
+
+        robo = st.session_state.robo_result
+
+        st.markdown(
+            "<h2 class='results-title'>Robo-Advisor Insight</h2>",
+            unsafe_allow_html=True
+        )
+
+        st.write(f"**Age Group:** {robo['age']}")
+        st.write(f"**Gender:** {robo['gender']}")
+
+        st.write(
+            f"Based on the behavioural patterns observed in the training dataset, "
+            f"investors in this demographic most commonly exhibit **{robo['bias']}**."
+        )
+
+        st.write(
+            f"Secondary data analysis also suggests that investors in this group "
+            f"most frequently allocate investments to the **{robo['sector']} sector**."
+        )
+
+        st.divider()
+
+    # ==================================================
+    # MANUAL SURVEY RESULTS
+    # ==================================================
+
     if not st.session_state.survey_completed:
-        st.warning("Please complete the behavioural assessment to view results.")
+        st.warning("Manual behavioural assessment has not been completed yet.")
     else:
+
         analysis = st.session_state.analysis_result
 
         bfs = analysis["behavioral_bias_analysis"]["bfs_summary"]
@@ -403,7 +438,6 @@ elif st.session_state.page == "Results":
             "<h2 class='results-title'>Behavioral Finance Score (BFS)</h2>",
             unsafe_allow_html=True
         )
-
 
         st.metric(
             "BFS",
@@ -421,7 +455,6 @@ elif st.session_state.page == "Results":
             "_Each bias intensity score (e.g., **0.75**) is measured **out of 1**, "
             "where higher values indicate stronger influence on decision-making._"
         )
-        st.markdown("</div>", unsafe_allow_html=True)
 
         # ---------------- BIASES CARD ----------------
         
@@ -441,8 +474,6 @@ elif st.session_state.page == "Results":
                 f"**{bias}** — {data['level']} "
                 f"(Score: {data['score']} / 1)"
             )
-
-        st.markdown("</div>", unsafe_allow_html=True)
 
         # ---------------- RISK APPETITE CARD ----------------
         avg_risk = risk["average_score"]
@@ -466,12 +497,10 @@ elif st.session_state.page == "Results":
                 "for potential long-term returns."
             )
 
-        
         st.markdown(
             "<h2 class='results-title'>Risk Appetite Assessment</h2>",
             unsafe_allow_html=True
         )
-
 
         st.metric(
             "Average Risk Score",
@@ -497,9 +526,6 @@ elif st.session_state.page == "Results":
             "_This assessment reflects behavioural tendencies inferred from your answers, "
             "not financial advice or performance predictions._"
         )
-
-        st.markdown("</div>", unsafe_allow_html=True)
-
 
 # ==================================================
 # STATIC PAGES
