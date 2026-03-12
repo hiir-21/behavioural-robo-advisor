@@ -58,32 +58,27 @@ body {
     margin: 30px 0 25px;
 }
 
-/* NAV BAR BUTTONS */
-
 .nav-btn > button {
-    padding: 10px 24px;
+    padding: 12px 28px;
     border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: none;
     font-weight: 600;
+    background: #0d1117;
+    color: #c9d1d9;
 
-    background: linear-gradient(135deg,#1f2937,#111827);
-    color: #e5e7eb;
-
-    transition: all 0.25s ease;
+    white-space: nowrap;      /* prevents text breaking */
+    min-width: 140px;         /* makes buttons wider */
+    text-align: center;
 }
-
-.nav-btn > button:hover {
-    background: linear-gradient(135deg,#2df8c5,#1cb5e0);
-    color: black;
-    transform: translateY(-2px);
-}
-
-/* ACTIVE TAB */
 
 .nav-btn-active > button {
-    background: linear-gradient(135deg,#2df8c5,#1cb5e0);
+    background: linear-gradient(135deg, #2df8c5, #1cb5e0);
     color: black;
-    border: none;
+
+    .nav-btn button,
+    .nav-btn-active button {
+    white-space: nowrap;
+    font-size: 16px;
 }
 
 /* HERO */
