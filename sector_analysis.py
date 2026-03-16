@@ -9,7 +9,8 @@ df = pd.read_excel("Stock_Sector_Allocation.xlsx", header=2)
 # CLEAN COLUMN NAMES
 # --------------------------------------------------
 # Remove " (%)" from sector names and trim spaces
-df.columns = df.columns.str.replace(" (%)", "", regex=False)
+df.columns = df.columns.str.replace("%", "", regex=False)
+df.columns = df.columns.str.replace("()", "", regex=False)
 df.columns = df.columns.str.strip()
 
 # --------------------------------------------------
