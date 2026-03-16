@@ -3,6 +3,10 @@ import pandas as pd
 # Load dataset
 df = pd.read_excel("Stock_Sector_Allocation.xlsx", header=2)
 
+# CLEAN COLUMN NAMES
+df.columns = df.columns.str.replace(" (%)", "", regex=False)
+df.columns = df.columns.str.strip()
+
 # Rename columns
 df = df.rename(columns={
     df.columns[1]: "Gender",
