@@ -22,19 +22,16 @@ sector_columns = [col for col in df.columns if col not in non_sector_cols and co
 
 def sector_analysis(age, gender):
 
-    # Filter by demographic
     filtered = df[(df["Age"] == age) & (df["Gender"] == gender)]
 
     if filtered.empty:
-        return None, None
+        return None, None, None
 
-    # Calculate mean allocation
+    # Average allocation for that demographic
     sector_avg = filtered[sector_columns].mean()
 
-    # Most preferred sector
+    # Highest and lowest sectors
     most_sector = sector_avg.idxmax()
-
-    # Least preferred sector
     least_sector = sector_avg.idxmin()
 
-    return most_sector, least_sector
+    return most_sector, least_sector, sector_avg
