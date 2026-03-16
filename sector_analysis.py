@@ -1,37 +1,36 @@
 import pandas as pd
 
-# load dataset
+# Load dataset
 df = pd.read_excel("Stock_Sector_Allocation.xlsx", header=1)
 
-# rename columns for easier use
+# Rename columns
 df = df.rename(columns={
     df.columns[1]: "Gender",
     df.columns[2]: "Age"
 })
 
-sector_columns = [
-    "Technology\n(%)",
-    "Healthcare\n(%)",
-    "Finance\n(%)",
-    "Energy\n(%)",
-    "Consumer Goods\n(%)",
-    "Real Estate\n(%)",
-    "Utilities\n(%)",
-    "Industrials\n(%)",
-    "Materials\n(%)",
-    "Telecom\n(%)"
-]
+# Define non-sector columns
+non_sector_cols = ["Gender", "Age"]
+
+# Automatically detect sector columns
+sector_columns = [col for col in df.columns if col not in non_sector_cols and col != df.columns[0]]
+
 
 def sector_analysis(age, gender):
 
+    # Filter by demographic
     filtered = df[(df["Age"] == age) & (df["Gender"] == gender)]
 
     if filtered.empty:
         return None, None
 
+    # Calculate mean allocation
     sector_avg = filtered[sector_columns].mean()
 
-    most = sector_avg.idxmax().replace("\n(%)","")
-    least = sector_avg.idxmin().replace("\n(%)","")
+    # Most preferred sector
+    most_sector = sector_avg.idxmax()
 
-    return most, least
+    # Least preferred sector
+    least_sector = sector_avg.idxmin()
+
+    return most_sector, least_sector
