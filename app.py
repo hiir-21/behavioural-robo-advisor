@@ -188,7 +188,7 @@ elif st.session_state.page == "RoboAdvisor":
     )
 
     gender = st.selectbox("Select Gender",
-        ["Female","Male","Prefer not to say"]
+        ["Female","Male"]
     )
 
     if st.button("Run Analysis"):
