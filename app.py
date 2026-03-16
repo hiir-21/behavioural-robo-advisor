@@ -195,16 +195,17 @@ elif st.session_state.page == "RoboAdvisor":
 
         bias = "Recency Bias"   # keep placeholder for now
 
-        most_sector, least_sector = sector_analysis(age, gender)
+        most_sector, least_sector, sector_avg = sector_analysis(age, gender)
 
         sector = most_sector
 
         st.session_state.robo_result = {
-            "age":age,
-            "gender":gender,
-            "bias":bias,
-            "sector":most_sector,
-            "least_sector":least_sector
+            "age": age,
+            "gender": gender,
+            "bias": bias,
+            "sector": most_sector,
+            "least_sector": least_sector,
+            "sector_avg": sector_avg
         }
 
         st.success("Analysis Complete")
@@ -223,6 +224,9 @@ elif st.session_state.page == "RoboAdvisor":
             f"The **least preferred sector** among this demographic "
             f"is **{least_sector}**."
         )
+
+        st.subheader("Average Sector Allocation for Your Demographic")
+        st.bar_chart(sector_avg)
 
         if st.button("View Combined Results"):
             st.session_state.page="Results"
