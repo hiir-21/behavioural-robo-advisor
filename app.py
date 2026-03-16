@@ -1,6 +1,7 @@
 
 import streamlit as st
 from survey_logic import generate_full_survey_analysis
+from sector_analysis import sector_analysis
 
 # --------------------------------------------------
 # PAGE CONFIG
@@ -183,7 +184,7 @@ elif st.session_state.page == "RoboAdvisor":
     st.header("Robo-Advisor Analysis")
 
     age = st.selectbox("Select Age Group",
-        ["18–25","26–35","36–50","50+"]
+        ["18-25","26-40","41-55","56-70","70+"]
     )
 
     gender = st.selectbox("Select Gender",
@@ -192,15 +193,18 @@ elif st.session_state.page == "RoboAdvisor":
 
     if st.button("Run Analysis"):
 
-        # placeholder until dataset integration
-        bias = "Recency Bias"
-        sector = "Technology"
+        bias = "Recency Bias"   # keep placeholder for now
+
+        most_sector, least_sector = sector_analysis(age, gender)
+
+        sector = most_sector
 
         st.session_state.robo_result = {
             "age":age,
             "gender":gender,
             "bias":bias,
-            "sector":sector
+            "sector":most_sector,
+            "least_sector":least_sector
         }
 
         st.success("Analysis Complete")
@@ -209,7 +213,16 @@ elif st.session_state.page == "RoboAdvisor":
         st.write(f"Most common bias in your demographic: **{bias}**")
 
         st.subheader("Sector Preference")
-        st.write(f"Investors in this demographic prefer **{sector} sector**")
+
+        st.write(
+            f"Investors in this demographic most frequently allocate "
+            f"their portfolio to the **{most_sector} sector**."
+        )
+        
+        st.write(
+            f"The **least preferred sector** among this demographic "
+            f"is **{least_sector}**."
+        )
 
         if st.button("View Combined Results"):
             st.session_state.page="Results"
@@ -420,8 +433,9 @@ elif st.session_state.page == "Results":
         )
 
         st.write(
-            f"Secondary data analysis also suggests that investors in this group "
-            f"most frequently allocate investments to the **{robo['sector']} sector**."
+            f"Secondary data analysis suggests that investors in this group "
+            f"most frequently allocate investments to the **{robo['sector']} sector**, "
+            f"while the **least preferred sector** is **{robo['least_sector']}**."
         )
 
         st.divider()
