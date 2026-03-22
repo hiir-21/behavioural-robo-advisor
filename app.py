@@ -2,6 +2,7 @@
 import streamlit as st
 from survey_logic import generate_full_survey_analysis
 from sector_analysis import sector_analysis
+from ml_model import predict_sector
 
 # --------------------------------------------------
 # PAGE CONFIG
