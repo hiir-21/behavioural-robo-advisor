@@ -841,5 +841,89 @@ elif st.session_state.page == "Biases":
 
 
 elif st.session_state.page == "About":
-    st.header("About")
-    st.info("This project is an academic behavioural finance prototype.")
+
+    st.header("About This Project")
+
+    # ---------------- OVERVIEW ----------------
+    st.markdown("""
+    <div class="card">
+    <h3>Overview</h3>
+    <p>
+    The Behavioural Robo-Advisor is an academic project that analyzes how 
+    psychological biases and demographic patterns influence investment decisions.
+    </p>
+
+    <p>
+    Unlike traditional financial tools that focus only on returns and risk,
+    this system integrates behavioural finance principles to provide deeper
+    insights into investor decision-making.
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ---------------- OBJECTIVE ----------------
+    st.markdown("""
+    <div class="card">
+    <h3>Objective</h3>
+    <ul>
+        <li>Identify behavioural biases in investment decisions</li>
+        <li>Measure individual risk appetite</li>
+        <li>Analyze patterns across age and gender groups</li>
+        <li>Provide data-driven and self-assessment insights</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ---------------- HOW IT WORKS ----------------
+    st.markdown("""
+    <div class="card">
+    <h3>How It Works</h3>
+    <p>
+    The platform provides two modes of analysis:
+    </p>
+
+    <ul>
+        <li><strong>Robo-Advisor Analysis:</strong> Uses demographic data to infer
+        behavioural patterns and sector preferences.</li>
+
+        <li><strong>Manual Assessment:</strong> A scenario-based survey that evaluates
+        behavioural biases and risk appetite using structured scoring logic.</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ---------------- DATA USED ----------------
+    st.markdown("""
+    <div class="card">
+    <h3>Data Used</h3>
+    <ul>
+        <li><strong>Primary Data:</strong> Survey responses collected from participants</li>
+        <li><strong>Secondary Data:</strong> Sector-wise investment allocation by demographic groups</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ---------------- KEY FEATURES ----------------
+    st.markdown("""
+    <div class="card">
+    <h3>Key Features</h3>
+    <ul>
+        <li>Behavioural Finance Score (BFS)</li>
+        <li>Bias detection and intensity analysis</li>
+        <li>Risk appetite classification</li>
+        <li>Demographic-based investment insights</li>
+        <li>Combined results dashboard</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ---------------- DISCLAIMER ----------------
+    st.markdown("""
+    <div class="card">
+    <h3>Disclaimer</h3>
+    <p>
+    This tool is developed for academic and research purposes only.
+    It does not provide financial advice or investment recommendations.
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
