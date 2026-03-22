@@ -196,16 +196,21 @@ elif st.session_state.page == "RoboAdvisor":
 
         bias = "Recency Bias"   # keep placeholder for now
 
+        bias = "Recency Bias"  # keep for now
+
+        # ---------- STATISTICAL ANALYSIS ----------
         most_sector, least_sector, sector_avg = sector_analysis(age, gender)
-
-        sector = most_sector
-
+        
+        # ---------- ML PREDICTION ----------
+        ml_sector = predict_sector(age, gender)
+        
         st.session_state.robo_result = {
             "age": age,
             "gender": gender,
             "bias": bias,
             "sector": most_sector,
             "least_sector": least_sector,
+            "ml_sector": ml_sector,
             "sector_avg": sector_avg
         }
 
@@ -216,14 +221,17 @@ elif st.session_state.page == "RoboAdvisor":
 
         st.subheader("Sector Preference")
 
+
         st.write(
-            f"Investors in this demographic most frequently allocate "
-            f"their portfolio to the **{most_sector} sector**."
+            f"📊 **Statistical Insight:** Most preferred sector is **{most_sector}**"
         )
         
         st.write(
-            f"The **least preferred sector** among this demographic "
-            f"is **{least_sector}**."
+            f"🤖 **ML Prediction:** Predicted preferred sector is **{ml_sector}**"
+        )
+        
+        st.write(
+            f"⚠️ **Least Preferred Sector:** **{least_sector}**"
         )
 
         st.subheader("Average Sector Allocation for Your Demographic")
