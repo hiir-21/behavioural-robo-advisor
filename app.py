@@ -253,9 +253,12 @@ elif st.session_state.page == "Manual Assessment":
         "Answer scenario-based questions to receive a personalized behavioural analysis."
     )
 
-    if st.button("Start Manual Assessment"):
-        st.session_state.page = "Survey-Demographics"
-        st.rerun()
+    col1, col2, col3 = st.columns([1, 2, 1])
+
+    with col2:
+        if st.button("Start Manual Assessment", use_container_width=True):
+            st.session_state.page = "Survey-Demographics"
+            st.rerun()
 
 # ==================================================
 # SURVEY – DEMOGRAPHICS
