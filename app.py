@@ -41,123 +41,194 @@ if "robo_result" not in st.session_state:
 # --------------------------------------------------
 st.markdown("""
 <style>
-body {
-    background: radial-gradient(circle at top, #0f2027, #000000 70%);
-    color: white;
-}
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 
-.app-title {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 800;
-    margin-top: 20px;
+/* ── GLOBAL RESET ── */
+html, body,
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"] {
+    background-color: #f5f3ef !important;
+    font-family: 'DM Sans', sans-serif !important;
+    color: #1a1a18 !important;
 }
+[data-testid="stHeader"]  { background-color: #f5f3ef !important; }
+[data-testid="stSidebar"] { background-color: #efecea !important; }
+.block-container { padding-top: 0 !important; padding-bottom: 0 !important; max-width: 100% !important; }
+#MainMenu, footer, header { visibility: hidden; }
 
-.navbar {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    margin: 30px 0 25px;
-}
-
-.nav-btn > button {
-    padding: 12px 28px;
-    border-radius: 999px;
-    border: none;
-    font-weight: 600;
-    background: #0d1117;
-    color: #c9d1d9;
-    white-space: nowrap;
-    min-width: 140px;
-    text-align: center;
-}
-
-/* BUG FIX 2: closed the unclosed nav-btn-active block */
-.nav-btn-active > button {
-    background: linear-gradient(135deg, #2df8c5, #1cb5e0);
-    color: black;
-    white-space: nowrap;
-    font-size: 16px;
-}
-
-.hero {
-    text-align: center;
-    margin-top: 70px;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    font-weight: 800;
-}
-
-.hero p {
-    max-width: 700px;
-    margin: auto;
-    color: #9ba3af;
-    font-size: 1.1rem;
-}
-
+/* ── STREAMLIT BUTTON OVERRIDES ── */
 .stButton > button {
-    background: linear-gradient(135deg, #2df8c5, #1cb5e0);
-    color: black;
-    border-radius: 999px;
-    padding: 14px 36px;
-    border: none;
-    font-weight: 600;
-    margin-top: 35px;
+    background: #1a1a18 !important;
+    color: #f5f3ef !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 11px 28px !important;
+    font-size: 13px !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+    transition: background 0.15s !important;
+}
+.stButton > button:hover { background: #2f2f2c !important; }
+
+/* ── HEADINGS ── */
+h1, h2, h3 {
+    font-family: 'Instrument Serif', serif !important;
+    font-weight: 400 !important;
+    color: #1a1a18 !important;
+    letter-spacing: -0.02em !important;
 }
 
+/* ── CARDS (about / results) ── */
 .card {
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(14px);
-    border-radius: 18px;
-    padding: 28px;
-    margin-top: 30px;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: #efecea;
+    border: 1px solid #e0ddd7;
+    border-radius: 0;
+    padding: 28px 32px;
+    margin-top: 16px;
 }
 
+/* ── RESULTS TITLE ── */
 .results-title {
-    color: #2df8c5;
-    font-weight: 800;
-    letter-spacing: 0.3px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: #1a1a18;
+    letter-spacing: -0.02em;
 }
 
+/* ── SUMMARY CARD ── */
 .summary-card {
-    background: rgba(45,248,197,0.06);
-    border: 1px solid rgba(45,248,197,0.2);
-    border-radius: 18px;
+    background: #efecea;
+    border: 1px solid #c5a35a;
+    border-left: 3px solid #c5a35a;
+    border-radius: 0;
     padding: 24px 28px;
     margin-bottom: 28px;
 }
 
+/* ── PROGRESS LABEL ── */
 .progress-label {
-    font-size: 0.85rem;
-    color: #9ba3af;
+    font-size: 0.8rem;
+    color: #9a9690;
     margin-bottom: 4px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
 }
+
+/* ── DIVIDERS ── */
+hr { border-color: #e0ddd7 !important; }
+
+/* ── METRICS ── */
+[data-testid="stMetric"] {
+    background: #efecea;
+    border: 1px solid #e0ddd7;
+    padding: 16px 20px;
+}
+[data-testid="stMetricLabel"] { color: #6b6860 !important; font-size: 12px !important; }
+[data-testid="stMetricValue"] {
+    font-family: 'Instrument Serif', serif !important;
+    color: #1a1a18 !important;
+}
+
+/* ── INPUTS ── */
+[data-testid="stSelectbox"] > div > div {
+    border-radius: 0 !important;
+    border-color: #d4d0c9 !important;
+    background: #fff !important;
+}
+
+/* ── NAVBAR ── */
+.bra-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    border-bottom: 1px solid #e0ddd7;
+    background: #f5f3ef;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.bra-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 17px;
+    color: #1a1a18;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+}
+.bra-logo span { color: #c5a35a; }
+.bra-nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    margin: 0; padding: 0;
+}
+.bra-nav-links li a {
+    font-size: 13px;
+    font-weight: 400;
+    color: #6b6860;
+    text-decoration: none;
+    padding: 8px 15px;
+    display: block;
+    letter-spacing: 0.01em;
+    transition: color 0.15s;
+    cursor: pointer;
+}
+.bra-nav-links li a:hover  { color: #1a1a18; }
+.bra-nav-links li a.active { color: #1a1a18; font-weight: 500; }
+.bra-nav-cta {
+    background: #1a1a18;
+    color: #f5f3ef;
+    border: none;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: background 0.15s;
+}
+.bra-nav-cta:hover { background: #2f2f2c; }
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# APP TITLE
+# CUSTOM HTML NAVBAR  (query-param routing)
 # --------------------------------------------------
-st.markdown('<div class="app-title">Behavioural Robo-Advisor</div>', unsafe_allow_html=True)
+_current = st.session_state.page
+_tabs = ["Home", "Manual Assessment", "Results", "Method", "Biases", "About"]
 
-# --------------------------------------------------
-# NAV BAR
-# --------------------------------------------------
-tabs = ["Home","Manual Assessment","Results","Method","Biases","About"]
-cols = st.columns([1.2,2.4,1.2,1.2,1.2,1.2])
+def _nav_link(tab, current):
+    cls = "active" if current == tab else ""
+    return f'<li><a class="{cls}" onclick="navTo(\'{tab}\')">{tab}</a></li>'
 
-for col, tab in zip(cols, tabs):
-    with col:
-        cls = "nav-btn-active" if st.session_state.page == tab else "nav-btn"
-        st.markdown(f'<div class="{cls}">', unsafe_allow_html=True)
-        if st.button(tab, key=f"nav-{tab}", use_container_width=True):
-            st.session_state.page = tab
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-st.divider()
+_links_html = "".join(_nav_link(t, _current) for t in _tabs)
+
+st.markdown(f"""
+<div class="bra-nav">
+  <div class="bra-logo" onclick="navTo('Home')">Behavioural<span>.</span>Advisor</div>
+  <ul class="bra-nav-links">{_links_html}</ul>
+  <button class="bra-nav-cta" onclick="navTo('RoboAdvisor')">Quick Analysis &rarr;</button>
+</div>
+<script>
+function navTo(page) {{
+    const url = new URL(window.location.href);
+    url.searchParams.set('nav', page);
+    window.location.href = url.toString();
+}}
+</script>
+""", unsafe_allow_html=True)
+
+# Pick up nav clicks via query params
+_qp = st.query_params
+if "nav" in _qp:
+    _dest = _qp["nav"]
+    if _dest != st.session_state.page:
+        st.session_state.page = _dest
+        st.query_params.clear()
+        st.rerun()
 
 
 # ==================================================
@@ -166,20 +237,230 @@ st.divider()
 if st.session_state.page == "Home":
 
     st.markdown("""
-    <div class="hero">
-        <h1>Understand Your Investment Behaviour</h1>
-        <p>
-        Identify behavioural biases influencing investment decisions using
-        scenario-based psychology and demographic investor behaviour.
-        </p>
+    <style>
+    .bra-hero { padding: 72px 48px 56px; max-width: 900px; margin: 0 auto; }
+    .bra-eyebrow {
+        display: inline-flex; align-items: center; gap: 8px;
+        font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+        text-transform: uppercase; color: #6b6860; margin-bottom: 24px;
+    }
+    .bra-eyebrow-dot { width:6px; height:6px; border-radius:50%; background:#c5a35a; display:inline-block; }
+    .bra-h1 {
+        font-family: 'Instrument Serif', serif !important;
+        font-size: 56px !important; font-weight: 400 !important;
+        line-height: 1.08 !important; letter-spacing: -0.025em !important;
+        color: #1a1a18 !important; margin-bottom: 24px !important; max-width: 680px;
+    }
+    .bra-h1 em { font-style: italic; color: #c5a35a; }
+    .bra-hero-sub {
+        font-size: 15px; font-weight: 300; color: #6b6860;
+        line-height: 1.7; max-width: 480px; margin-bottom: 36px;
+    }
+    .bra-hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .bra-btn-p {
+        background: #1a1a18; color: #f5f3ef; border: none;
+        padding: 13px 28px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+        font-weight: 500; cursor: pointer; letter-spacing: 0.02em; transition: background 0.15s;
+    }
+    .bra-btn-p:hover { background: #2f2f2c; }
+    .bra-btn-g {
+        background: transparent; color: #6b6860; border: 1px solid #d4d0c9;
+        padding: 12px 24px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+        font-weight: 400; cursor: pointer; letter-spacing: 0.01em; transition: all 0.15s;
+    }
+    .bra-btn-g:hover { border-color: #1a1a18; color: #1a1a18; }
+
+    .bra-stat-strip {
+        border-top: 1px solid #e0ddd7; border-bottom: 1px solid #e0ddd7;
+        background: #efecea; padding: 0 48px; display: flex; overflow-x: auto;
+    }
+    .bra-stat-item {
+        padding: 20px 40px 20px 0; display: flex; flex-direction: column;
+        gap: 3px; flex-shrink: 0; border-right: 1px solid #e0ddd7; margin-right: 40px;
+    }
+    .bra-stat-item:last-child { border-right: none; margin-right: 0; }
+    .bra-stat-num { font-family: 'Instrument Serif', serif; font-size: 30px; color: #1a1a18; letter-spacing: -0.02em; line-height:1; }
+    .bra-stat-label { font-size: 11px; font-weight: 400; color: #9a9690; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; }
+
+    .bra-ticker-wrap {
+        overflow: hidden; border-top: 1px solid #e0ddd7; border-bottom: 1px solid #e0ddd7;
+        background: #efecea; padding: 11px 0; margin-top: 64px;
+    }
+    .bra-ticker { display: flex; white-space: nowrap; animation: bra-tick 26s linear infinite; }
+    .bra-ticker-item {
+        display: inline-flex; align-items: center; gap: 10px; font-size: 11px;
+        font-weight: 400; letter-spacing: 0.07em; text-transform: uppercase;
+        color: #9a9690; padding: 0 28px; border-right: 1px solid #d4d0c9; flex-shrink: 0;
+    }
+    .bra-ticker-item span { color: #c5a35a; font-weight: 500; }
+    @keyframes bra-tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .bra-section { max-width: 900px; margin: 0 auto; padding: 64px 48px 0; }
+    .bra-section-header {
+        display: flex; align-items: baseline; justify-content: space-between;
+        margin-bottom: 20px; border-bottom: 1px solid #e0ddd7; padding-bottom: 12px;
+    }
+    .bra-section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #9a9690; }
+    .bra-section-num { font-family: 'Instrument Serif', serif; font-size: 13px; color: #c5a35a; }
+
+    .bra-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #e0ddd7; border: 1px solid #e0ddd7; }
+    .bra-card { background: #f5f3ef; padding: 28px 26px; transition: background 0.15s; }
+    .bra-card:hover { background: #efecea; }
+    .bra-card-icon {
+        width: 30px; height: 30px; border: 1px solid #d4d0c9;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 16px; font-size: 13px; color: #6b6860;
+    }
+    .bra-card-title { font-size: 14px; font-weight: 500; color: #1a1a18; margin-bottom: 7px; letter-spacing: -0.01em; }
+    .bra-card-desc { font-size: 13px; font-weight: 300; color: #6b6860; line-height: 1.65; }
+    .bra-card-cta {
+        background: #1a1a18; grid-column: span 2;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 26px 30px; cursor: pointer; transition: background 0.15s;
+    }
+    .bra-card-cta:hover { background: #2f2f2c; }
+    .bra-card-cta-title { font-size: 15px; font-weight: 500; color: #f5f3ef; margin-bottom: 5px; font-family: 'Instrument Serif', serif; letter-spacing: -0.01em; }
+    .bra-card-cta-sub { font-size: 13px; font-weight: 300; color: #9a9690; }
+    .bra-card-cta-arrow { font-size: 22px; color: #c5a35a; flex-shrink: 0; margin-left: 20px; }
+
+    .bra-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #e0ddd7; border: 1px solid #e0ddd7; }
+    .bra-step { background: #f5f3ef; padding: 26px 22px; }
+    .bra-step-num { font-family: 'Instrument Serif', serif; font-size: 34px; color: #d4d0c9; line-height: 1; margin-bottom: 14px; }
+    .bra-step-title { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 6px; }
+    .bra-step-desc { font-size: 12px; font-weight: 300; color: #6b6860; line-height: 1.6; }
+
+    .bra-home-footer {
+        max-width: 900px; margin: 64px auto 0; padding: 18px 48px 40px;
+        border-top: 1px solid #e0ddd7; display: flex;
+        justify-content: space-between; align-items: center;
+    }
+    .bra-footer-note { font-size: 11px; color: #9a9690; letter-spacing: 0.02em; }
+    .bra-footer-logo { font-family: 'Instrument Serif', serif; font-size: 14px; color: #9a9690; }
+    .bra-footer-logo span { color: #c5a35a; }
+    </style>
+
+    <!-- HERO -->
+    <div class="bra-hero">
+      <div class="bra-eyebrow">
+        <span class="bra-eyebrow-dot"></span>
+        Behavioural Finance &middot; AI-Powered &middot; India-focused
+      </div>
+      <p class="bra-h1">Invest smarter.<br>Understand your <em>biases</em> first.</p>
+      <p class="bra-hero-sub">
+        Identify the psychological patterns shaping your financial decisions &mdash;
+        backed by behavioural finance research and demographic investor data.
+      </p>
+      <div class="bra-hero-actions">
+        <button class="bra-btn-p" onclick="navTo('Survey-Demographics')">Start Behavioural Assessment</button>
+        <button class="bra-btn-g" onclick="navTo('Method')">Learn the method</button>
+      </div>
+    </div>
+
+    <!-- STAT STRIP -->
+    <div class="bra-stat-strip">
+      <div class="bra-stat-item"><div class="bra-stat-num">11</div><div class="bra-stat-label">Biases tracked</div></div>
+      <div class="bra-stat-item"><div class="bra-stat-num">22</div><div class="bra-stat-label">Survey questions</div></div>
+      <div class="bra-stat-item"><div class="bra-stat-num">5</div><div class="bra-stat-label">Age cohorts</div></div>
+      <div class="bra-stat-item"><div class="bra-stat-num">2</div><div class="bra-stat-label">Analysis modes</div></div>
+      <div class="bra-stat-item"><div class="bra-stat-num">BFS</div><div class="bra-stat-label">Proprietary scoring</div></div>
+    </div>
+
+    <!-- BIAS TICKER -->
+    <div class="bra-ticker-wrap">
+      <div class="bra-ticker">
+        <div class="bra-ticker-item">Confirmation Bias <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Loss Aversion <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Anchoring <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Herding <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Overconfidence <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Recency Bias <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Framing Effect <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Disposition Effect <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Status Quo Bias <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Risk Sensitivity <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Overtrading Bias <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Confirmation Bias <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Loss Aversion <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Anchoring <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Herding <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Overconfidence <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Recency Bias <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Framing Effect <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Disposition Effect <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Status Quo Bias <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Risk Sensitivity <span>&rsaquo;</span></div>
+        <div class="bra-ticker-item">Overtrading Bias <span>&rsaquo;</span></div>
+      </div>
+    </div>
+
+    <!-- WHAT YOU GET -->
+    <div class="bra-section">
+      <div class="bra-section-header">
+        <div class="bra-section-label">What you get</div>
+        <div class="bra-section-num">01</div>
+      </div>
+      <div class="bra-cards">
+        <div class="bra-card">
+          <div class="bra-card-icon">&#9678;</div>
+          <div class="bra-card-title">Behavioural Finance Score</div>
+          <div class="bra-card-desc">A single score out of 60 that quantifies how strongly cognitive biases influence your investment decisions.</div>
+        </div>
+        <div class="bra-card">
+          <div class="bra-card-icon">&#9638;</div>
+          <div class="bra-card-title">Bias Intensity Profile</div>
+          <div class="bra-card-desc">Visualise each of the 11 biases — rated Low, Moderate, or High — based on your real scenario responses.</div>
+        </div>
+        <div class="bra-card">
+          <div class="bra-card-icon">&#9672;</div>
+          <div class="bra-card-title">Risk Appetite Classification</div>
+          <div class="bra-card-desc">Understand whether your financial temperament is conservative, moderate, or aggressive — and why.</div>
+        </div>
+        <div class="bra-card">
+          <div class="bra-card-icon">&#9677;</div>
+          <div class="bra-card-title">Demographic Sector Insights</div>
+          <div class="bra-card-desc">See how investors in your age group allocate across sectors — powered by real survey data.</div>
+        </div>
+        <div class="bra-card-cta" onclick="navTo('Survey-Demographics')">
+          <div>
+            <div class="bra-card-cta-title">Ready to see your investor profile?</div>
+            <div class="bra-card-cta-sub">Takes about 5 minutes. No financial data required — just your instincts.</div>
+          </div>
+          <div class="bra-card-cta-arrow">&rarr;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="bra-section">
+      <div class="bra-section-header">
+        <div class="bra-section-label">How it works</div>
+        <div class="bra-section-num">02</div>
+      </div>
+      <div class="bra-steps">
+        <div class="bra-step">
+          <div class="bra-step-num">01</div>
+          <div class="bra-step-title">Choose your path</div>
+          <div class="bra-step-desc">Use Quick Analysis for instant demographic insights, or take the full manual assessment for a detailed personal profile.</div>
+        </div>
+        <div class="bra-step">
+          <div class="bra-step-num">02</div>
+          <div class="bra-step-title">Answer scenario questions</div>
+          <div class="bra-step-desc">22 carefully designed questions test your real decision-making instincts — not what you think you should do.</div>
+        </div>
+        <div class="bra-step">
+          <div class="bra-step-num">03</div>
+          <div class="bra-step-title">Get your results</div>
+          <div class="bra-step-desc">Receive a bias profile, BFS score, risk classification, and sector allocation breakdown — all in one dashboard.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="bra-home-footer">
+      <div class="bra-footer-note">Academic project &middot; Not financial advice &middot; For research purposes only</div>
+      <div class="bra-footer-logo">Behavioural<span>.</span>Advisor</div>
     </div>
     """, unsafe_allow_html=True)
-
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("Start Behavioural Assessment"):
-            st.session_state.page = "RoboAdvisor"
-            st.rerun()
 
 
 # ==================================================
