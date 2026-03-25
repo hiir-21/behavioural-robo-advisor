@@ -210,6 +210,7 @@ hr { border-color: #e0ddd7 !important; }
     border-radius: 0 !important;
     border-color: #d4d0c9 !important;
     background: #fff !important;
+    color: #1a1a18 !important;
 }
 [data-testid="stSelectbox"] label,
 [data-testid="stSelectbox"] label p,
@@ -217,6 +218,33 @@ hr { border-color: #e0ddd7 !important; }
     color: #1a1a18 !important;
 }
 [data-testid="stSelectbox"] > div > div > div {
+    color: #1a1a18 !important;
+}
+
+/* ── SELECTBOX DROPDOWN POPUP ── */
+[data-baseweb="popover"],
+[data-baseweb="popover"] *,
+[data-baseweb="menu"],
+[data-baseweb="menu"] *,
+[data-baseweb="select"] [role="listbox"],
+[data-baseweb="select"] [role="listbox"] *,
+[data-baseweb="select"] [role="option"],
+ul[role="listbox"],
+ul[role="listbox"] li,
+div[role="listbox"],
+div[role="listbox"] * {
+    background-color: #fff !important;
+    color: #1a1a18 !important;
+}
+[data-baseweb="menu"] li:hover,
+ul[role="listbox"] li:hover,
+[data-baseweb="select"] [role="option"]:hover {
+    background-color: #f5f3ef !important;
+    color: #1a1a18 !important;
+}
+/* Selected item highlight */
+[aria-selected="true"] {
+    background-color: #efecea !important;
     color: #1a1a18 !important;
 }
 
@@ -276,6 +304,15 @@ small, .stCaption {
 [data-testid="stExpander"] div p {
     color: #1a1a18 !important;
 }
+[data-testid="stExpander"] > div > div {
+    background-color: #f5f3ef !important;
+    color: #1a1a18 !important;
+}
+details[data-testid="stExpander"] > div {
+    background-color: #f5f3ef !important;
+}
+details summary { color: #1a1a18 !important; }
+details[open] > div * { color: #1a1a18 !important; background-color: transparent !important; }
 
 /* ── PROGRESS BAR TEXT ── */
 [data-testid="stProgress"] { background: #e0ddd7 !important; }
@@ -400,46 +437,53 @@ if st.session_state.page == "Home":
     </p>
     """, unsafe_allow_html=True)
 
-    btn_col1, btn_col2, _ = st.columns([1, 1, 2])
-    with btn_col1:
-        if st.button("Start Full Assessment", key="home_start"):
-            st.session_state.page = "Survey-Demographics"
-            st.rerun()
-    with btn_col2:
-        st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
-        if st.button("Learn the method", key="home_method"):
-            st.session_state.page = "Method"
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # QUICK ANALYSIS — inline on home page
-    st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
+    # ── QUICK ANALYSIS — HERO WIDGET ──
     st.markdown("""
-    <div style="border-top:2px solid #1a1a18;padding-top:20px;margin-bottom:8px;">
-      <span style="font-family:'Instrument Serif',serif;font-size:1.15rem;color:#1a1a18;">Quick Analysis</span>
-      <span style="font-size:12px;color:#9a9690;margin-left:14px;">Instant demographic insights — no survey required</span>
+    <div style="border:1px solid #1a1a18;padding:28px 28px 20px;margin:8px 0 0;background:#f5f3ef;">
+      <div style="font-family:'Instrument Serif',serif;font-size:1.4rem;color:#1a1a18;margin-bottom:4px;">Quick Analysis</div>
+      <div style="font-size:12px;color:#9a9690;margin-bottom:20px;letter-spacing:0.02em;">
+        Select your demographic and get instant behavioural insights — no survey required.
+      </div>
     </div>
     """, unsafe_allow_html=True)
 
     qa_age_col, qa_gender_col, qa_btn_col = st.columns([2, 1.5, 1])
     with qa_age_col:
-        qa_age = st.selectbox("Age group", ["18-25 years", "26-40 years", "41-55 years", "56-70 years", "70+ years"], key="home_qa_age", label_visibility="collapsed")
+        st.markdown("<p style='font-size:11px;color:#9a9690;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;'>Choose your age</p>", unsafe_allow_html=True)
+        qa_age = st.selectbox(
+            "Age",
+            options=["Choose", "18-25 years", "26-40 years", "41-55 years", "56-70 years", "70+ years"],
+            key="home_qa_age",
+            label_visibility="collapsed"
+        )
     with qa_gender_col:
-        qa_gender = st.selectbox("Gender", ["Female", "Male"], key="home_qa_gender", label_visibility="collapsed")
+        st.markdown("<p style='font-size:11px;color:#9a9690;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px;'>Choose your gender</p>", unsafe_allow_html=True)
+        qa_gender = st.selectbox(
+            "Gender",
+            options=["Choose", "Female", "Male"],
+            key="home_qa_gender",
+            label_visibility="collapsed"
+        )
     with qa_btn_col:
+        st.markdown("<p style='font-size:11px;color:transparent;margin-bottom:4px;'>.</p>", unsafe_allow_html=True)
         if st.button("Analyse →", key="home_qa_run"):
-            with st.spinner("Analysing..."):
-                most_sector, least_sector, sector_avg = sector_analysis(qa_age, qa_gender)
-                ml_sector   = predict_sector(qa_age, qa_gender)
-                bias_result = get_dominant_bias(qa_age, qa_gender)
-                bias        = bias_result.get("dominant", "Insufficient data")
-            st.session_state.robo_result = {
-                "age": qa_age, "gender": qa_gender, "bias": bias,
-                "sector": most_sector, "least_sector": least_sector,
-                "ml_sector": ml_sector, "sector_avg": sector_avg
-            }
-            st.session_state.page = "Results"
-            st.rerun()
+            if qa_age == "Choose" or qa_gender == "Choose":
+                st.warning("Please select both age group and gender.")
+            else:
+                with st.spinner("Analysing..."):
+                    most_sector, least_sector, sector_avg = sector_analysis(qa_age, qa_gender)
+                    ml_sector   = predict_sector(qa_age, qa_gender)
+                    bias_result = get_dominant_bias(qa_age, qa_gender)
+                    bias        = bias_result.get("dominant", "Insufficient data")
+                st.session_state.robo_result = {
+                    "age": qa_age, "gender": qa_gender, "bias": bias,
+                    "sector": most_sector, "least_sector": least_sector,
+                    "ml_sector": ml_sector, "sector_avg": sector_avg
+                }
+                st.session_state.page = "Results"
+                st.rerun()
+
+    st.markdown("<div style='margin-top:8px;padding:12px 28px;background:#efecea;border:1px solid #1a1a18;border-top:none;font-size:11px;color:#9a9690;'>Or take the full 22-question assessment for a detailed personal bias profile → <a href='?nav=Survey-Demographics' style='color:#c5a35a;text-decoration:none;font-weight:500;'>Start Assessment</a></div>", unsafe_allow_html=True)
 
     st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
 
