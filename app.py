@@ -146,8 +146,8 @@ st.markdown('<div class="app-title">Behavioural Robo-Advisor</div>', unsafe_allo
 # --------------------------------------------------
 # NAV BAR
 # --------------------------------------------------
-tabs = ["Home", "Manual Assessment", "Results", "Method", "Biases", "About"]
-cols = st.columns([1.2, 2.4, 1.2, 1.2, 1.2, 1.2])
+tabs = ["Home","Manual Assessment","Results","Method","Biases","About"]
+cols = st.columns([1.2,2.4,1.2,1.2,1.2,1.2])
 
 for col, tab in zip(cols, tabs):
     with col:
@@ -157,7 +157,6 @@ for col, tab in zip(cols, tabs):
             st.session_state.page = tab
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
-
 st.divider()
 
 
