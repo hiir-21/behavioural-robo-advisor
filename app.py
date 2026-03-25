@@ -45,11 +45,12 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
 .block-container { padding-top: 0 !important; padding-bottom: 2rem !important; max-width: 860px !important; }
 #MainMenu, footer, header { visibility: hidden; }
 
-/* ── NATIVE TABS STYLING ── */
+/* ── NATIVE TABS STYLING — sits right of logo ── */
 [data-testid="stTabs"] [role="tablist"] {
     border-bottom: 1px solid #e0ddd7 !important;
     gap: 0 !important;
     background: transparent !important;
+    padding-left: 24px !important;
 }
 [data-testid="stTabs"] button[role="tab"] {
     font-family: 'DM Sans', sans-serif !important;
@@ -77,10 +78,10 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     padding-top: 24px !important;
 }
 
-/* ── BUTTONS ── */
+/* ── BUTTONS — cream box, black border, black text ── */
 .stButton > button {
-    background: #1a1a18 !important;
-    color: #f5f3ef !important;
+    background: #f5f3ef !important;
+    color: #1a1a18 !important;
     border: 1px solid #1a1a18 !important;
     border-radius: 0 !important;
     padding: 10px 22px !important;
@@ -88,10 +89,13 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     font-family: 'DM Sans', sans-serif !important;
     font-weight: 500 !important;
     white-space: nowrap !important;
-    transition: background 0.15s !important;
+    transition: all 0.15s !important;
     margin-top: 0 !important;
 }
-.stButton > button:hover { background: #2f2f2c !important; }
+.stButton > button:hover {
+    background: #1a1a18 !important;
+    color: #f5f3ef !important;
+}
 
 .ghost-btn .stButton > button {
     background: transparent !important;
@@ -158,11 +162,23 @@ p, span, div, li { color: #1a1a18; }
 [data-testid="stMetricLabel"] { color: #6b6860 !important; font-size: 12px !important; }
 [data-testid="stMetricValue"] { font-family: 'Instrument Serif', serif !important; color: #1a1a18 !important; }
 
-/* ── EXPANDER ── */
+/* ── EXPANDER — force light background always ── */
 [data-testid="stExpander"] summary,
 [data-testid="stExpander"] summary p { color: #1a1a18 !important; font-weight: 500 !important; }
-[data-testid="stExpander"] > div > div { background-color: #f5f3ef !important; }
-details[open] > div * { color: #1a1a18 !important; background-color: transparent !important; }
+[data-testid="stExpander"] { background: #f5f3ef !important; }
+[data-testid="stExpander"] > div,
+[data-testid="stExpander"] > div > div,
+[data-testid="stExpander"] > div > div > div { background: #f5f3ef !important; background-color: #f5f3ef !important; }
+details { background: #f5f3ef !important; }
+details > div,
+details > div * { background-color: #f5f3ef !important; color: #1a1a18 !important; }
+details[open] summary ~ * { background-color: #f5f3ef !important; }
+/* Override any dark theme Streamlit injects into expander content */
+.streamlit-expanderContent,
+.streamlit-expanderContent * {
+    background-color: #f5f3ef !important;
+    color: #1a1a18 !important;
+}
 
 /* ── PROGRESS ── */
 [data-testid="stProgress"] > div > div { background-color: #c5a35a !important; }
@@ -249,7 +265,7 @@ hr { border-color: #e0ddd7 !important; }
 st.markdown("""
 <div style="font-family:'Instrument Serif',serif;font-size:17px;color:#1a1a18;
             letter-spacing:-0.01em;padding:16px 0 4px;">
-  Behavioural<span style="color:#c5a35a;">.</span>Advisor
+  Behavioural Robo Advisor
 </div>
 """, unsafe_allow_html=True)
 
@@ -268,7 +284,7 @@ tab_home, tab_manual, tab_results, tab_method, tab_biases, tab_about = st.tabs(
 with tab_home:
 
     st.markdown("""
-    <p class="bra-h1">Invest smarter.<br>Understand your <em>biases</em> first.</p>
+    <p class="bra-h1">Invest smarter.</p>
     <p class="bra-hero-sub">
       Identify the psychological patterns shaping your financial decisions —
       backed by behavioural finance research and demographic investor data.
