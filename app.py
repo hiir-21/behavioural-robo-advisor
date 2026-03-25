@@ -47,50 +47,91 @@ html, body,
 .block-container { padding-top: 0 !important; padding-bottom: 2rem !important; max-width: 860px !important; }
 #MainMenu, footer, header { visibility: hidden; }
 
-/* BUTTONS */
+/* ── ALL STREAMLIT BUTTONS — dark filled, readable ── */
 .stButton > button {
     background: #1a1a18 !important;
     color: #f5f3ef !important;
-    border: none !important;
+    border: 1px solid #1a1a18 !important;
     border-radius: 0 !important;
-    padding: 11px 28px !important;
+    padding: 10px 22px !important;
     font-size: 13px !important;
     font-family: 'DM Sans', sans-serif !important;
     font-weight: 500 !important;
     letter-spacing: 0.02em !important;
+    white-space: nowrap !important;
     transition: background 0.15s !important;
     margin-top: 0 !important;
+    min-width: 0 !important;
+    width: auto !important;
 }
-.stButton > button:hover { background: #2f2f2c !important; }
+.stButton > button:hover { background: #2f2f2c !important; border-color: #2f2f2c !important; }
 
+/* Ghost button — wrap button in div.ghost-btn */
 .ghost-btn .stButton > button {
     background: transparent !important;
-    color: #6b6860 !important;
-    border: 1px solid #d4d0c9 !important;
-    padding: 10px 24px !important;
+    color: #1a1a18 !important;
+    border: 1px solid #1a1a18 !important;
 }
 .ghost-btn .stButton > button:hover {
-    border-color: #1a1a18 !important;
-    color: #1a1a18 !important;
+    background: #1a1a18 !important;
+    color: #f5f3ef !important;
 }
 
-.nav-btn .stButton > button {
-    background: transparent !important;
-    color: #6b6860 !important;
-    border: none !important;
-    padding: 8px 14px !important;
-    font-size: 13px !important;
-    font-weight: 400 !important;
-    letter-spacing: 0.01em !important;
+/* ── INLINE HTML NAVBAR ── */
+.bra-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0 12px;
+    border-bottom: 1px solid #e0ddd7;
+    margin-bottom: 24px;
+    flex-wrap: nowrap;
+    gap: 0;
 }
-.nav-btn .stButton > button:hover { color: #1a1a18 !important; }
-.nav-btn-active .stButton > button {
-    background: transparent !important;
-    color: #1a1a18 !important;
-    border: none !important;
-    font-weight: 500 !important;
-    padding: 8px 14px !important;
-    font-size: 13px !important;
+.bra-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0; padding: 0;
+    flex-wrap: nowrap;
+}
+.bra-nav-link {
+    font-size: 13px;
+    font-weight: 400;
+    color: #6b6860 !important;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.15s;
+}
+.bra-nav-link:hover { color: #1a1a18 !important; }
+.bra-nav-link.active { color: #1a1a18 !important; font-weight: 500; }
+.bra-nav-cta-btn {
+    background: #1a1a18;
+    color: #f5f3ef !important;
+    border: none;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    transition: background 0.15s;
+    margin-left: 16px;
+    flex-shrink: 0;
+}
+.bra-nav-cta-btn:hover { background: #2f2f2c; }
+
+/* Progress bar colour fix */
+[data-testid="stProgress"] > div > div {
+    background-color: #c5a35a !important;
 }
 
 h1, h2, h3 {
@@ -232,32 +273,33 @@ hr { border-color: #e0ddd7 !important; }
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# NAVBAR — pure Streamlit buttons, no JS
+# NAVBAR — HTML links + query_params routing
 # --------------------------------------------------
-st.markdown('<div style="border-bottom:1px solid #e0ddd7;padding-bottom:4px;margin-bottom:0;">', unsafe_allow_html=True)
+_page = st.session_state.page
+_nav_tabs = ["Home", "Manual Assessment", "Results", "Method", "Biases", "About"]
 
-logo_col, *nav_cols, cta_col = st.columns([2, 1, 1.6, 1, 1, 1, 1, 1.4])
+def _link(tab, current):
+    cls = "bra-nav-link active" if current == tab else "bra-nav-link"
+    return f'<a class="{cls}" href="?nav={tab}">{tab}</a>'
 
-with logo_col:
-    st.markdown('<div class="bra-logo">Behavioural<span>.</span>Advisor</div>', unsafe_allow_html=True)
+_links = "".join(_link(t, _page) for t in _nav_tabs)
 
-nav_tabs = ["Home", "Manual Assessment", "Results", "Method", "Biases", "About"]
-for col, tab in zip(nav_cols, nav_tabs):
-    with col:
-        cls = "nav-btn-active" if st.session_state.page == tab else "nav-btn"
-        st.markdown(f'<div class="{cls}">', unsafe_allow_html=True)
-        if st.button(tab, key=f"nav_{tab}"):
-            st.session_state.page = tab
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+st.markdown(f"""
+<div class="bra-nav-bar">
+  <div class="bra-logo">Behavioural<span>.</span>Advisor</div>
+  <nav class="bra-nav-links">{_links}</nav>
+  <a href="?nav=RoboAdvisor" class="bra-nav-cta-btn">Quick Analysis →</a>
+</div>
+""", unsafe_allow_html=True)
 
-with cta_col:
-    if st.button("Quick Analysis →", key="nav_cta"):
-        st.session_state.page = "RoboAdvisor"
+# Handle navbar clicks via query params
+_qp = st.query_params
+if "nav" in _qp:
+    _dest = _qp["nav"]
+    if _dest != st.session_state.page:
+        st.session_state.page = _dest
+        st.query_params.clear()
         st.rerun()
-
-st.markdown('</div>', unsafe_allow_html=True)
-st.divider()
 
 
 # ==================================================
@@ -266,10 +308,6 @@ st.divider()
 if st.session_state.page == "Home":
 
     st.markdown("""
-    <div class="bra-eyebrow">
-      <span class="bra-eyebrow-dot"></span>
-      Behavioural Finance &middot; AI-Powered &middot; India-focused
-    </div>
     <p class="bra-h1">Invest smarter.<br>Understand your <em>biases</em> first.</p>
     <p class="bra-hero-sub">
       Identify the psychological patterns shaping your financial decisions —
@@ -277,9 +315,9 @@ if st.session_state.page == "Home":
     </p>
     """, unsafe_allow_html=True)
 
-    btn_col1, btn_col2, _ = st.columns([1.4, 1.4, 3])
+    btn_col1, btn_col2, _ = st.columns([1, 1, 2])
     with btn_col1:
-        if st.button("Start Assessment", key="home_start"):
+        if st.button("Start Full Assessment", key="home_start"):
             st.session_state.page = "Survey-Demographics"
             st.rerun()
     with btn_col2:
@@ -288,6 +326,34 @@ if st.session_state.page == "Home":
             st.session_state.page = "Method"
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
+
+    # QUICK ANALYSIS — inline on home page
+    st.markdown("""
+    <div style="border:1px solid #e0ddd7;background:#efecea;padding:24px 28px;margin:32px 0 0;">
+      <div style="font-family:'Instrument Serif',serif;font-size:1.1rem;color:#1a1a18;margin-bottom:4px;">Quick Analysis</div>
+      <div style="font-size:12px;color:#9a9690;margin-bottom:16px;">Get instant demographic insights — no survey required.</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    qa_age_col, qa_gender_col, qa_btn_col = st.columns([2, 1.5, 1])
+    with qa_age_col:
+        qa_age = st.selectbox("Age group", ["18-25 years", "26-40 years", "41-55 years", "56-70 years", "70+ years"], key="home_qa_age", label_visibility="collapsed")
+    with qa_gender_col:
+        qa_gender = st.selectbox("Gender", ["Female", "Male"], key="home_qa_gender", label_visibility="collapsed")
+    with qa_btn_col:
+        if st.button("Analyse →", key="home_qa_run"):
+            with st.spinner("Analysing..."):
+                most_sector, least_sector, sector_avg = sector_analysis(qa_age, qa_gender)
+                ml_sector   = predict_sector(qa_age, qa_gender)
+                bias_result = get_dominant_bias(qa_age, qa_gender)
+                bias        = bias_result.get("dominant", "Insufficient data")
+            st.session_state.robo_result = {
+                "age": qa_age, "gender": qa_gender, "bias": bias,
+                "sector": most_sector, "least_sector": least_sector,
+                "ml_sector": ml_sector, "sector_avg": sector_avg
+            }
+            st.session_state.page = "Results"
+            st.rerun()
 
     st.markdown("""
     <div class="bra-stat-strip">
@@ -351,15 +417,7 @@ if st.session_state.page == "Home":
         <div class="bra-card-desc">See how investors in your age group allocate across sectors — powered by real survey data.</div>
       </div>
     </div>
-    """, unsafe_allow_html=True)
 
-    _, cta_mid, _ = st.columns([0.2, 3, 0.2])
-    with cta_mid:
-        if st.button("Ready to see your investor profile? Start here →", key="home_cta"):
-            st.session_state.page = "Survey-Demographics"
-            st.rerun()
-
-    st.markdown("""
     <div class="bra-section-header">
       <div class="bra-section-label">How it works</div>
       <div class="bra-section-num">02</div>
@@ -368,7 +426,7 @@ if st.session_state.page == "Home":
       <div class="bra-step">
         <div class="bra-step-num">01</div>
         <div class="bra-step-title">Choose your path</div>
-        <div class="bra-step-desc">Use Quick Analysis for instant demographic insights, or take the full manual assessment for a detailed personal profile.</div>
+        <div class="bra-step-desc">Use Quick Analysis above for instant demographic insights, or take the full assessment for a detailed personal profile.</div>
       </div>
       <div class="bra-step">
         <div class="bra-step-num">02</div>
@@ -386,31 +444,11 @@ if st.session_state.page == "Home":
 
 
 # ==================================================
-# ROBO ADVISOR
+# ROBO ADVISOR — redirects to Home where QA lives
 # ==================================================
 elif st.session_state.page == "RoboAdvisor":
-
-    st.header("Quick Analysis")
-    st.markdown("<p style='color:#6b6860;font-size:14px;margin-top:-8px;'>Demographic-based behavioural insights — no survey required.</p>", unsafe_allow_html=True)
-    st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
-
-    age    = st.selectbox("Age group", ["18-25 years", "26-40 years", "41-55 years", "56-70 years", "70+ years"])
-    gender = st.selectbox("Gender", ["Female", "Male"])
-
-    if st.button("Run Analysis", key="robo_run"):
-        with st.spinner("Analysing demographic patterns..."):
-            most_sector, least_sector, sector_avg = sector_analysis(age, gender)
-            ml_sector    = predict_sector(age, gender)
-            bias_result  = get_dominant_bias(age, gender)
-            bias         = bias_result.get("dominant", "Insufficient data")
-
-        st.session_state.robo_result = {
-            "age": age, "gender": gender, "bias": bias,
-            "sector": most_sector, "least_sector": least_sector,
-            "ml_sector": ml_sector, "sector_avg": sector_avg
-        }
-        st.session_state.page = "Results"
-        st.rerun()
+    st.session_state.page = "Home"
+    st.rerun()
 
 
 # ==================================================
