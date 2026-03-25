@@ -66,7 +66,23 @@ html, body,
 }
 .stButton > button:hover { background: #2f2f2c !important; border-color: #2f2f2c !important; }
 
-/* Ghost button — wrap button in div.ghost-btn */
+/* ── GHOST BUTTON — target by key ── */
+button[kind="secondary"],
+[data-testid="stButton"] button[kind="secondary"] {
+    background: transparent !important;
+    color: #1a1a18 !important;
+    border: 1px solid #1a1a18 !important;
+}
+
+/* Specific ghost buttons by key */
+[data-testid="stButton"]:has(button[data-testid*="home_method"]) button,
+[data-testid="stButton"]:has(button[data-testid*="bias_back"]) button,
+[data-testid="stButton"]:has(button[data-testid*="risk_back"]) button {
+    background: transparent !important;
+    color: #1a1a18 !important;
+    border: 1px solid #c5a35a !important;
+}
+
 .ghost-btn .stButton > button {
     background: transparent !important;
     color: #1a1a18 !important;
@@ -189,11 +205,80 @@ hr { border-color: #e0ddd7 !important; }
     color: #1a1a18 !important;
 }
 
+/* ── SELECTBOX — label, placeholder, selected value all dark ── */
 [data-testid="stSelectbox"] > div > div {
     border-radius: 0 !important;
     border-color: #d4d0c9 !important;
     background: #fff !important;
 }
+[data-testid="stSelectbox"] label,
+[data-testid="stSelectbox"] label p,
+[data-testid="stSelectbox"] span {
+    color: #1a1a18 !important;
+}
+[data-testid="stSelectbox"] > div > div > div {
+    color: #1a1a18 !important;
+}
+
+/* ── RADIO BUTTONS — all text dark ── */
+[data-testid="stRadio"] label,
+[data-testid="stRadio"] label p,
+[data-testid="stRadio"] div,
+[data-testid="stRadio"] span {
+    color: #1a1a18 !important;
+}
+[data-testid="stRadio"] > label {
+    color: #1a1a18 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+
+/* ── ALL FORM LABELS ── */
+label, label p, .stSelectbox label, .stRadio label {
+    color: #1a1a18 !important;
+}
+
+/* ── GENERAL TEXT — catch-all for any missed elements ── */
+p, span, div, li {
+    color: #1a1a18;
+}
+
+/* ── CAPTIONS & HELP TEXT ── */
+[data-testid="stCaptionContainer"] p,
+small, .stCaption {
+    color: #6b6860 !important;
+}
+
+/* ── WARNINGS / INFO ── */
+[data-testid="stAlert"] p { color: #1a1a18 !important; }
+
+/* ── PLOTLY CHARTS — fix text on light bg ── */
+.js-plotly-plot .plotly .gtitle,
+.js-plotly-plot .plotly text { fill: #1a1a18 !important; }
+
+/* ── GHOST BUTTON — use data-key attribute trick ── */
+[data-testid="baseButton-secondary"] {
+    background: transparent !important;
+    color: #1a1a18 !important;
+    border: 1px solid #1a1a18 !important;
+}
+[data-testid="baseButton-secondary"]:hover {
+    background: #1a1a18 !important;
+    color: #f5f3ef !important;
+}
+
+/* ── EXPANDER ── */
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] summary p {
+    color: #1a1a18 !important;
+    font-weight: 500 !important;
+}
+[data-testid="stExpander"] div p {
+    color: #1a1a18 !important;
+}
+
+/* ── PROGRESS BAR TEXT ── */
+[data-testid="stProgress"] { background: #e0ddd7 !important; }
 
 .bra-logo {
     font-family: 'Instrument Serif', serif;
@@ -328,10 +413,11 @@ if st.session_state.page == "Home":
         st.markdown('</div>', unsafe_allow_html=True)
 
     # QUICK ANALYSIS — inline on home page
+    st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
     st.markdown("""
-    <div style="border:1px solid #e0ddd7;background:#efecea;padding:24px 28px;margin:32px 0 0;">
-      <div style="font-family:'Instrument Serif',serif;font-size:1.1rem;color:#1a1a18;margin-bottom:4px;">Quick Analysis</div>
-      <div style="font-size:12px;color:#9a9690;margin-bottom:16px;">Get instant demographic insights — no survey required.</div>
+    <div style="border-top:2px solid #1a1a18;padding-top:20px;margin-bottom:8px;">
+      <span style="font-family:'Instrument Serif',serif;font-size:1.15rem;color:#1a1a18;">Quick Analysis</span>
+      <span style="font-size:12px;color:#9a9690;margin-left:14px;">Instant demographic insights — no survey required</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -354,6 +440,8 @@ if st.session_state.page == "Home":
             }
             st.session_state.page = "Results"
             st.rerun()
+
+    st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
 
     st.markdown("""
     <div class="bra-stat-strip">
@@ -696,13 +784,13 @@ elif st.session_state.page == "Results":
                             colorscale=[[0,"#d4c4a0"],[1,"#c5a35a"]], showscale=False),
                 text=[f"{v:.1f}%" for v in sector_data.values],
                 textposition="outside",
-                textfont=dict(color="#6b6860", size=10)
+                textfont=dict(color="#1a1a18", size=10)
             ))
             fig_sector.update_layout(
                 paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                font=dict(color="#6b6860", family="DM Sans"),
-                xaxis=dict(tickangle=-35, gridcolor="#e0ddd7", tickfont=dict(size=11)),
-                yaxis=dict(gridcolor="#e0ddd7", title="Avg Allocation (%)"),
+                font=dict(color="#1a1a18", family="DM Sans"),
+                xaxis=dict(tickangle=-35, gridcolor="#e0ddd7", tickfont=dict(size=11, color="#6b6860")),
+                yaxis=dict(gridcolor="#e0ddd7", title="Avg Allocation (%)", tickfont=dict(color="#6b6860")),
                 margin=dict(t=20, b=80, l=40, r=20), height=340
             )
             st.plotly_chart(fig_sector, use_container_width=True)
@@ -733,19 +821,19 @@ elif st.session_state.page == "Results":
             marker=dict(color=bar_colors),
             text=[f"{s:.2f} — {l}" for s, l in zip(bias_scores, bias_levels)],
             textposition="outside",
-            textfont=dict(color="#6b6860", size=11)
+            textfont=dict(color="#1a1a18", size=11)
         ))
         fig_bias.update_layout(
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            font=dict(color="#6b6860", family="DM Sans"),
-            xaxis=dict(range=[0,1.3], gridcolor="#e0ddd7", title="Intensity (0–1)"),
-            yaxis=dict(gridcolor="#e0ddd7", tickfont=dict(size=11)),
+            font=dict(color="#1a1a18", family="DM Sans"),
+            xaxis=dict(range=[0,1.3], gridcolor="#e0ddd7", title="Intensity (0–1)", tickfont=dict(color="#6b6860")),
+            yaxis=dict(gridcolor="#e0ddd7", tickfont=dict(size=11, color="#1a1a18")),
             margin=dict(t=10, b=30, l=180, r=110), height=400,
             shapes=[
                 dict(type="line", x0=0.33, x1=0.33, y0=-0.5, y1=len(bias_names)-0.5,
-                     line=dict(color="#d4d0c9", width=1, dash="dot")),
+                     line=dict(color="#c5c0b8", width=1, dash="dot")),
                 dict(type="line", x0=0.66, x1=0.66, y0=-0.5, y1=len(bias_names)-0.5,
-                     line=dict(color="#d4d0c9", width=1, dash="dot")),
+                     line=dict(color="#c5c0b8", width=1, dash="dot")),
             ]
         )
         st.plotly_chart(fig_bias, use_container_width=True)
