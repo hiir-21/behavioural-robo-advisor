@@ -50,8 +50,10 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     border-bottom: 1px solid #e0ddd7 !important;
     gap: 0 !important;
     background: transparent !important;
-    padding-left: 24px !important;
+    padding-left: 220px !important;
+    position: relative !important;
 }
+/* Fix Streamlit's default red/orange active tab indicator to black */
 [data-testid="stTabs"] button[role="tab"] {
     font-family: 'DM Sans', sans-serif !important;
     font-size: 13px !important;
@@ -73,6 +75,12 @@ html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     font-weight: 500 !important;
     border-bottom: 2px solid #1a1a18 !important;
     background: transparent !important;
+}
+/* Override Streamlit's injected red ink bar */
+[data-testid="stTabs"] [role="tablist"]::after,
+[data-testid="stTabs"] [role="tablist"] > div:last-child {
+    background-color: #1a1a18 !important;
+    background: #1a1a18 !important;
 }
 [data-testid="stTabs"] [data-testid="stTabContent"] {
     padding-top: 24px !important;
@@ -263,10 +271,27 @@ hr { border-color: #e0ddd7 !important; }
 # LOGO
 # --------------------------------------------------
 st.markdown("""
-<div style="font-family:'Instrument Serif',serif;font-size:17px;color:#1a1a18;
-            letter-spacing:-0.01em;padding:16px 0 4px;">
-  Behavioural Robo Advisor
-</div>
+<style>
+/* Position logo inline with the tab bar */
+.bra-inline-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 16px;
+    color: #1a1a18;
+    letter-spacing: -0.01em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0 0 0;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+}
+/* Push tabs to the right to make room for logo */
+[data-testid="stTabs"] [role="tablist"] {
+    padding-left: 220px !important;
+}
+</style>
+<div class="bra-inline-logo">Behavioural Robo Advisor</div>
 """, unsafe_allow_html=True)
 
 # ==================================================
