@@ -395,33 +395,115 @@ details[open] > div * { color: #1a1a18 !important; background-color: transparent
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# NAVBAR — HTML links + query_params routing
+# NAVBAR — single row, no columns, no reloads
 # --------------------------------------------------
 _page = st.session_state.page
 _nav_tabs = ["Home", "Manual Assessment", "Results", "Method", "Biases", "About"]
 
-def _link(tab, current):
-    cls = "bra-nav-link active" if current == tab else "bra-nav-link"
-    return f'<a class="{cls}" href="?nav={tab}">{tab}</a>'
+st.markdown("""
+<style>
+/* ── NAVBAR CONTAINER ── */
+.bra-topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 10px;
+    border-bottom: 1px solid #e0ddd7;
+    margin-bottom: 20px;
+}
+.bra-topnav-logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 17px; color: #1a1a18;
+    letter-spacing: -0.01em; flex-shrink: 0;
+}
+.bra-topnav-logo span { color: #c5a35a; }
 
-_links = "".join(_link(t, _page) for t in _nav_tabs)
+/* Hide ALL nav buttons' visual chrome — keep only click area */
+.bra-navbtn-wrap .stButton > button {
+    background: transparent !important;
+    color: #6b6860 !important;
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+    border-radius: 0 !important;
+    padding: 4px 10px !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.01em !important;
+    white-space: nowrap !important;
+    margin: 0 2px !important;
+    box-shadow: none !important;
+    line-height: 1.5 !important;
+    min-height: unset !important;
+    height: auto !important;
+}
+.bra-navbtn-wrap .stButton > button:hover {
+    color: #1a1a18 !important;
+    background: transparent !important;
+    border-bottom: 2px solid #d4d0c9 !important;
+}
+.bra-navbtn-active .stButton > button {
+    color: #1a1a18 !important;
+    font-weight: 500 !important;
+    border-bottom: 2px solid #1a1a18 !important;
+    background: transparent !important;
+}
+.bra-navbtn-active .stButton > button:hover {
+    color: #1a1a18 !important;
+    border-bottom: 2px solid #1a1a18 !important;
+}
+.bra-navbtn-cta .stButton > button {
+    background: #1a1a18 !important;
+    color: #f5f3ef !important;
+    border: 1px solid #1a1a18 !important;
+    border-radius: 0 !important;
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    margin-left: 12px !important;
+}
+.bra-navbtn-cta .stButton > button:hover { background: #2f2f2c !important; }
 
-st.markdown(f"""
-<div class="bra-nav-bar">
-  <div class="bra-logo">Behavioural<span>.</span>Advisor</div>
-  <nav class="bra-nav-links">{_links}</nav>
-  <a href="?nav=RoboAdvisor" class="bra-nav-cta-btn">Quick Analysis →</a>
-</div>
+/* Make the nav row a flexbox so all buttons sit inline */
+.bra-nav-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    flex-wrap: nowrap;
+}
+.bra-nav-row > div {
+    flex-shrink: 0;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# Handle navbar clicks via query params
-_qp = st.query_params
-if "nav" in _qp:
-    _dest = _qp["nav"]
-    if _dest != st.session_state.page:
-        st.session_state.page = _dest
-        st.query_params.clear()
+# Logo
+st.markdown('<div class="bra-topnav"><div class="bra-topnav-logo">Behavioural<span>.</span>Advisor</div></div>', unsafe_allow_html=True)
+
+# Nav buttons in one wide row — equal small widths so text doesn't wrap
+_ncols = st.columns([1.8, 0.9, 1.6, 0.85, 0.85, 0.85, 0.85, 1.2])
+
+with _ncols[0]:
+    st.markdown(" ")  # logo spacer
+
+for _i, _tab in enumerate(_nav_tabs):
+    with _ncols[_i + 1]:
+        _cls = "bra-navbtn-active" if _page == _tab else "bra-navbtn-wrap"
+        st.markdown(f'<div class="{_cls}">', unsafe_allow_html=True)
+        if st.button(_tab, key=f"nb_{_tab}"):
+            st.session_state.page = _tab
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+with _ncols[7]:
+    st.markdown('<div class="bra-navbtn-cta">', unsafe_allow_html=True)
+    if st.button("Quick Analysis →", key="nb_cta"):
+        st.session_state.page = "Home"
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
+st.divider()
 
 
 # ==================================================
@@ -483,7 +565,14 @@ if st.session_state.page == "Home":
                 st.session_state.page = "Results"
                 st.rerun()
 
-    st.markdown("<div style='margin-top:8px;padding:12px 28px;background:#efecea;border:1px solid #1a1a18;border-top:none;font-size:11px;color:#9a9690;'>Or take the full 22-question assessment for a detailed personal bias profile → <a href='?nav=Survey-Demographics' style='color:#c5a35a;text-decoration:none;font-weight:500;'>Start Assessment</a></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top:8px;padding:12px 28px;background:#efecea;border:1px solid #1a1a18;border-top:none;font-size:11px;color:#9a9690;'>Or take the full 22-question assessment for a detailed personal bias profile.</div>", unsafe_allow_html=True)
+    _sa_col, _ = st.columns([1, 4])
+    with _sa_col:
+        st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
+        if st.button("Start Full Assessment →", key="home_start_full"):
+            st.session_state.page = "Survey-Demographics"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
 
@@ -771,18 +860,51 @@ elif st.session_state.page == "Results":
     has_survey = st.session_state.survey_completed
 
     if not has_robo and not has_survey:
-        st.info("No analysis completed yet. Use Quick Analysis or take the Manual Assessment.")
-        c1, c2, _ = st.columns([1, 1, 2])
+        st.markdown("""
+        <div style="border:1px solid #e0ddd7;background:#efecea;padding:28px 32px;margin-bottom:20px;">
+          <div style="font-family:'Instrument Serif',serif;font-size:1.3rem;color:#1a1a18;margin-bottom:8px;">No analysis completed yet</div>
+          <div style="font-size:13px;color:#6b6860;margin-bottom:20px;">Complete one or both of the following to see your results here.</div>
+        </div>
+        """, unsafe_allow_html=True)
+        c1, c2, _ = st.columns([1.2, 1.5, 2])
         with c1:
-            if st.button("Quick Analysis", key="res_robo"):
-                st.session_state.page = "RoboAdvisor"
+            if st.button("Run Quick Analysis", key="res_goto_home"):
+                st.session_state.page = "Home"
                 st.rerun()
         with c2:
-            if st.button("Start Assessment", key="res_survey"):
+            st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
+            if st.button("Take Manual Assessment", key="res_goto_survey"):
                 st.session_state.page = "Survey-Demographics"
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
-    # COMBINED SUMMARY
+    elif has_robo and not has_survey:
+        st.markdown("""
+        <div style="border-left:3px solid #c5a35a;padding:12px 20px;background:#efecea;margin-bottom:20px;font-size:13px;color:#6b6860;">
+          Quick Analysis complete. Take the Manual Assessment to also see your personal BFS score and bias profile.
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown('<div class="ghost-btn" style="display:inline-block;">', unsafe_allow_html=True)
+        if st.button("Take Manual Assessment →", key="res_nudge_survey"):
+            st.session_state.page = "Survey-Demographics"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+
+    elif has_survey and not has_robo:
+        st.markdown("""
+        <div style="border-left:3px solid #c5a35a;padding:12px 20px;background:#efecea;margin-bottom:20px;font-size:13px;color:#6b6860;">
+          Manual Assessment complete. Run Quick Analysis on the Home page to also see demographic sector insights.
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown('<div class="ghost-btn" style="display:inline-block;">', unsafe_allow_html=True)
+        if st.button("Go to Quick Analysis →", key="res_nudge_robo"):
+            st.session_state.page = "Home"
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+
+    # COMBINED SUMMARY — only when both done
     if has_robo and has_survey:
         robo     = st.session_state.robo_result
         analysis = st.session_state.analysis_result
