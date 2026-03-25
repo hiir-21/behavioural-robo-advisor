@@ -192,6 +192,34 @@ details[open] summary ~ * { background-color: #f5f3ef !important; }
     color: #1a1a18 !important;
 }
 
+/* ── DOWNLOAD BUTTON — always dark with white text ── */
+[data-testid="stDownloadButton"] button {
+    background: #1a1a18 !important;
+    color: #f5f3ef !important;
+    border: 1px solid #1a1a18 !important;
+}
+[data-testid="stDownloadButton"] button:hover { background: #2f2f2c !important; }
+[data-testid="stDownloadButton"] button p,
+[data-testid="stDownloadButton"] button span { color: #f5f3ef !important; }
+
+/* ── FILE UPLOADER ── */
+[data-testid="stFileUploader"] button {
+    background: #1a1a18 !important;
+    color: #f5f3ef !important;
+    border: 1px solid #1a1a18 !important;
+}
+[data-testid="stFileUploader"] button p,
+[data-testid="stFileUploader"] button span { color: #f5f3ef !important; }
+[data-testid="stFileUploader"] section {
+    background: #efecea !important;
+    border: 1px solid #d4d0c9 !important;
+    border-radius: 0 !important;
+}
+[data-testid="stFileUploader"] section p,
+[data-testid="stFileUploader"] section span,
+[data-testid="stFileUploader"] section small { color: #1a1a18 !important; }
+[data-testid="stFileUploaderFile"] * { color: #1a1a18 !important; background: transparent !important; }
+
 /* ── PROGRESS ── */
 [data-testid="stProgress"] > div > div { background-color: #c5a35a !important; }
 [data-testid="stProgress"] { background: #e0ddd7 !important; }
@@ -797,42 +825,57 @@ with tab_portfolio:
     # Style download + browse buttons to be readable
     st.markdown("""
     <style>
-    /* Download button */
-    [data-testid="stDownloadButton"] > button {
+    /* Download button — force white text on dark background */
+    [data-testid="stDownloadButton"] button,
+    [data-testid="stDownloadButton"] button p,
+    [data-testid="stDownloadButton"] button span,
+    [data-testid="stDownloadButton"] button div {
         background: #1a1a18 !important;
         color: #f5f3ef !important;
         border: 1px solid #1a1a18 !important;
+        border-radius: 0 !important;
     }
-    [data-testid="stDownloadButton"] > button:hover {
+    [data-testid="stDownloadButton"] button:hover {
         background: #2f2f2c !important;
     }
-    /* Browse files button inside uploader */
-    [data-testid="stFileUploader"] button {
+    /* Browse files button inside file uploader */
+    [data-testid="stFileUploaderDropzoneInput"] + div button,
+    [data-testid="stFileUploader"] [data-testid="stBaseButton-secondary"],
+    [data-testid="stFileUploader"] button[kind="secondary"],
+    [data-testid="stFileUploader"] section > button,
+    [data-testid="stFileUploader"] section div button {
         background: #1a1a18 !important;
         color: #f5f3ef !important;
         border: 1px solid #1a1a18 !important;
+        border-radius: 4px !important;
     }
-    /* File uploader drag zone */
+    /* Nuclear option — any button inside file uploader gets white text */
+    [data-testid="stFileUploader"] button {
+        color: #f5f3ef !important;
+        background-color: #1a1a18 !important;
+    }
+    [data-testid="stFileUploader"] button * {
+        color: #f5f3ef !important;
+    }
+    /* File uploader drag zone — light background */
     [data-testid="stFileUploader"] section {
         background: #efecea !important;
         border: 1px solid #d4d0c9 !important;
         border-radius: 0 !important;
+    }
+    [data-testid="stFileUploader"] section p,
+    [data-testid="stFileUploader"] section span,
+    [data-testid="stFileUploader"] section small,
+    [data-testid="stFileUploader"] section div {
         color: #1a1a18 !important;
     }
-    [data-testid="stFileUploader"] section * {
-        color: #1a1a18 !important;
-    }
-    /* Uploaded file name row */
+    /* Uploaded filename row — dark text */
+    [data-testid="stFileUploader"] > div,
+    [data-testid="stFileUploader"] > div *,
     [data-testid="stFileUploaderFile"],
-    [data-testid="stFileUploaderFile"] *,
-    [data-testid="stFileUploaderFileName"],
-    [data-testid="stFileUploaderFileName"] * {
+    [data-testid="stFileUploaderFile"] * {
         color: #1a1a18 !important;
-        background: #f5f3ef !important;
-    }
-    /* Small file info text */
-    .stFileUploader span, .stFileUploader p, .stFileUploader small {
-        color: #1a1a18 !important;
+        background-color: transparent !important;
     }
     </style>
     """, unsafe_allow_html=True)
