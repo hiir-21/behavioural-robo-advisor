@@ -1,9 +1,11 @@
 import streamlit as st
 import plotly.graph_objects as go
+import pandas as pd
 from survey_logic import generate_full_survey_analysis
 from sector_analysis import sector_analysis
 from ml_model import predict_sector
 from bias_rules import get_dominant_bias
+from portfolio_logic import analyse_portfolio, validate_upload, REQUIRED_COLS
 
 # --------------------------------------------------
 # PAGE CONFIG
@@ -27,6 +29,8 @@ if "responses" not in st.session_state:
     st.session_state.responses = {"demographics": {}, "bias": {}, "risk": {}}
 if "survey_step" not in st.session_state:
     st.session_state.survey_step = "demographics"
+if "portfolio_result" not in st.session_state:
+    st.session_state.portfolio_result = None
 
 # --------------------------------------------------
 # STYLES
@@ -298,8 +302,8 @@ st.markdown("""
 # TABS — Streamlit native tabs = zero page reloads
 # Session state is FULLY preserved between tab clicks
 # ==================================================
-tab_home, tab_manual, tab_results, tab_method, tab_biases, tab_about = st.tabs(
-    ["Home", "Manual Assessment", "Results", "Method", "Biases", "About"]
+tab_home, tab_manual, tab_results, tab_portfolio, tab_method, tab_biases, tab_about = st.tabs(
+    ["Home", "Manual Assessment", "Results", "Portfolio", "Method", "Biases", "About"]
 )
 
 
@@ -769,7 +773,219 @@ with tab_results:
 
 
 # ══════════════════════════════════════════════════
-# TAB 4: METHOD
+# TAB 4: PORTFOLIO ANALYSIS
+# ══════════════════════════════════════════════════
+with tab_portfolio:
+
+    st.header("Portfolio Analysis")
+    st.markdown("<p style='color:#6b6860;font-size:14px;margin-top:-8px;'>Upload your holdings to get allocation analysis, return metrics, and bias-aware insights.</p>", unsafe_allow_html=True)
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
+    # ── Template download ──────────────────────────────────────────────────
+    import io
+    sample = pd.DataFrame({
+        "Stock":               ["Reliance Industries", "Infosys", "HDFC Bank", "TCS", "Tata Motors"],
+        "Sector":              ["Energy", "Technology", "Finance", "Technology", "Consumer Goods"],
+        "Quantity":            [10, 5, 8, 3, 20],
+        "Buy Price (INR)":     [2400, 1500, 1600, 3500, 450],
+        "Current Price (INR)": [2800, 1700, 1750, 3800, 520],
+    })
+    buf = io.BytesIO()
+    sample.to_csv(buf, index=False)
+    buf.seek(0)
+    st.download_button(
+        label="Download sample template (CSV)",
+        data=buf,
+        file_name="portfolio_template.csv",
+        mime="text/csv",
+        key="dl_template"
+    )
+
+    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+
+    # ── File uploader ──────────────────────────────────────────────────────
+    uploaded = st.file_uploader(
+        "Upload your portfolio (CSV or Excel)",
+        type=["csv", "xlsx"],
+        key="portfolio_upload"
+    )
+
+    if uploaded:
+        try:
+            if uploaded.name.endswith(".csv"):
+                raw_df = pd.read_csv(uploaded)
+            else:
+                raw_df = pd.read_excel(uploaded)
+
+            valid, err = validate_upload(raw_df)
+            if not valid:
+                st.error(f"File error: {err}")
+            else:
+                # Detect dominant bias from whatever assessment user has done
+                dominant_bias = None
+                if st.session_state.robo_result:
+                    dominant_bias = st.session_state.robo_result.get("bias")
+                if st.session_state.survey_completed and st.session_state.analysis_result:
+                    bp = st.session_state.analysis_result["behavioral_bias_analysis"]["bias_profile"]
+                    dominant_bias = max(bp, key=lambda b: bp[b]["score"])
+
+                result = analyse_portfolio(raw_df, dominant_bias=dominant_bias)
+                st.session_state.portfolio_result = result
+        except Exception as e:
+            st.error(f"Could not read file: {e}")
+
+    # ── Display results ────────────────────────────────────────────────────
+    if st.session_state.portfolio_result:
+        res  = st.session_state.portfolio_result
+        summ = res["summary"]
+        div  = res["diversification"]
+        sa   = res["sector_alloc"]
+        bi   = res["bias_insight"]
+
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+
+        # ── Summary metrics ──
+        st.markdown("<span class='results-title'>Portfolio Summary</span>", unsafe_allow_html=True)
+
+        m1, m2, m3, m4 = st.columns(4)
+        with m1: st.metric("Total Invested", f"₹{summ['total_invested']:,.0f}")
+        with m2: st.metric("Current Value",  f"₹{summ['total_current']:,.0f}",
+                           f"{'▲' if summ['total_gain'] >= 0 else '▼'} ₹{abs(summ['total_gain']):,.0f}")
+        with m3: st.metric("Overall Return",  f"{summ['total_return']:+.2f}%")
+        with m4: st.metric("Holdings",        summ["n_holdings"])
+
+        m5, m6, m7 = st.columns(3)
+        with m5: st.metric("Best Performer",  f"{summ['best_holding']}",  f"{summ['best_return']:+.1f}%")
+        with m6: st.metric("Worst Performer", f"{summ['worst_holding']}", f"{summ['worst_return']:+.1f}%")
+        with m7: st.metric("Diversification", div["level"])
+
+        # ── Risk flags ──
+        if res["flags"]:
+            st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+            for flag in res["flags"]:
+                st.warning(flag)
+
+        st.divider()
+
+        # ── Sector allocation chart ──
+        st.markdown("<span class='results-title'>Sector Allocation</span>", unsafe_allow_html=True)
+
+        fig_sa = go.Figure(go.Bar(
+            x=list(sa.index),
+            y=list(sa.values),
+            marker=dict(
+                color=list(sa.values),
+                colorscale=[[0, "#e8dfc8"], [1, "#c5a35a"]],
+                showscale=False
+            ),
+            text=[f"{v:.1f}%" for v in sa.values],
+            textposition="outside",
+            textfont=dict(color="#1a1a18", size=11)
+        ))
+        fig_sa.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+            font=dict(color="#1a1a18", family="DM Sans"),
+            xaxis=dict(tickangle=-30, gridcolor="#e0ddd7", tickfont=dict(size=11, color="#6b6860")),
+            yaxis=dict(gridcolor="#e0ddd7", title="Allocation (%)", tickfont=dict(color="#6b6860")),
+            margin=dict(t=20, b=70, l=40, r=20), height=320
+        )
+        st.plotly_chart(fig_sa, use_container_width=True)
+
+        st.divider()
+
+        # ── Holdings table ──
+        st.markdown("<span class='results-title'>Holdings Detail</span>", unsafe_allow_html=True)
+
+        display_cols = [
+            "Stock", "Sector", "Quantity",
+            "Invested Value (INR)", "Current Value (INR)",
+            "Gain / Loss (INR)", "Return (%)", "Portfolio Weight (%)"
+        ]
+        holdings_display = res["holdings"][display_cols].copy()
+
+        # Colour-code return column
+        def colour_return(val):
+            color = "#2e7d32" if val > 0 else "#c62828" if val < 0 else "#6b6860"
+            return f"color: {color}; font-weight: 500"
+
+        st.dataframe(
+            holdings_display.style.applymap(colour_return, subset=["Return (%)", "Gain / Loss (INR)"]),
+            use_container_width=True,
+            hide_index=True
+        )
+
+        # ── Bias-portfolio insight ──
+        if bi:
+            st.divider()
+            st.markdown("<span class='results-title'>Behavioural Insight on Your Portfolio</span>", unsafe_allow_html=True)
+
+            indicator = "▲ Pattern detected in your portfolio" if bi["triggered"] else "ℹ Pattern not strongly evident, but worth being aware of"
+            border_color = "#c0392b" if bi["triggered"] else "#c5a35a"
+
+            st.markdown(f"""
+            <div style="border:1px solid {border_color};border-left:4px solid {border_color};
+                        padding:20px 24px;background:#f5f3ef;margin-bottom:12px;">
+              <div style="font-size:11px;color:#9a9690;text-transform:uppercase;
+                          letter-spacing:0.05em;margin-bottom:8px;">{indicator}</div>
+              <div style="font-family:'Instrument Serif',serif;font-size:1.1rem;
+                          color:#1a1a18;margin-bottom:10px;">{bi['bias']}</div>
+              <div style="font-size:13px;color:#1a1a18;line-height:1.6;margin-bottom:12px;">{bi['insight']}</div>
+              <div style="font-size:12px;color:#6b6860;border-top:1px solid #e0ddd7;
+                          padding-top:10px;"><strong>Suggested action:</strong> {bi['action']}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            if not (st.session_state.robo_result or st.session_state.survey_completed):
+                st.info("Complete the Quick Analysis or Manual Assessment to get a personalised bias-portfolio connection.")
+
+    elif not uploaded:
+        # ── Empty state with column guide ──
+        st.markdown("""
+        <div style="border:1px solid #e0ddd7;background:#efecea;padding:24px 28px;margin-top:8px;">
+          <div style="font-family:'Instrument Serif',serif;font-size:1.1rem;color:#1a1a18;margin-bottom:12px;">
+            Expected file format
+          </div>
+          <table style="font-size:12px;color:#1a1a18;border-collapse:collapse;width:100%;">
+            <tr style="border-bottom:1px solid #e0ddd7;">
+              <th style="text-align:left;padding:6px 12px 6px 0;font-weight:500;">Column</th>
+              <th style="text-align:left;padding:6px 12px;font-weight:500;">Description</th>
+              <th style="text-align:left;padding:6px 0;font-weight:500;">Example</th>
+            </tr>
+            <tr style="border-bottom:1px solid #e0ddd7;">
+              <td style="padding:6px 12px 6px 0;color:#c5a35a;font-weight:500;">Stock</td>
+              <td style="padding:6px 12px;color:#6b6860;">Company name</td>
+              <td style="padding:6px 0;color:#6b6860;">Reliance Industries</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e0ddd7;">
+              <td style="padding:6px 12px 6px 0;color:#c5a35a;font-weight:500;">Sector</td>
+              <td style="padding:6px 12px;color:#6b6860;">Market sector</td>
+              <td style="padding:6px 0;color:#6b6860;">Energy</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e0ddd7;">
+              <td style="padding:6px 12px 6px 0;color:#c5a35a;font-weight:500;">Quantity</td>
+              <td style="padding:6px 12px;color:#6b6860;">Number of shares held</td>
+              <td style="padding:6px 0;color:#6b6860;">10</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e0ddd7;">
+              <td style="padding:6px 12px 6px 0;color:#c5a35a;font-weight:500;">Buy Price (INR)</td>
+              <td style="padding:6px 12px;color:#6b6860;">Price paid per share</td>
+              <td style="padding:6px 0;color:#6b6860;">2400</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 12px 6px 0;color:#c5a35a;font-weight:500;">Current Price (INR)</td>
+              <td style="padding:6px 12px;color:#6b6860;">Today's market price</td>
+              <td style="padding:6px 0;color:#6b6860;">2800</td>
+            </tr>
+          </table>
+          <div style="font-size:11px;color:#9a9690;margin-top:12px;">
+            Download the sample template above to get started quickly.
+          </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════
+# TAB 5: METHOD
 # ══════════════════════════════════════════════════
 with tab_method:
     st.header("Method")
@@ -812,7 +1028,7 @@ with tab_method:
 
 
 # ══════════════════════════════════════════════════
-# TAB 5: BIASES
+# TAB 6: BIASES
 # ══════════════════════════════════════════════════
 with tab_biases:
     st.header("Behavioural Biases")
@@ -862,7 +1078,7 @@ with tab_biases:
 
 
 # ══════════════════════════════════════════════════
-# TAB 6: ABOUT
+# TAB 7: ABOUT
 # ══════════════════════════════════════════════════
 with tab_about:
     st.header("About This Project")
