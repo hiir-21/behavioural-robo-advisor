@@ -793,6 +793,50 @@ with tab_portfolio:
     buf = io.BytesIO()
     sample.to_csv(buf, index=False)
     buf.seek(0)
+
+    # Style download + browse buttons to be readable
+    st.markdown("""
+    <style>
+    /* Download button */
+    [data-testid="stDownloadButton"] > button {
+        background: #1a1a18 !important;
+        color: #f5f3ef !important;
+        border: 1px solid #1a1a18 !important;
+    }
+    [data-testid="stDownloadButton"] > button:hover {
+        background: #2f2f2c !important;
+    }
+    /* Browse files button inside uploader */
+    [data-testid="stFileUploader"] button {
+        background: #1a1a18 !important;
+        color: #f5f3ef !important;
+        border: 1px solid #1a1a18 !important;
+    }
+    /* File uploader drag zone */
+    [data-testid="stFileUploader"] section {
+        background: #efecea !important;
+        border: 1px solid #d4d0c9 !important;
+        border-radius: 0 !important;
+        color: #1a1a18 !important;
+    }
+    [data-testid="stFileUploader"] section * {
+        color: #1a1a18 !important;
+    }
+    /* Uploaded file name row */
+    [data-testid="stFileUploaderFile"],
+    [data-testid="stFileUploaderFile"] *,
+    [data-testid="stFileUploaderFileName"],
+    [data-testid="stFileUploaderFileName"] * {
+        color: #1a1a18 !important;
+        background: #f5f3ef !important;
+    }
+    /* Small file info text */
+    .stFileUploader span, .stFileUploader p, .stFileUploader small {
+        color: #1a1a18 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.download_button(
         label="Download sample template (CSV)",
         data=buf,
@@ -895,24 +939,65 @@ with tab_portfolio:
 
         # ── Holdings table ──
         st.markdown("<span class='results-title'>Holdings Detail</span>", unsafe_allow_html=True)
+        st.caption("Green = profit · Red = loss · Values in INR")
 
-        display_cols = [
-            "Stock", "Sector", "Quantity",
-            "Invested Value (INR)", "Current Value (INR)",
-            "Gain / Loss (INR)", "Return (%)", "Portfolio Weight (%)"
-        ]
-        holdings_display = res["holdings"][display_cols].copy()
+        holdings = res["holdings"].copy()
 
-        # Colour-code return column
-        def colour_return(val):
-            color = "#2e7d32" if val > 0 else "#c62828" if val < 0 else "#6b6860"
-            return f"color: {color}; font-weight: 500"
+        # Build HTML table rows
+        rows_html = ""
+        for _, row in holdings.iterrows():
+            ret = row["Return (%)"]
+            gl  = row["Gain / Loss (INR)"]
 
-        st.dataframe(
-            holdings_display.style.applymap(colour_return, subset=["Return (%)", "Gain / Loss (INR)"]),
-            use_container_width=True,
-            hide_index=True
-        )
+            if ret > 0:
+                ret_color  = "#2e7d32"
+                gl_color   = "#2e7d32"
+                pl_badge   = f'<span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;font-size:11px;font-weight:500;border-radius:3px;">▲ PROFIT</span>'
+            elif ret < 0:
+                ret_color  = "#c62828"
+                gl_color   = "#c62828"
+                pl_badge   = f'<span style="background:#ffebee;color:#c62828;padding:2px 8px;font-size:11px;font-weight:500;border-radius:3px;">▼ LOSS</span>'
+            else:
+                ret_color  = "#6b6860"
+                gl_color   = "#6b6860"
+                pl_badge   = f'<span style="background:#f5f3ef;color:#6b6860;padding:2px 8px;font-size:11px;border-radius:3px;">— FLAT</span>'
+
+            rows_html += f"""
+            <tr style="border-bottom:1px solid #e0ddd7;">
+              <td style="padding:10px 12px;font-weight:500;color:#1a1a18;">{row['Stock']}</td>
+              <td style="padding:10px 12px;color:#6b6860;">{row['Sector']}</td>
+              <td style="padding:10px 12px;color:#1a1a18;text-align:right;">{int(row['Quantity'])}</td>
+              <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Buy Price (INR)']:,.0f}</td>
+              <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Current Price (INR)']:,.0f}</td>
+              <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Invested Value (INR)']:,.0f}</td>
+              <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Current Value (INR)']:,.0f}</td>
+              <td style="padding:10px 12px;font-weight:500;color:{gl_color};text-align:right;">₹{gl:+,.0f}</td>
+              <td style="padding:10px 12px;font-weight:500;color:{ret_color};text-align:right;">{ret:+.2f}%</td>
+              <td style="padding:10px 12px;text-align:center;">{pl_badge}</td>
+            </tr>"""
+
+        table_html = f"""
+        <div style="overflow-x:auto;margin-top:8px;">
+        <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:13px;">
+          <thead>
+            <tr style="border-bottom:2px solid #1a1a18;">
+              <th style="padding:8px 12px;text-align:left;font-weight:500;color:#1a1a18;white-space:nowrap;">Stock</th>
+              <th style="padding:8px 12px;text-align:left;font-weight:500;color:#1a1a18;white-space:nowrap;">Sector</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;">Qty</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Buy Price</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Curr Price</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Invested</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Curr Value</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Gain / Loss</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;">Return</th>
+              <th style="padding:8px 12px;text-align:center;font-weight:500;color:#1a1a18;">Status</th>
+            </tr>
+          </thead>
+          <tbody>{rows_html}</tbody>
+        </table>
+        </div>"""
+
+        st.markdown(table_html, unsafe_allow_html=True)
 
         # ── Bias-portfolio insight ──
         if bi:
