@@ -1084,24 +1084,28 @@ with tab_portfolio:
 
         holdings = res["holdings"].copy()
 
-        # Build HTML table rows
+        # Column background colours
+        COL_INVESTED_BG  = "#f0ede6"   # warm cream  — invested group
+        COL_CURRENT_BG   = "#e8f0e8"   # soft green  — current value group
+        COL_GAINLOSS_BG  = "#fdf6ec"   # light amber — gain/loss group
+
         rows_html = ""
         for _, row in holdings.iterrows():
             ret = row["Return (%)"]
             gl  = row["Gain / Loss (INR)"]
 
             if ret > 0:
-                ret_color  = "#2e7d32"
-                gl_color   = "#2e7d32"
-                pl_badge   = f'<span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;font-size:11px;font-weight:500;border-radius:3px;">▲ PROFIT</span>'
+                ret_color = "#2e7d32"
+                gl_color  = "#2e7d32"
+                pl_badge  = '<span style="background:#e8f5e9;color:#2e7d32;padding:3px 10px;font-size:11px;font-weight:600;border-radius:3px;letter-spacing:0.03em;">▲ PROFIT</span>'
             elif ret < 0:
-                ret_color  = "#c62828"
-                gl_color   = "#c62828"
-                pl_badge   = f'<span style="background:#ffebee;color:#c62828;padding:2px 8px;font-size:11px;font-weight:500;border-radius:3px;">▼ LOSS</span>'
+                ret_color = "#c62828"
+                gl_color  = "#c62828"
+                pl_badge  = '<span style="background:#ffebee;color:#c62828;padding:3px 10px;font-size:11px;font-weight:600;border-radius:3px;letter-spacing:0.03em;">▼ LOSS</span>'
             else:
-                ret_color  = "#6b6860"
-                gl_color   = "#6b6860"
-                pl_badge   = f'<span style="background:#f5f3ef;color:#6b6860;padding:2px 8px;font-size:11px;border-radius:3px;">— FLAT</span>'
+                ret_color = "#6b6860"
+                gl_color  = "#6b6860"
+                pl_badge  = '<span style="background:#f5f3ef;color:#6b6860;padding:3px 10px;font-size:11px;border-radius:3px;">— FLAT</span>'
 
             rows_html += f"""
             <tr style="border-bottom:1px solid #e0ddd7;">
@@ -1110,10 +1114,10 @@ with tab_portfolio:
               <td style="padding:10px 12px;color:#1a1a18;text-align:right;">{int(row['Quantity'])}</td>
               <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Buy Price (INR)']:,.0f}</td>
               <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Current Price (INR)']:,.0f}</td>
-              <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Invested Value (INR)']:,.0f}</td>
-              <td style="padding:10px 12px;color:#1a1a18;text-align:right;">₹{row['Current Value (INR)']:,.0f}</td>
-              <td style="padding:10px 12px;font-weight:500;color:{gl_color};text-align:right;">₹{gl:+,.0f}</td>
-              <td style="padding:10px 12px;font-weight:500;color:{ret_color};text-align:right;">{ret:+.2f}%</td>
+              <td style="padding:10px 12px;color:#1a1a18;text-align:right;background:{COL_INVESTED_BG};">₹{row['Invested Value (INR)']:,.0f}</td>
+              <td style="padding:10px 12px;color:#1a1a18;text-align:right;background:{COL_CURRENT_BG};">₹{row['Current Value (INR)']:,.0f}</td>
+              <td style="padding:10px 12px;font-weight:500;color:{gl_color};text-align:right;background:{COL_GAINLOSS_BG};">₹{gl:+,.0f}</td>
+              <td style="padding:10px 12px;font-weight:500;color:{ret_color};text-align:right;background:{COL_GAINLOSS_BG};">{ret:+.2f}%</td>
               <td style="padding:10px 12px;text-align:center;">{pl_badge}</td>
             </tr>"""
 
@@ -1127,37 +1131,85 @@ with tab_portfolio:
               <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;">Qty</th>
               <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Buy Price</th>
               <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Curr Price</th>
-              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Invested</th>
-              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Curr Value</th>
-              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;">Gain / Loss</th>
-              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;">Return</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;background:{COL_INVESTED_BG};">Invested</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;background:{COL_CURRENT_BG};">Curr Value</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;white-space:nowrap;background:{COL_GAINLOSS_BG};">Gain / Loss</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;color:#1a1a18;background:{COL_GAINLOSS_BG};">Return</th>
               <th style="padding:8px 12px;text-align:center;font-weight:500;color:#1a1a18;">Status</th>
             </tr>
           </thead>
           <tbody>{rows_html}</tbody>
         </table>
+        <div style="display:flex;gap:20px;margin-top:8px;font-size:11px;color:#9a9690;">
+          <span style="display:inline-flex;align-items:center;gap:5px;">
+            <span style="width:12px;height:12px;background:{COL_INVESTED_BG};border:1px solid #d4d0c9;display:inline-block;"></span>Invested amount
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:5px;">
+            <span style="width:12px;height:12px;background:{COL_CURRENT_BG};border:1px solid #d4d0c9;display:inline-block;"></span>Current value
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:5px;">
+            <span style="width:12px;height:12px;background:{COL_GAINLOSS_BG};border:1px solid #d4d0c9;display:inline-block;"></span>Gain / Loss &amp; Return
+          </span>
+        </div>
         </div>"""
 
         st.markdown(table_html, unsafe_allow_html=True)
 
-        # ── Bias-portfolio insight ──
+        # ── Bias-portfolio insight — detailed ──
         if bi:
             st.divider()
             st.markdown("<span class='results-title'>Behavioural Insight on Your Portfolio</span>", unsafe_allow_html=True)
 
-            indicator = "▲ Pattern detected in your portfolio" if bi["triggered"] else "ℹ Pattern not strongly evident, but worth being aware of"
+            st.markdown("""
+            <p style="font-size:13px;color:#6b6860;line-height:1.6;margin-bottom:16px;">
+            Behavioural biases don't just affect how you think about investing — they leave
+            measurable traces in the portfolio you actually build. The analysis below compares
+            your <strong style="color:#1a1a18;">dominant bias</strong> (identified from your
+            assessment) against patterns observed in your uploaded holdings to show how your
+            psychology may be shaping your real investment decisions.
+            </p>
+            """, unsafe_allow_html=True)
+
+            indicator    = "▲ Pattern detected in your portfolio" if bi["triggered"] else "ℹ Pattern not strongly evident, but worth being aware of"
             border_color = "#c0392b" if bi["triggered"] else "#c5a35a"
+            status_text  = (
+                "This pattern <strong>is actively present</strong> in your current holdings — "
+                "the data suggests this bias is influencing your investment decisions right now."
+                if bi["triggered"] else
+                "This pattern is <strong>not strongly visible</strong> in your current snapshot — "
+                "but biases often affect past decisions (what you bought or sold) that no longer "
+                "appear in current holdings. Stay aware of this tendency."
+            )
 
             st.markdown(f"""
             <div style="border:1px solid {border_color};border-left:4px solid {border_color};
-                        padding:20px 24px;background:#f5f3ef;margin-bottom:12px;">
+                        padding:22px 26px;background:#f5f3ef;margin-bottom:8px;">
+
               <div style="font-size:11px;color:#9a9690;text-transform:uppercase;
-                          letter-spacing:0.05em;margin-bottom:8px;">{indicator}</div>
-              <div style="font-family:'Instrument Serif',serif;font-size:1.1rem;
-                          color:#1a1a18;margin-bottom:10px;">{bi['bias']}</div>
-              <div style="font-size:13px;color:#1a1a18;line-height:1.6;margin-bottom:12px;">{bi['insight']}</div>
-              <div style="font-size:12px;color:#6b6860;border-top:1px solid #e0ddd7;
-                          padding-top:10px;"><strong>Suggested action:</strong> {bi['action']}</div>
+                          letter-spacing:0.05em;margin-bottom:10px;">{indicator}</div>
+
+              <div style="font-family:'Instrument Serif',serif;font-size:1.2rem;
+                          color:#1a1a18;margin-bottom:6px;">{bi['bias']}</div>
+
+              <div style="font-size:12px;color:#9a9690;margin-bottom:14px;font-style:italic;">
+                Typical portfolio pattern: {bi['pattern']}
+              </div>
+
+              <div style="font-size:13px;color:#1a1a18;line-height:1.65;margin-bottom:10px;">
+                {bi['insight']}
+              </div>
+
+              <div style="font-size:13px;color:#6b6860;line-height:1.6;margin-bottom:14px;">
+                {status_text}
+              </div>
+
+              <div style="background:#efecea;border-radius:0;padding:12px 16px;
+                          border-left:3px solid {border_color};">
+                <div style="font-size:11px;color:#9a9690;text-transform:uppercase;
+                            letter-spacing:0.04em;margin-bottom:4px;">Suggested action</div>
+                <div style="font-size:13px;color:#1a1a18;line-height:1.6;">{bi['action']}</div>
+              </div>
+
             </div>
             """, unsafe_allow_html=True)
 
