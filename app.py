@@ -1022,7 +1022,7 @@ with tab_portfolio:
 
         try:
             sr_df = pd.read_excel(
-                "Sectorwise_Return_Data.xlsx",
+                "Sectorwise Return Data.xlsx",
                 header=None,
                 usecols=[1, 2, 3],
                 names=["index_name", "start_val", "end_val"]
