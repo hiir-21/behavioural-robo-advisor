@@ -1511,11 +1511,11 @@ with tab_about:
     """, unsafe_allow_html=True)
 
     students = [
-        ("Surya Ashish Kothari",    "AU2210087", "SK", "BBA (Finance)"),
-        ("Bhavisha Devanshu Gandhi","AU2210444", "BG", "BBA (Accounting & Finance)\nMinor in Economics"),
-        ("Diya Malav Shah",         "AU2210394", "DS", "BBA\n(Accounting & Finance)"),
-        ("Vrushank Ujjaval Thakkar","AU2210434", "VT", "BSc\n(Computer Science)"),
-        ("Hiir Bharatbhai Jadav",   "AU2220265", "HJ", "BSc\n(Computer Science)"),
+        ("Surya Ashish Kothari",    "AU2210087", "SK", "Bachelor of Business Administration \n(Finance)"),
+        ("Bhavisha Devanshu Gandhi","AU2210444", "BG", "Bachelor of Business Administration (Accounting & Finance)\nMinor in Economics"),
+        ("Diya Malav Shah",         "AU2210394", "DS", "Bachelor of Business Administration\n(Accounting & Finance)"),
+        ("Vrushank Ujjaval Thakkar","AU2210434", "VT", "Bachelor of Science\n(Computer Science)"),
+        ("Hiir Bharatbhai Jadav",   "AU2220265", "HJ", "Bachelor of Science\n(Computer Science)"),
     ]
 
     cols = st.columns(5)
