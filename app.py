@@ -1511,21 +1511,22 @@ with tab_about:
     """, unsafe_allow_html=True)
 
     students = [
-        ("Surya Ashish Kothari",    "AU2210087", "SK"),
-        ("Bhavisha Devanshu Gandhi","AU2210444", "BG"),
-        ("Diya Malav Shah",         "AU2210394", "DS"),
-        ("Vrushank Ujjaval Thakkar","AU2210434", "VT"),
-        ("Hiir Bharatbhai Jadav",   "AU2220265", "HJ"),
+        ("Surya Ashish Kothari",    "AU2210087", "SK", "BBA (Finance)"),
+        ("Bhavisha Devanshu Gandhi","AU2210444", "BG", "BBA (Accounting & Finance)\nMinor in Economics"),
+        ("Diya Malav Shah",         "AU2210394", "DS", "BBA\n(Accounting & Finance)"),
+        ("Vrushank Ujjaval Thakkar","AU2210434", "VT", "BSc\n(Computer Science)"),
+        ("Hiir Bharatbhai Jadav",   "AU2220265", "HJ", "BSc\n(Computer Science)"),
     ]
 
     cols = st.columns(5)
-    for i, (name, enrol, initials) in enumerate(students):
+    for i, (name, enrol, initials, program) in enumerate(students):
         first, *rest = name.split()
         last = rest[-1] if rest else ""
+        program_html = program.replace("\n", "<br>")
         with cols[i]:
             st.markdown(f"""
             <div style="background:#f5f3ef;border:1px solid #e0ddd7;padding:18px 12px;
-                        text-align:center;">
+                        text-align:center;height:100%;">
               <div style="width:52px;height:52px;border-radius:50%;background:#1a1a18;
                           display:flex;align-items:center;justify-content:center;
                           margin:0 auto 12px;flex-shrink:0;">
@@ -1535,7 +1536,9 @@ with tab_about:
               <div style="font-size:12px;font-weight:500;color:#1a1a18;
                           line-height:1.4;margin-bottom:6px;">{first}<br>{last}</div>
               <div style="font-size:10px;color:#9a9690;letter-spacing:0.04em;
-                          font-family:'DM Sans',sans-serif;">{enrol}</div>
+                          font-family:'DM Sans',sans-serif;margin-bottom:8px;">{enrol}</div>
+              <div style="font-size:10px;color:#6b6860;line-height:1.5;
+                          border-top:1px solid #e0ddd7;padding-top:8px;">{program_html}</div>
             </div>
             """, unsafe_allow_html=True)
 
