@@ -1581,7 +1581,7 @@ with tab_about:
         with cols[i]:
             st.markdown(f"""
             <div style="background:#f5f3ef;border:1px solid #e0ddd7;padding:18px 12px;
-                        text-align:center;height:360px;box-sizing:border-box;
+                        text-align:center;height:260px;box-sizing:border-box;
                         display:flex;flex-direction:column;align-items:center;">
               <div style="width:52px;height:52px;border-radius:50%;background:#1a1a18;
                           display:flex;align-items:center;justify-content:center;
