@@ -183,23 +183,61 @@ p, span, div, li { color: #1a1a18; }
 [data-testid="stMetricLabel"] { color: #6b6860 !important; font-size: 12px !important; }
 [data-testid="stMetricValue"] { font-family: 'Instrument Serif', serif !important; color: #1a1a18 !important; }
 
-/* ── EXPANDER — force light background always ── */
-[data-testid="stExpander"] summary,
-[data-testid="stExpander"] summary p { color: #1a1a18 !important; font-weight: 500 !important; }
+/* ── EXPANDER — cream background always, never black ── */
+/* Target the outer wrapper */
 [data-testid="stExpander"] { background: #f5f3ef !important; }
+/* Target every nested div */
 [data-testid="stExpander"] > div,
 [data-testid="stExpander"] > div > div,
-[data-testid="stExpander"] > div > div > div { background: #f5f3ef !important; background-color: #f5f3ef !important; }
-details { background: #f5f3ef !important; }
-details > div,
-details > div * { background-color: #f5f3ef !important; color: #1a1a18 !important; }
-details[open] summary ~ * { background-color: #f5f3ef !important; }
-/* Override any dark theme Streamlit injects into expander content */
-.streamlit-expanderContent,
-.streamlit-expanderContent * {
+[data-testid="stExpander"] > div > div > div { background: #f5f3ef !important; }
+/* The black bar: Streamlit renders expander header as a <details><summary> with an inner button */
+[data-testid="stExpander"] details { background: #f5f3ef !important; }
+[data-testid="stExpander"] details > summary {
+    background: #f5f3ef !important;
     background-color: #f5f3ef !important;
     color: #1a1a18 !important;
 }
+[data-testid="stExpander"] details[open] > summary {
+    background: #efecea !important;
+    background-color: #efecea !important;
+    color: #1a1a18 !important;
+}
+/* Everything inside summary */
+[data-testid="stExpander"] details summary *,
+[data-testid="stExpander"] details[open] summary * {
+    background: transparent !important;
+    color: #1a1a18 !important;
+}
+/* CRITICAL: The global .stButton > button rule makes expander header black.
+   Override it here with higher specificity for ALL button states */
+[data-testid="stExpander"] button,
+[data-testid="stExpander"] button:hover,
+[data-testid="stExpander"] button:focus,
+[data-testid="stExpander"] button:active,
+[data-testid="stExpander"] [role="button"],
+[data-testid="stExpander"] [role="button"]:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #1a1a18 !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: auto !important;
+    padding: 0 !important;
+}
+[data-testid="stExpander"] button p,
+[data-testid="stExpander"] button span,
+[data-testid="stExpander"] [role="button"] p,
+[data-testid="stExpander"] [role="button"] span { color: #1a1a18 !important; }
+/* SVG chevron */
+[data-testid="stExpander"] svg { fill: #1a1a18 !important; color: #1a1a18 !important; }
+/* Content area */
+.streamlit-expanderContent,
+.streamlit-expanderContent * { background-color: #f5f3ef !important; color: #1a1a18 !important; }
+/* Fallback details tag globally */
+details > summary { background: #f5f3ef !important; color: #1a1a18 !important; }
+details[open] > summary { background: #efecea !important; color: #1a1a18 !important; }
+details { background: #f5f3ef !important; }
+details > div, details > div * { background-color: #f5f3ef !important; color: #1a1a18 !important; }
 
 /* ── SELECTBOX placeholder "Choose" — force dark ── */
 [data-baseweb="select"] [data-testid="stMarkdownContainer"],
@@ -222,7 +260,28 @@ details[open] summary ~ * { background-color: #f5f3ef !important; }
 [data-testid="stDownloadButton"] button p,
 [data-testid="stDownloadButton"] button span { color: #f5f3ef !important; }
 
-/* ── FILE UPLOADER ── */
+/* ── SURVEY NAV BUTTONS — force same height and alignment ── */
+.ghost-btn { display: block; }
+.ghost-btn .stButton > button,
+.ghost-btn .stButton > button:hover {
+    height: 44px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.stButton > button {
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+/* Remove any top margin that causes misalignment */
+.ghost-btn .stButton,
+.ghost-btn .stButton > button { margin-top: 0 !important; }
+
+/* ── FILE UPLOADER BROWSE BUTTON — white text ── */
 [data-testid="stFileUploader"] button {
     background: #1a1a18 !important;
     color: #f5f3ef !important;
@@ -274,7 +333,8 @@ hr { border-color: #e0ddd7 !important; }
 .bra-h1 em { font-style: italic; color: #c5a35a; }
 .bra-hero-sub {
     font-size: 15px; font-weight: 300; color: #6b6860;
-    line-height: 1.7; max-width: 520px; margin-bottom: 8px;
+    line-height: 1.7; max-width: 860px; margin-bottom: 8px;
+    white-space: normal;
 }
 .bra-stat-strip {
     border-top: 1px solid #e0ddd7; border-bottom: 1px solid #e0ddd7;
@@ -362,10 +422,7 @@ with tab_home:
 
     st.markdown("""
     <p class="bra-h1">Invest smarter.</p>
-    <p class="bra-hero-sub">
-      Identify the psychological patterns shaping your financial decisions —
-      backed by behavioural finance research and demographic investor data.
-    </p>
+    <p style="font-size:15px;font-weight:300;color:#6b6860;line-height:1.7;margin-bottom:8px;white-space:nowrap;overflow:visible;">Identify the psychological patterns shaping your financial decisions — backed by behavioural finance research and demographic investor data.</p>
     """, unsafe_allow_html=True)
 
     # QUICK ANALYSIS WIDGET
@@ -607,16 +664,15 @@ with tab_manual:
                 ["A. Trade actively", "B. Adjust positions quickly",
                  "C. Pause and reassess", "D. Stick to preset rules", "E. Avoid reacting"])
 
-            st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
-            bc, nc, _ = st.columns([1, 1, 3])
-            with bc:
-                st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
-                if st.button("← Back", key="bias_back"):
+            st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+            st.markdown("<hr style='border-color:#e0ddd7;margin:0 0 16px;'>", unsafe_allow_html=True)
+            btn_row_b = st.columns([1, 1, 3])
+            with btn_row_b[0]:
+                if st.button("← Back", key="bias_back", use_container_width=True):
                     st.session_state.survey_step = "demographics"
                     st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
-            with nc:
-                if st.button("Next →", key="bias_next"):
+            with btn_row_b[1]:
+                if st.button("Next →", key="bias_next", use_container_width=True):
                     if all(st.session_state.responses["bias"].get(f"Q{i}") for i in range(3, 15)):
                         st.session_state.survey_step = "risk"
                         st.rerun()
@@ -664,16 +720,15 @@ with tab_manual:
                  "C. Balance both", "D. Prefer the faster route",
                  "E. Strongly prefer speed despite risk"])
 
-            st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
-            bc2, sc, _ = st.columns([1, 1, 3])
-            with bc2:
-                st.markdown('<div class="ghost-btn">', unsafe_allow_html=True)
-                if st.button("← Back", key="risk_back"):
+            st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+            st.markdown("<hr style='border-color:#e0ddd7;margin:0 0 16px;'>", unsafe_allow_html=True)
+            btn_row_r = st.columns([1, 1, 3])
+            with btn_row_r[0]:
+                if st.button("← Back", key="risk_back", use_container_width=True):
                     st.session_state.survey_step = "bias"
                     st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
-            with sc:
-                if st.button("Submit Survey", key="risk_submit"):
+            with btn_row_r[1]:
+                if st.button("Submit Survey", key="risk_submit", use_container_width=True):
                     responses_numeric = {}
                     for q, ans in st.session_state.responses["bias"].items():
                         responses_numeric[q] = 6 - (["A","B","C","D","E"].index(ans[0]) + 1)
@@ -1511,11 +1566,11 @@ with tab_about:
     """, unsafe_allow_html=True)
 
     students = [
-        ("Surya Ashish Kothari",    "AU2210087", "SK", "Bachelor of Business Administration \n(Finance)"),
-        ("Bhavisha Devanshu Gandhi","AU2210444", "BG", "Bachelor of Business Administration (Accounting & Finance)\nMinor in Economics"),
-        ("Diya Malav Shah",         "AU2210394", "DS", "Bachelor of Business Administration\n(Accounting & Finance)"),
-        ("Vrushank Ujjaval Thakkar","AU2210434", "VT", "Bachelor of Science\n(Computer Science)"),
-        ("Hiir Bharatbhai Jadav",   "AU2220265", "HJ", "Bachelor of Science\n(Computer Science)"),
+        ("Surya Ashish Kothari",    "AU2210087", "SK", "Bachelors of Business Administration (Finance)"),
+        ("Bhavisha Devanshu Gandhi","AU2210444", "BG", "Bachelors of Business Administration (Accounting and Finance), Minor in Economics"),
+        ("Diya Malav Shah",         "AU2210394", "DS", "Bachelors of Business Administration (Accounting and Finance)"),
+        ("Vrushank Ujjaval Thakkar","AU2210434", "VT", "Bachelor of Science (Computer Science)"),
+        ("Hiir Bharatbhai Jadav",   "AU2220265", "HJ", "Bachelor of Science (Computer Science)"),
     ]
 
     cols = st.columns(5)
@@ -1526,7 +1581,8 @@ with tab_about:
         with cols[i]:
             st.markdown(f"""
             <div style="background:#f5f3ef;border:1px solid #e0ddd7;padding:18px 12px;
-                        text-align:center;height:100%;">
+                        text-align:center;height:360px;box-sizing:border-box;
+                        display:flex;flex-direction:column;align-items:center;">
               <div style="width:52px;height:52px;border-radius:50%;background:#1a1a18;
                           display:flex;align-items:center;justify-content:center;
                           margin:0 auto 12px;flex-shrink:0;">
@@ -1534,11 +1590,13 @@ with tab_about:
                              color:#c5a35a;">{initials}</span>
               </div>
               <div style="font-size:12px;font-weight:500;color:#1a1a18;
-                          line-height:1.4;margin-bottom:6px;">{first}<br>{last}</div>
+                          line-height:1.4;margin-bottom:6px;height:36px;
+                          display:flex;align-items:center;justify-content:center;">{first}<br>{last}</div>
               <div style="font-size:10px;color:#9a9690;letter-spacing:0.04em;
                           font-family:'DM Sans',sans-serif;margin-bottom:8px;">{enrol}</div>
-              <div style="font-size:10px;color:#6b6860;line-height:1.5;
-                          border-top:1px solid #e0ddd7;padding-top:8px;">{program_html}</div>
+              <div style="font-size:10px;color:#6b6860;line-height:1.6;
+                          border-top:1px solid #e0ddd7;padding-top:8px;
+                          width:100%;flex:1;">{program_html}</div>
             </div>
             """, unsafe_allow_html=True)
 
