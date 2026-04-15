@@ -31,6 +31,8 @@ if "survey_step" not in st.session_state:
     st.session_state.survey_step = "demographics"
 if "portfolio_result" not in st.session_state:
     st.session_state.portfolio_result = None
+if "portfolio_raw_df" not in st.session_state:
+    st.session_state.portfolio_raw_df = None
 
 # --------------------------------------------------
 # STYLES
@@ -931,16 +933,10 @@ with tab_portfolio:
             if not valid:
                 st.error(f"File error: {err}")
             else:
-                # Detect dominant bias from whatever assessment user has done
-                dominant_bias = None
-                if st.session_state.robo_result:
-                    dominant_bias = st.session_state.robo_result.get("bias")
-                if st.session_state.survey_completed and st.session_state.analysis_result:
-                    bp = st.session_state.analysis_result["behavioral_bias_analysis"]["bias_profile"]
-                    dominant_bias = max(bp, key=lambda b: bp[b]["score"])
-
-                result = analyse_portfolio(raw_df, dominant_bias=dominant_bias)
+                result = analyse_portfolio(raw_df, dominant_bias=None)
                 st.session_state.portfolio_result = result
+                # Store raw df too so we can re-run bias insight at display time
+                st.session_state.portfolio_raw_df = raw_df
         except Exception as e:
             st.error(f"Could not read file: {e}")
 
@@ -950,7 +946,27 @@ with tab_portfolio:
         summ = res["summary"]
         div  = res["diversification"]
         sa   = res["sector_alloc"]
-        bi   = res["bias_insight"]
+
+        # ── Detect dominant bias at display time — always uses latest assessment ──
+        dominant_bias = None
+        if st.session_state.robo_result:
+            dominant_bias = st.session_state.robo_result.get("bias")
+        if st.session_state.survey_completed and st.session_state.analysis_result:
+            bp = st.session_state.analysis_result["behavioral_bias_analysis"]["bias_profile"]
+            dominant_bias = max(bp, key=lambda b: bp[b]["score"])
+
+        # Re-compute bias insight live using current dominant bias
+        if dominant_bias and hasattr(st.session_state, "portfolio_raw_df"):
+            try:
+                live_result = analyse_portfolio(
+                    st.session_state.portfolio_raw_df,
+                    dominant_bias=dominant_bias
+                )
+                bi = live_result["bias_insight"]
+            except Exception:
+                bi = res["bias_insight"]
+        else:
+            bi = res["bias_insight"]
 
         st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
@@ -1359,56 +1375,177 @@ with tab_biases:
 # TAB 7: ABOUT
 # ══════════════════════════════════════════════════
 with tab_about:
-    st.header("About This Project")
 
     st.markdown("""
-    <div class="card">
-    <h3>Overview</h3>
-    <p>The Behavioural Robo-Advisor is an academic project analysing how psychological biases
-    and demographic patterns influence investment decisions. Unlike traditional financial tools
-    that focus only on returns and risk, this system integrates behavioural finance principles
-    for deeper investor insights.</p>
+    <!-- ── HERO STRIP ── -->
+    <div style="border-bottom:1px solid #e0ddd7;padding-bottom:28px;margin-bottom:32px;">
+      <div style="font-size:11px;color:#c5a35a;letter-spacing:0.1em;text-transform:uppercase;
+                  font-weight:500;margin-bottom:10px;">Capstone Research Project</div>
+      <div style="font-family:'Instrument Serif',serif;font-size:2rem;color:#1a1a18;
+                  letter-spacing:-0.02em;margin-bottom:10px;line-height:1.15;">
+        AI-Powered Behavioural<br>Robo-Advisor
+      </div>
+      <div style="font-size:13px;color:#6b6860;max-width:560px;line-height:1.7;">
+        An academic prototype that identifies the psychological patterns shaping financial
+        decisions — backed by behavioural finance research and primary survey data from
+        Indian retail investors.
+      </div>
+    </div>
+
+    <!-- ── 3-STAT ROW ── -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+                background:#e0ddd7;border:1px solid #e0ddd7;margin-bottom:32px;">
+      <div style="background:#f5f3ef;padding:20px 24px;">
+        <div style="font-family:'Instrument Serif',serif;font-size:2rem;color:#1a1a18;line-height:1;">135+</div>
+        <div style="font-size:11px;color:#9a9690;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;">Survey respondents</div>
+      </div>
+      <div style="background:#f5f3ef;padding:20px 24px;">
+        <div style="font-family:'Instrument Serif',serif;font-size:2rem;color:#1a1a18;line-height:1;">11</div>
+        <div style="font-size:11px;color:#9a9690;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;">Behavioural biases measured</div>
+      </div>
+      <div style="background:#f5f3ef;padding:20px 24px;">
+        <div style="font-family:'Instrument Serif',serif;font-size:2rem;color:#1a1a18;line-height:1;">220</div>
+        <div style="font-size:11px;color:#9a9690;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;">Investor profiles analysed</div>
+      </div>
+    </div>
+
+    <!-- ── OBJECTIVES ── -->
+    <div style="margin-bottom:32px;">
+      <div style="font-size:11px;color:#c5a35a;letter-spacing:0.08em;text-transform:uppercase;
+                  font-weight:500;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e0ddd7;">
+        Objectives
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:#efecea;border-left:3px solid #c5a35a;padding:14px 18px;">
+          <div style="font-size:13px;color:#1a1a18;font-weight:500;margin-bottom:4px;">Bias Identification</div>
+          <div style="font-size:12px;color:#6b6860;line-height:1.6;">Identify behavioural biases influencing investment decisions among Indian retail investors</div>
+        </div>
+        <div style="background:#efecea;border-left:3px solid #c5a35a;padding:14px 18px;">
+          <div style="font-size:13px;color:#1a1a18;font-weight:500;margin-bottom:4px;">BFS Development</div>
+          <div style="font-size:12px;color:#6b6860;line-height:1.6;">Develop a proprietary Behavioural Finance Scoring System to quantify bias susceptibility</div>
+        </div>
+        <div style="background:#efecea;border-left:3px solid #c5a35a;padding:14px 18px;">
+          <div style="font-size:13px;color:#1a1a18;font-weight:500;margin-bottom:4px;">Demographic Analysis</div>
+          <div style="font-size:12px;color:#6b6860;line-height:1.6;">Analyse bias patterns across age and gender groups using real survey data</div>
+        </div>
+        <div style="background:#efecea;border-left:3px solid #c5a35a;padding:14px 18px;">
+          <div style="font-size:13px;color:#1a1a18;font-weight:500;margin-bottom:4px;">Functional Prototype</div>
+          <div style="font-size:12px;color:#6b6860;line-height:1.6;">Build an interactive tool providing personalised, data-driven bias-aware insights</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DATA & RESEARCH ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;">
+      <div>
+        <div style="font-size:11px;color:#c5a35a;letter-spacing:0.08em;text-transform:uppercase;
+                    font-weight:500;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e0ddd7;">
+          Data Sources
+        </div>
+        <div style="background:#f5f3ef;border:1px solid #e0ddd7;padding:16px 18px;margin-bottom:8px;">
+          <div style="font-size:10px;color:#c5a35a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Primary</div>
+          <div style="font-size:13px;color:#1a1a18;">~135 survey responses from Indian retail investors, students, and salaried professionals</div>
+        </div>
+        <div style="background:#f5f3ef;border:1px solid #e0ddd7;padding:16px 18px;">
+          <div style="font-size:10px;color:#c5a35a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Secondary</div>
+          <div style="font-size:13px;color:#1a1a18;">220 investor profiles · 10 market sectors · 11-year historical index return data</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#c5a35a;letter-spacing:0.08em;text-transform:uppercase;
+                    font-weight:500;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #e0ddd7;">
+          Research Basis
+        </div>
+        <div style="font-size:12px;color:#6b6860;line-height:2.2;">
+          <div style="border-bottom:1px solid #e0ddd7;padding-bottom:6px;margin-bottom:6px;color:#1a1a18;">
+            Barber &amp; Odean (2001) <span style="color:#9a9690;">— Gender, Overconfidence &amp; Stock Investment</span>
+          </div>
+          <div style="border-bottom:1px solid #e0ddd7;padding-bottom:6px;margin-bottom:6px;color:#1a1a18;">
+            Shefrin &amp; Statman (2000) <span style="color:#9a9690;">— Behavioural Portfolio Theory</span>
+          </div>
+          <div style="border-bottom:1px solid #e0ddd7;padding-bottom:6px;margin-bottom:6px;color:#1a1a18;">
+            Pompian (2012) <span style="color:#9a9690;">— Behavioural Finance &amp; Investor Types</span>
+          </div>
+          <div style="color:#1a1a18;">
+            NISM &amp; SEBI <span style="color:#9a9690;">— Investor Reports (2022–2024)</span>
+          </div>
+        </div>
+      </div>
     </div>
     """, unsafe_allow_html=True)
 
+    # ── MENTOR SECTION ──
     st.markdown("""
-    <div class="card">
-    <h3>Objectives</h3>
-    <ul>
-        <li>Identify behavioural biases in investment decisions among Indian investors</li>
-        <li>Develop a Behavioural Finance Scoring System (BFS)</li>
-        <li>Analyse patterns across age and gender groups</li>
-        <li>Provide data-driven and self-assessment insights through a functional prototype</li>
-    </ul>
+    <div style="margin-bottom:32px;">
+      <div style="font-size:11px;color:#c5a35a;letter-spacing:0.08em;text-transform:uppercase;
+                  font-weight:500;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e0ddd7;">
+        Project Mentor
+      </div>
+      <div style="display:flex;align-items:center;gap:24px;background:#efecea;
+                  border:1px solid #e0ddd7;border-left:4px solid #c5a35a;padding:24px 28px;">
+        <div style="width:72px;height:72px;border-radius:50%;background:#1a1a18;
+                    display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:'Instrument Serif',serif;font-size:1.4rem;color:#c5a35a;font-weight:400;">KS</span>
+        </div>
+        <div>
+          <div style="font-family:'Instrument Serif',serif;font-size:1.25rem;color:#1a1a18;
+                      letter-spacing:-0.01em;margin-bottom:4px;">Kinshuk Saurabh</div>
+          <div style="font-size:13px;color:#c5a35a;font-weight:500;margin-bottom:4px;">Associate Professor</div>
+          <div style="font-size:12px;color:#6b6860;line-height:1.6;">
+            Fellow Programme in Management (FPM)<br>
+            <span style="color:#9a9690;">Indian Institute of Management Ahmedabad</span>
+          </div>
+        </div>
+      </div>
     </div>
     """, unsafe_allow_html=True)
 
+    # ── STUDENT TEAM ──
     st.markdown("""
-    <div class="card">
-    <h3>Data</h3>
-    <ul>
-        <li><strong>Primary:</strong> ~135 survey responses from Indian investors</li>
-        <li><strong>Secondary:</strong> Sector-wise allocation across 220 investor profiles and 10 market sectors</li>
-    </ul>
-    </div>
+    <div style="margin-bottom:32px;">
+      <div style="font-size:11px;color:#c5a35a;letter-spacing:0.08em;text-transform:uppercase;
+                  font-weight:500;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e0ddd7;">
+        Student Team
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="card">
-    <h3>Research Basis</h3>
-    <ul>
-        <li>Barber &amp; Odean (2001) — Gender, Overconfidence and Stock Investment</li>
-        <li>Shefrin &amp; Statman (2000) — Behavioural Portfolio Theory</li>
-        <li>Pompian (2012) — Behavioural Finance and Investor Types</li>
-        <li>NISM and SEBI Investor Reports (2022–2024)</li>
-    </ul>
-    </div>
-    """, unsafe_allow_html=True)
+    students = [
+        ("Surya Ashish Kothari",    "AU2210087", "SK"),
+        ("Bhavisha Devanshu Gandhi","AU2210444", "BG"),
+        ("Diya Malav Shah",         "AU2210394", "DS"),
+        ("Vrushank Ujjaval Thakkar","AU2210434", "VT"),
+        ("Hiir Bharatbhai Jadav",   "AU2220265", "HJ"),
+    ]
 
+    cols = st.columns(5)
+    for i, (name, enrol, initials) in enumerate(students):
+        first, *rest = name.split()
+        last = rest[-1] if rest else ""
+        with cols[i]:
+            st.markdown(f"""
+            <div style="background:#f5f3ef;border:1px solid #e0ddd7;padding:18px 12px;
+                        text-align:center;">
+              <div style="width:52px;height:52px;border-radius:50%;background:#1a1a18;
+                          display:flex;align-items:center;justify-content:center;
+                          margin:0 auto 12px;flex-shrink:0;">
+                <span style="font-family:'Instrument Serif',serif;font-size:1rem;
+                             color:#c5a35a;">{initials}</span>
+              </div>
+              <div style="font-size:12px;font-weight:500;color:#1a1a18;
+                          line-height:1.4;margin-bottom:6px;">{first}<br>{last}</div>
+              <div style="font-size:10px;color:#9a9690;letter-spacing:0.04em;
+                          font-family:'DM Sans',sans-serif;">{enrol}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # ── DISCLAIMER ──
     st.markdown("""
-    <div class="card">
-    <h3>Disclaimer</h3>
-    <p>This tool is developed for academic and research purposes only.
-    It does not constitute financial advice or investment recommendations.</p>
+    <div style="margin-top:32px;border-top:1px solid #e0ddd7;padding-top:20px;">
+      <div style="font-size:11px;color:#9a9690;letter-spacing:0.04em;line-height:1.8;text-align:center;">
+        This tool is developed for <strong style="color:#6b6860;">academic and research purposes only</strong>
+        · It does not constitute financial advice or investment recommendations
+        · Behavioural Finance Research · Indian Retail Investors
+      </div>
     </div>
     """, unsafe_allow_html=True)
