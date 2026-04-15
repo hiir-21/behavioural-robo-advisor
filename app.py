@@ -1553,6 +1553,29 @@ with tab_about:
         </div>
       </div>
     </div>
+
+    <div style="margin-bottom:32px;">
+      <div style="font-size:11px;color:#c5a35a;letter-spacing:0.08em;text-transform:uppercase;
+                  font-weight:500;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #e0ddd7;">
+        Co-Evaluator
+      </div>
+      <div style="display:flex;align-items:center;gap:24px;background:#efecea;
+                  border:1px solid #e0ddd7;border-left:4px solid #e0ddd7;padding:24px 28px;">
+        <div style="width:72px;height:72px;border-radius:50%;background:#1a1a18;
+                    display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-family:'Instrument Serif',serif;font-size:1.4rem;color:#c5a35a;font-weight:400;">NK</span>
+        </div>
+        <div>
+          <div style="font-family:'Instrument Serif',serif;font-size:1.25rem;color:#1a1a18;
+                      letter-spacing:-0.01em;margin-bottom:4px;">Narendra Nath Kushwaha</div>
+          <div style="font-size:13px;color:#c5a35a;font-weight:500;margin-bottom:4px;">Assistant Professor</div>
+          <div style="font-size:12px;color:#6b6860;line-height:1.6;">
+            PhD<br>
+            <span style="color:#9a9690;">Indian Institute of Management Tiruchirappalli</span>
+          </div>
+        </div>
+      </div>
+    </div>
     """, unsafe_allow_html=True)
 
     # ── STUDENT TEAM ──
